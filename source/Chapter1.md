@@ -43,5 +43,17 @@ Here’s a list of some models that fit into the simple GCM niche:
 ## What can you do with DREAM ?
 In its simplest form DREAM is a dynamical model that either simulates a perpetual season or can be used to study perturbations about a fixed basic state, in both cases with time-independent forcing. An extension to the forcing has been developed that includes an annual cycle. In this way DREAM can be used for climate studies in which a one-to-one correspondence with historical data is required. DREAM is designed to work with the reanalysis data that is used to calculate the empirical forcing. This dataset can be consulted during a run to constrain predefined regions of the world to a time sequence of observations by “nudging” on a specified timescale. Further extensions to DREAM have been developed, including interaction with moist thermodynamics associated with the model’s specific humidity variable, and the response to tropical SST anomalies.  DREAM has been used for a wide range of applications, including fundamental properties of the midlatitude jets and baroclinic waves, easterly waves over West Africa, teleconnections from tropical convection, the annual cycle and seasonal prediction of continental rainfall. A complete list of publications is given in Appendix E. 
 
-
+## References
+* Dee D.P., et al, 2011: The ERA INTERIM reanalysis: Configuration and performance of the data assimilation system. Quart. J. Roy. Meteor. Soc., 137, 553–597. 
+* Hall, N.M.J., 2000: A simple GCM based on dry dynamics and constant forcing. J. Atmos. Sci., 57, 1557-1572.
+* Hall, N.M.J., 2005: The atmospheric response to boundary forcing and the use of diagnostic models. ERCA6, EDP sciences, C. Boutron ed. J. Phys IV, France, 121, pp 125-137.
+* Hall, N.M.J., S. Leroux and T. Ambrizzi, 2019: Transient contributions to the forcing of the atmospheric annual cycle: A diagnostic study with the DREAM model. Climate Dyn. [https://doi.org/10.1007/s00382-018-4539-y](https://doi.org/10.1007/s00382-018-4539-y)
+* Hall, N.M.J. and P.D. Sardeshmukh, 1998: Is the time mean Northern Hemisphere flow baroclinically unstable ?  J. Atmos. Sci., 55, 41-56.
+* Hoskins, B.J., 1983: Dynamical processes in the atmosphere and the use of models. Quart. J. Roy. Meteor. Soc., 109, 1-21. 
+* Hoskins, B. J., and A. J. Simmons, 1975: A multi-layer spectral model and the semi-implicit method. Quart. J. Roy. Meteor. Soc., 101, 637–655.
+* Jin, F., and B. J. Hoskins, 1995: The direct response to tropical heating in a baroclinic atmosphere. J. Atmos. Sci., 52, 307–319. 
+* Joshi, M., M. Stringer, K. van der Wiel, A. O’Callaghan and S. Fueglistaler, 2015: IGCM4: a fast, parallel and flexible intermediate climate model. Geosci. Model Dev., 8, 1157–1167.
+* Roads, J. O., 1987: Predictability in the extended range. J. Atmos. Sci., 44, 3495–3527. 
+* Simmons, A. J., and D. M. Burridge, 1981: An energy and angular-momentum conserving vertical finite-difference scheme and hybrid vertical coordinates. Mon. Wea. Rev., 109, 758–766. 
+* Simmons, A. J., and B. J. Hoskins, 1978: The lifecycles of some nonlinear baroclinic waves. J. Atmos. Sci., 35, 414–432.
 

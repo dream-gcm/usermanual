@@ -19,9 +19,9 @@ sys.path.append(os.path.abspath('../'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'imhotep-doc'
-copyright = '2022, imhotep project'
-author = 'stephanie leroux'
+project = 'dream-user-manual'
+copyright = '2022, nick hall'
+author = 'nick hall'
 
 # The full version, including alpha/beta/rc tags
 release = '0.0'
