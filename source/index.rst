@@ -6,13 +6,14 @@ DREAM user manual
 ==============================================
 
 .. image:: img/cover.png
-   :width: 600
+   :width: 300
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-   Context
-   Experiments
-   Access-the-data
-   Tools   
+   Chapter1
+   Chapter2
+   Chapter3
+   Chapter4
+   Chapter5   
