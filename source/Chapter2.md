@@ -75,11 +75,7 @@ and if all goes well, you will find some netCDFs in your experiment directory `D
 
 The probability of all going well is less than unity !  Typically there is some work to do to make sure your version of netCDF is compatible with your fortran compiler. 
 
-The netCDFs are labelled with reference to resolution, variable name and level. So for example
-
-`dreamT31L15_u_250.nc`
-
-is output from the model run at T31 with 15 levels, zonal wind at 250 mb  
+The netCDFs are labelled with reference to resolution, variable name and level. So for example `dreamT31L15_u_250.nc` is output from the model run at T31 with 15 levels, zonal wind at 250 mb  
 ( but it’s not really millibars - in fact it’s output on the sigma=0.25 level, but it is close to data on a pressure surface because DREAM runs without orography and the surface pressure in the data is actually mean sea level pressure - see appendix A).
 
 Now you can plot these variables and compute any diagnostics you want with your favourite tools and programs for dealing with netCDF datasets.
@@ -103,19 +99,19 @@ gfortran -fdefault-real-8 -fconvert=big-endian -O3 -frecord-marker=4 -w -fallow-
 ```
 
 ## So what else do you need to know ?
-I want to know where are all the files are stored and what are they’re all for - see Chapter 3.
-I want to go further with diagnostics and understand the data structure and timing - see Chapter 3 and Appendix A
-What is the physical and numerical specification of this model ? - see Appendix A.
-What’s the difference between a GCM run and a perturbation experiment ? - see Chapter 4 and Appendix B.
-How is the basic forcing calculated ? - see Chapter 4.
-How do I make an anomaly forcing file ? - see Chapter 4.
-What are all those parameters in the namelist for ? - see Appendix C.
-I want to run ensemble forecasts, with an annual cycle, and nudging, and SST anomalies, and deep convection - whoah, calm down, one step at a time, it’s all in Chapter 4. 
-I want to know everything about how the model works - I’m afraid you have no choice but to look at Appendix D, good luck.
+* I want to know where are all the files are stored and what are they’re all for - see Chapter 3.
+* I want to go further with diagnostics and understand the data structure and timing - see Chapter 3 and Appendix A
+* What is the physical and numerical specification of this model ? - see Appendix A.
+* What’s the difference between a GCM run and a perturbation experiment ? - see Chapter 4 and Appendix B.
+* How is the basic forcing calculated ? - see Chapter 4.
+* How do I make an anomaly forcing file ? - see Chapter 4.
+* What are all those parameters in the namelist for ? - see Appendix C.
+* I want to run ensemble forecasts, with an annual cycle, and nudging, and SST anomalies, and deep convection - whoah, calm down, one step at a time, it’s all in Chapter 4. 
+* I want to know everything about how the model works - I’m afraid you have no choice but to look at Appendix D, good luck.
 
 and finally…
 
-I’ve successfully used DREAM and my results are astonishing ! I think this is a major contribution to atmospheric science which will launch my career. My first draft is ready - Congratulations ! Now don’t forget about the rest of us - see Chapter 5
+* I’ve successfully used DREAM and my results are astonishing ! I think this is a major contribution to atmospheric science which will launch my career. My first draft is ready - Congratulations ! Now don’t forget about the rest of us - see Chapter 5
 
 
 
