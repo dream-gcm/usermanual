@@ -1,11 +1,11 @@
-.. Imhotep documentation master file
+.. Dream user manual
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Documentation for the IMHOTEP project
+DREAM user manual
 ==============================================
 
-.. image:: img/sss-esa.png
+.. image:: img/cover.png
    :width: 600
 
 .. toctree::
