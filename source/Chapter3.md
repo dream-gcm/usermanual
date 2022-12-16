@@ -6,7 +6,7 @@ _Description of the DREAM File Structure_
 The sub-headings in this chapter refer to directory names under the DREAM root directory. As well as giving you a guide to the file structure, we’ll also have a look inside and see what data there is, and what code is available for pre-processing and manipulating the data, running the model and post processing the output. This chapter is mainly a guide to the files available with a few details where appropriate, especially for the data files. A more comprehensive guide to running the model and diagnosing the output follows in Chapter 4. 
 
 ---
-## dream data
+## 3.1 dream data
 The first of three main branches from DREAM is `dream_data`. There are four sub-directories as the data is split into two resolutions, and into spectral and grid data. So T31 spectral data goes with G96 grid data, and T42 spectral data goes with G128 grid data. 
 
 
@@ -70,11 +70,10 @@ is actually output from a long perpetual DJF integration of DREAM, sampled once 
 The only essential grid file the model needs is the land-sea mask, `LSmask_G96.b` for T31 and `LSmask_G128.b` for T42. Apart from that the most important grid-based input to the model is the SST data. Single record climatologies are given for the four seasons, and a monthly climatology is also provided in a 12-record file. These climatologies are used in conjunction with either realistic or idealised SST anomalies to calculate the associated atmospheric heating anomaly. This is still  subject of research. 
 
 ---
-## data_process
+## 3.2 data_process
 In the second main directory, dream_model, we have a set of routines to manipulate the data and prepare data files and forcing for the model. 
 
-i) `/data_manip/`
-
+i) In `/data_manip/`:
 Here we have a selection of fortran programs for a wide variety of tasks. They are stand-alone without scripts to run them, so it’s up to you to compile them:
 
 ```
@@ -120,30 +119,33 @@ Here’s the complete list:
 * `W2G2W_sector_mean.f` - uses the model’s spectral analysis code to do geographical  manipulations on spectral data in grid space, notably the sector mean. 
 * `zonal_mean+WN123.f` - takes the zonal mean of the input data, with options to also make it symmetric about the equator, and to retain wavenumbers 1, 1 and 2 or 1,2 and 3. 
 
-ii) `/prep_cyc/`
-
+ii) In `/prep_cyc/`:
 A small number of fortran programs specifically focussed on computing cycles. The names of these programs are quite self explanatory (except the ones that refer to components of the annual cycle CT, TT, MC and CC which are highly specialised): 
 * `annual_cycle_spec/grid` - calculates the mean annual cycle from a sequence - note that there is no smoothing filter applied in this code, that is done separately afterwards using cyclic_running_mean_spec/grid. 
 * `composite_n_day_cycle_spec/grid` - used for diagnosing aggregate cyclic responses to cyclic forcing (like the MJO) in long model runs. 
 
-iii) `/prep_fan/`
-
+iii) In `/prep_fan/`:
 Scripts and programs for preparing idealised forcing anomalies. First look at makefan.ksh. It compiles and runs makefan.f to produce a gridpoint forcing anomaly for either temperature or vorticity. This is then spectrally analysed at T42 using `specanANOMT42.f` and written to a file called temp_fan.b (to be renamed as needed). T31 anomalies can be made by changing the parameters and using `specanANOMT31.f` (or by downscaling the T42 result using `truncate_T42toT31.f`). 
 
 The program `makefan.f` starts from scratch and can be edited for the desired properties of the forcing anomaly. It will take the form of an ellipse with a cosine squared bell shaped horizontal distribution. You can specify its location and radius in x and y directions, its heating rate and its vertical profile. Examples are given in the file `Notes_for_forcing_anomalies.rtf`. 
 
 More complex shapes can be defined from gridpoint input using makefan_ReadGrid.f and sequences of forcing can be produced using `makefan_seq.f`. The model will read through a forcing anomaly sequence at a user-defined rate until it reaches the end and then it will repeat to give a cyclic forcing anomaly. 
 
-iv) `/prep_lsm/`
-
+iv) In `/prep_lsm/`:
 Code for creating the land-sea mask in model format from gridpoint data
 
-v) `/prep_seq/`
-
+v) In `/prep_seq/`:
 Basic code for creating the ERA-interim dataset as a sequential binary file in the model format. 
 
-vi) `/prep_sst/`
-
+vi) In  `/prep_sst/`:
 Code for manipulating and visualising SST data and idealised SST anomalies:
 * `check_grid_SST.f reads binary SST data in model format and prints it on the screen to check it’s OK. 
 * `makessta.f` creates an elliptical SST anomaly in model grid format in a similar way to makefan.f
+
+---
+## 3.3 Source code
+In the `/source` directory you’ll find the model: at time of writing it’s `dream_v8.1.f`. Appendix A section 6 and Appendix D take you through the code in some detail. It is easy to edit the code but not recommended ! If you do want to hack it for some special reason, just make sure you keep a safe original copy. The model calls some library routines in /lib but once compiled these should not be touched. It also reads a lot of parameters and common block variable declarations from the /include directory. Note that this is set up to work at two resolutions, T31 and T42, with the associated grid resolutions of 96 and 128 points around a latitude circle (and 24 and 32 latitudes per hemisphere). Switching between resolutions is transparent for the code, and to a large extent also for the associated data files. It's all set up in the job script, as described in the next section. So you have very little reason to visit this source directory. 
+
+Also in the include subdirectory is a setup file. This contains a few edits to the code to alter its behaviour depending on some choices made in the job script namelists. The idea is to have some standard use cases, but we haven’t gone very far down this road as in general everyone’s use case is different. 
+
+Finally there is a change-log which contains notes on changes made between versions of DREAM. As such it is a nice chronological summary of the development history which complements this user guide. 
