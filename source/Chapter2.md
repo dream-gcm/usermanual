@@ -1,6 +1,6 @@
 ![chapter 2 fig](./img/chapter_2.png)
-# Chapter 2: Eyes Wide Shut
-_A Quick Start Guide to Running DREAM_
+# Chapter 2: Eyes Wide Shut - A Quick Start Guide to Running DREAM
+
 
 ## 2.1 Accessing the model
 The DREAM code and a selection of data is currently hosted on GitHub:

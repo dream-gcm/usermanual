@@ -1,6 +1,6 @@
 ![nomenclature tab](./img/chapter_3.png)
-# Chapter 3: The Matrix
-_Description of the DREAM File Structure_
+# Chapter 3: The Matrix - Description of the DREAM File Structure
+
 
 
 The sub-headings in this chapter refer to directory names under the DREAM root directory. As well as giving you a guide to the file structure, we’ll also have a look inside and see what data there is, and what code is available for pre-processing and manipulating the data, running the model and post processing the output. This chapter is mainly a guide to the files available with a few details where appropriate, especially for the data files. A more comprehensive guide to running the model and diagnosing the output follows in Chapter 4. 
