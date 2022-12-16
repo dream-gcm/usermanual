@@ -1,5 +1,5 @@
 ![chapter 2 fig](./img/chapter_1.png)
-# Chapter 1: Inception
+# Chapter 1: Inception (Introduction to DREAM)
 _Introduction to DREAM_
 
 ## 1.1 Preamble
