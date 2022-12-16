@@ -6,7 +6,7 @@ _Description of the DREAM File Structure_
 The sub-headings in this chapter refer to directory names under the DREAM root directory. As well as giving you a guide to the file structure, we’ll also have a look inside and see what data there is, and what code is available for pre-processing and manipulating the data, running the model and post processing the output. This chapter is mainly a guide to the files available with a few details where appropriate, especially for the data files. A more comprehensive guide to running the model and diagnosing the output follows in Chapter 4. 
 
 ---
-## 3.1 dream data
+## 3.1 `dream_data`directory
 The first of three main branches from DREAM is `dream_data`. There are four sub-directories as the data is split into two resolutions, and into spectral and grid data. So T31 spectral data goes with G96 grid data, and T42 spectral data goes with G128 grid data. 
 
 
@@ -70,7 +70,7 @@ is actually output from a long perpetual DJF integration of DREAM, sampled once 
 The only essential grid file the model needs is the land-sea mask, `LSmask_G96.b` for T31 and `LSmask_G128.b` for T42. Apart from that the most important grid-based input to the model is the SST data. Single record climatologies are given for the four seasons, and a monthly climatology is also provided in a 12-record file. These climatologies are used in conjunction with either realistic or idealised SST anomalies to calculate the associated atmospheric heating anomaly. This is still  subject of research. 
 
 ---
-## 3.2 data_process
+## 3.2 `data_process` directory
 In the second main directory, dream_model, we have a set of routines to manipulate the data and prepare data files and forcing for the model. 
 
 i) In `/data_manip/`:
@@ -139,7 +139,7 @@ Basic code for creating the ERA-interim dataset as a sequential binary file in t
 
 vi) In  `/prep_sst/`:
 Code for manipulating and visualising SST data and idealised SST anomalies:
-* `check_grid_SST.f reads binary SST data in model format and prints it on the screen to check it’s OK. 
+* `check_grid_SST.f` reads binary SST data in model format and prints it on the screen to check it’s OK. 
 * `makessta.f` creates an elliptical SST anomaly in model grid format in a similar way to makefan.f
 
 ---
@@ -149,3 +149,57 @@ In the `/source` directory you’ll find the model: at time of writing it’s `d
 Also in the include subdirectory is a setup file. This contains a few edits to the code to alter its behaviour depending on some choices made in the job script namelists. The idea is to have some standard use cases, but we haven’t gone very far down this road as in general everyone’s use case is different. 
 
 Finally there is a change-log which contains notes on changes made between versions of DREAM. As such it is a nice chronological summary of the development history which complements this user guide. 
+
+
+---
+## 3.4 `jobs`directory
+This is where you’ll spend a lot of your time. We’ve already had a look at the job script to run the model in chapter 2, and we’ll go into much more detail in chapter 4. Here’s just an overview of the files in this directory. 
+
+* `runmodel_v8.1.ksh` - your basic script for running the model
+multirun.ksh - a bog standard script to sequentially run several experiments - edit at will.
+
+* `makefrc.ksh` - the script for making forcing files _fbs and _fcm. How to do this is explained in Chapter 4 section 2. It calls fortran routines: calcfrc_T31.f or calcfrc_T42.f. 
+
+* `makefrc_cyc.ksh` - calculating a forcing function with an annual cycle is a protracted and elaborate business, see Chapter 4 section 2iv and Appendix B section 8 . This script is only part of the procedure, along with fortran routines: calcfrc_cycADV.f and calcfrc_cycTEND.f
+
+* `makefed.ksh` - if you want to diagnose the transient eddy part of the forcing, it is the difference between a _fbs file and an `_fcm` file (see Appendix B). This script works it out using `calcfed.f`. 
+
+* `run_ensemble.ksh` - a very useful script for organising an ensemble forecast and then calculating an ensemble mean history record. It calls the script make_ensemble_mean.ksh, and fortran routines: `ensemble_ic.f` and `ensemble_mean.f` or `ensemble_mean_dry.f`
+
+---
+## 3.5 `results` directory
+So the model has run without crashing and you have some history files. They will have been put into your experimental directory under DREAM/dream_results. Here you will find for reference a record of how you set up the experiment in the form of the following files: 
+* `runmodel_v8.1.ksh` - a record of the script you used to run the model
+* `namelist_data` - the changes you made to the model namelist defaults
+* `results` - a text file with details of the run including namelist values etc. 
+* `dream_v8.1.f` and `setup.f` - a clone of the model code you used
+* `parameters.f` - a record of your parameter (i.e. the resolution)
+* `prog` - the executable file for the model
+* `history` - the dynamical output from the model
+* `history_grid2d` and `history_grid2d` - precipitation-related gridpoint output if appropriate
+`restart.11` and `restart.12` - restart files periodically during the run (11) and at the end (12). 
+
+When you run the diagnostics you’ll also get:
+* `run_output.ksh` and `model_output.ksh` - a record of the diagnostic scripts you used
+`/netcdfs` - your netCDF output goes here
+* `/binary_grid` and `/binary_grid3d` - binary diagnostic output if you selected it. 
+
+---
+## 3.6 `diagnostics` directory
+Another directory where you’ll spend a lot of your time. Again, this is an overview of the files. A comprehensive guide to diagnostics is given in Chapter 4. 
+* `specan_W2G.f` - the core fortran program that everything depends on, this routine uses the spectral analysis from the model to take a model history file and write grid diagnostic fields for dynamical variables into binary and netCDF formats.
+* `gridan2d.f` and `gridan3d.f` do a similar job but for model grid output, i.e. fields that are related to model precipitation.
+
+* `time_mean_spec_grid.f` - calculates a time mean from your sequential output, called by the script if requested. 
+
+* `run_output.ksh` - this is your basic script for running the output, it calls `model_output.ksh` and `file_renamer.ksh` as well as the diagnostics programs cited above. 
+
+* `run_output_flux.ksh` - an extended script that does the same job as `run_output.ksh` but will also provide quadratic quantities with time-filtering, such as heat, moisture and momentum fluxes, geopotential variance and eddy kinetic energy. To do this it calls `model_output.ksh`, `model_flux.ksh`, `hp_flux.ksh`, and the fortran programs cited above. For handling fluxes and time filtering it also calls: `time_filter_history.f`, `time_mean_flux2d.f`, `gridan_flux2d.f` and `hp_flux2d.f`. 
+
+* `/include` - contains parameters and common blocks. Note that the common block files are not simply copies of the ones in the source directory. 
+
+* `check_grid3d.f` - this is just a verification program to print 3d grid data on the screen.
+
+
+
+
