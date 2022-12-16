@@ -5,12 +5,12 @@ _Description of the DREAM File Structure_
 
 The sub-headings in this chapter refer to directory names under the DREAM root directory. As well as giving you a guide to the file structure, we’ll also have a look inside and see what data there is, and what code is available for pre-processing and manipulating the data, running the model and post processing the output. This chapter is mainly a guide to the files available with a few details where appropriate, especially for the data files. A more comprehensive guide to running the model and diagnosing the output follows in Chapter 4. 
 
+---
+## dream data
+The first of three main branches from DREAM is `dream_data`. There are four sub-directories as the data is split into two resolutions, and into spectral and grid data. So T31 spectral data goes with G96 grid data, and T42 spectral data goes with G128 grid data. 
 
-## `dream_data` directory
-The first of three main branches from DREAM is dream_data. There are four sub-directories as the data is split into two resolutions, and into spectral and grid data. So T31 spectral data goes with G96 grid data, and T42 spectral data goes with G128 grid data. 
 
-
-## Spectral files
+### Spectral files
 Let's look at spectral data first. These files are all in the same format and contain the base variables of the model: vorticity, divergence, temperature, log surface pressure and specific humidity. Details of the file structure are given in Appendix A, but for now let’s look at the files in the different subdirectories. Note that the file names can be the same for T31 or T42 so it is important to keep them in their correct directories. 
 
 _i) ave: Average_ 
@@ -66,6 +66,83 @@ There are also sequences for a given date: `ERAi_seq_1979-2016_01_01.b` contains
 is actually output from a long perpetual DJF integration of DREAM, sampled once every 28 days. So there are 120 records of independent data sampled from the model’s own climate: useful for drift-free idealised ensemble work. 
 
 
-## Grid files
+### Grid files
 The only essential grid file the model needs is the land-sea mask, `LSmask_G96.b` for T31 and `LSmask_G128.b` for T42. Apart from that the most important grid-based input to the model is the SST data. Single record climatologies are given for the four seasons, and a monthly climatology is also provided in a 12-record file. These climatologies are used in conjunction with either realistic or idealised SST anomalies to calculate the associated atmospheric heating anomaly. This is still  subject of research. 
 
+---
+## data_process
+In the second main directory, dream_model, we have a set of routines to manipulate the data and prepare data files and forcing for the model. 
+
+i) data_manip
+
+Here we have a selection of fortran programs for a wide variety of tasks. They are stand-alone without scripts to run them, so it’s up to you to compile them:
+
+````
+gfortran -fdefault-real-8 -fconvert=big-endian
+```
+
+and link the right input files to the appropriate channels and to rename the output as required. This means you’ll have to understand how the programs work, and possibly edit them to your needs. None of them are very long. They all have very specific purposes. Most of them work on spectral “history” files which may be reanalysis data or model output. Some work on grid data which is from model output of fields that are not spectrally analysed in the model, such as rainfall. 
+
+Here’s the complete list: 
+* `add2_hst.f` - adds two model spectral history files together
+* `checkhst.f` - simply reads a spectral history file to check the data
+* `checkhst_modenorm.f` - reads a history file and calculates the norm used in “modefinder” (see Chapter 4 section 4i) 
+* `compare_hst.f` - compares two history files
+* `concat.f` - concatenates two history files into one
+* `daily_means.f` - calculates daily means from 4x-daily spectral data
+* `extract_10yr.f` - extracts a chosen decade from the data sequence
+* `extract_38x1Jan.f` - extracts a sequence of 1st of Januarys from the data sequence
+* `extract_38x1st_of_Month.f` - same but for the first of any chosen month
+* `extract_DJF.f` - to create a sequence of DJF 4x-daily data from the full sequence
+* `extract_IC_for_ensemble.f` - to create a sequence of states by reading a long model run at fixed intervals to provide ensemble initial conditions
+* `extract_last_40_days_same_IC.f` - from model output of any length, extracts the last 40 days of 4x-daily data and writes it out with the original initial condition - useful for analysing modes
+* `extract_season_means_cyc.f` - to make four seasonal means from a mean annual cycle 
+* `extract_seasons_spec.f` - extracts the four seasons from the full sequential dataset - spectral
+* `extract_seasons_grid2d.f` - same but for 2d grid fields (variables related to precipitation)
+* `extract-label_years.f` - relabel spectral data with information about the year and daynumber
+* `global_mean.f` - creates spectral data with the global mean of the input file but no horizontal variations
+* `global_mean_resting.f` - same but with no wind at all
+* `growth.f` - calculates growth rates in a quadratic vorticity norm (for analysis from the modefinder, see Chapter 4 section 4i)
+* `make_inst2.f` - extracts a single record from a sequence to furnish a singe initial condition
+* `make_inst.f` - same with KOUNT and DAY set to zero
+* `modify_metadata.f` - to update timing information on history files
+* `pack_history_grid.f` - deals with a bug in writing out grid data where some of the data were not output from the model
+* `rephase_MJO_fan48d.f` - shuffles MJO forcing anomaly sequence to change initial phase
+* `subtract2_hst.f` - subtracts one history file from another
+* `subtract_BS.f` - subtracts a basic state from a history file and adds a resting state in its place, useful for looking at anomalies on a fixed basic state.  
+* `subtract_CTL.f` - subtracts a time-dependent control experiment and adds a resting state, useful for tangent anomaly development. 
+* `subtract_IC.f` - subtracts the initial condition from a history file and adds a resting state, useful for anomaly forecasts. 
+* `TILS.f` - Time Independent Linear Solution. Complicated routine for extrapolating a set of three solutions found at different additional damping rates back to zero additional damping (see Appendix B section 3). 
+* `time_filter_history.f` - creates a block mean history file for crude low-pass filtering.
+* `time_mean.f` - creates a custom time-mean from the sequence data after skipping an initial period.
+* `truncate_T42toT31.f` - creates T31 history record from T42 input
+* `visualise_forcing_T42.f` - creates a history file that differs from the initial condition by an input forcing rate (from a _fan, _fcm or _fbs file) multiplied by one day to allow visualisation of tendency fields in units per day
+* `W2G2W_sector_mean.f` - uses the model’s spectral analysis code to do geographical  manipulations on spectral data in grid space, notably the sector mean. 
+* `zonal_mean+WN123.f` - takes the zonal mean of the input data, with options to also make it symmetric about the equator, and to retain wavenumbers 1, 1 and 2 or 1,2 and 3. 
+
+ii) prep_cyc
+A small number of fortran programs specifically focussed on computing cycles. The names of these programs are quite self explanatory (except the ones that refer to components of the annual cycle CT, TT, MC and CC which are highly specialised). 
+
+annual_cycle_spec/grid - calculates the mean annual cycle from a sequence - note that there is no smoothing filter applied in this code, that is done separately afterwards using cyclic_running_mean_spec/grid. 
+
+composite_n_day_cycle_spec/grid - used for diagnosing aggregate cyclic responses to cyclic forcing (like the MJO) in long model runs. 
+
+iii) prep_fan
+Scripts and programs for preparing idealised forcing anomalies. First look at makefan.ksh. It compiles and runs makefan.f to produce a gridpoint forcing anomaly for either temperature or vorticity. This is then spectrally analysed at T42 using specanANOMT42.f and written to a file called temp_fan.b (to be renamed as needed). T31 anomalies can be made by changing the parameters and using specanANOMT31.f (or by downscaling the T42 result using truncate_T42toT31.f). 
+
+The program makefan.f starts from scratch and can be edited for the desired properties of the forcing anomaly. It will take the form of an ellipse with a cosine squared bell shaped horizontal distribution. You can specify its location and radius in x and y directions, its heating rate and its vertical profile. Examples are given in the file Notes_for_forcing_anomalies.rtf. 
+
+More complex shapes can be defined from gridpoint input using makefan_ReadGrid.f and sequences of forcing can be produced using makefan_seq.f. The model will read through a forcing anomaly sequence at a user-defined rate until it reaches the end and then it will repeat to give a cyclic forcing anomaly. 
+
+iv) prep_lsm
+Code for creating the land-sea mask in model format from gridpoint data
+
+v) prep_seq
+Basic code for creating the ERA-interim dataset as a sequential binary file in the model format. 
+
+vi) prep_sst
+Code for manipulating and visualising SST data and idealised SST anomalies. 
+
+check_grid_SST.f reads binary SST data in model format and prints it on the screen to check it’s OK. 
+
+makessta.f creates an elliptical SST anomaly in model grid format in a similar way to makefan.f
