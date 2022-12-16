@@ -1,6 +1,6 @@
-![nomenclature tab](./img/chapter_1.png)
+![chapter 2 fig](./img/chapter_1.png)
 # Chapter 1: Inception
-Introduction to DREAM
+_Introduction to DREAM_
 
 ## Preamble
 In 1983 Sir Brian Hoskins published a lecture in the QJ under the title “Dynamical processes in the atmosphere and the use of models” in which he commented on the interplay between observations, sophisticated numerical models and our understanding of dynamical processes. He advocated a hierarchical approach in which dynamical models of intermediate complexity play a role (I made a contribution to this vision in Hall 2004, but I don’t think anyone read it). There is always a tradeoff between physical realism and conceptual understanding. Models of varying complexity can bridge the gap. 
