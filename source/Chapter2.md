@@ -61,7 +61,8 @@ To run the model execute the script in a terminal:
 
 The model will run, developing over five days from its initial condition, subject to the forcing you have specified.
 
-## Postprocess the model output
+---
+## 2.4 Postprocess the model output
 If the model has run without errors, some output files have now been produced and stored in `DREAM/dream_results/$EXPDIR`  (the default name for `$EXPDIR` is test_run).
 
 The post processing code resides in `DREAM/dream_model/diagnostics`. There are many scripts here that produce a large variety of diagnostics, including sequences, time means and fluxes with output options for netCDF and binary grid. 
@@ -82,7 +83,7 @@ The netCDFs are labelled with reference to resolution, variable name and level. 
 Now you can plot these variables and compute any diagnostics you want with your favourite tools and programs for dealing with netCDF datasets.
 
 ---
-## 2.4  Further notes on installation
+## 2.5  Further notes on installation
 gfortran is strongly recommended, with netCDF libraries and big endian option. 
 
 Example of the compilation line for the model code: 
@@ -99,7 +100,7 @@ Example of the compilation line :
 gfortran -fdefault-real-8 -fconvert=big-endian -O3 -frecord-marker=4 -w -fallow-argument-mismatch -fno-align-commons specan_W2G.f -o a.out -I/usr/local/include/ -I./include -L/usr/local/lib -lnetCDF -lnetCDFf -L/yourpath/DREAM/lib -lfft -lblas -lutil -laux
 ```
 ---
-## 2.5 So what else do you need to know ?
+## 2.6 So what else do you need to know ?
 * I want to know where are all the files are stored and what are they’re all for - see Chapter 3.
 * I want to go further with diagnostics and understand the data structure and timing - see Chapter 3 and Appendix A
 * What is the physical and numerical specification of this model ? - see Appendix A.
