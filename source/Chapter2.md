@@ -2,14 +2,14 @@
 # Chapter 2: Eyes Wide Shut
 _A Quick Start Guide to Running DREAM_
 
-## Accessing the model
+## 2.1 Accessing the model
 The DREAM code and a selection of data is currently hosted on GitHub:
 [https://github.com/dream-gcm/DREAM](https://github.com/dream-gcm/DREAM)
 
 You need to join the private DREAM project on github, so if you don’t already have a github account, the first step is to create one. Then contact us through the link on our web site to be invited to the DREAM private github page. Once you have been invited to the page, you’ll be able to download the model. Go to the model page, click on the green Code button to Download ZIP. Unzip it and you’re done. 
 
-
-## Compilation on your system
+---
+## 2.2 Compilation on your system
 Now you’re on your computer and you have unzipped the directory named “DREAM-master”. Reaname this folder as DREAM, put it wherever you want, and go into this directory. 
 
 First you’ll need to recompile the model libraries. Go into the “dream_model/source” directory to compile the model libraries on your computer (you should only have to do this once):
@@ -22,7 +22,8 @@ cd ../..
 
 and now you should be back in the dream_model directory.
 
-## Your first test simulation
+---
+## 2.3 Your first test simulation
 Go into the `DREAM/dream_model/jobs` directory and open the script `runmodel_v8.1.ksh` (at time of writing).
 
 Modify the root path `$KD` so it points to the DREAM directory:
@@ -80,8 +81,8 @@ The netCDFs are labelled with reference to resolution, variable name and level. 
 
 Now you can plot these variables and compute any diagnostics you want with your favourite tools and programs for dealing with netCDF datasets.
 
-
-## Further notes on installation
+---
+## 2.4  Further notes on installation
 gfortran is strongly recommended, with netCDF libraries and big endian option. 
 
 Example of the compilation line for the model code: 
@@ -97,8 +98,8 @@ Example of the compilation line :
 ```
 gfortran -fdefault-real-8 -fconvert=big-endian -O3 -frecord-marker=4 -w -fallow-argument-mismatch -fno-align-commons specan_W2G.f -o a.out -I/usr/local/include/ -I./include -L/usr/local/lib -lnetCDF -lnetCDFf -L/yourpath/DREAM/lib -lfft -lblas -lutil -laux
 ```
-
-## So what else do you need to know ?
+---
+## 2.5 So what else do you need to know ?
 * I want to know where are all the files are stored and what are they’re all for - see Chapter 3.
 * I want to go further with diagnostics and understand the data structure and timing - see Chapter 3 and Appendix A
 * What is the physical and numerical specification of this model ? - see Appendix A.

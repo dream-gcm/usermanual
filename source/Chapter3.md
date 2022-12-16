@@ -143,12 +143,12 @@ Code for manipulating and visualising SST data and idealised SST anomalies:
 * `makessta.f` creates an elliptical SST anomaly in model grid format in a similar way to makefan.f
 
 ---
-## 3.3 Source code
-In the `/source` directory you’ll find the model: at time of writing it’s `dream_v8.1.f`. Appendix A section 6 and Appendix D take you through the code in some detail. It is easy to edit the code but not recommended ! If you do want to hack it for some special reason, just make sure you keep a safe original copy. The model calls some library routines in /lib but once compiled these should not be touched. It also reads a lot of parameters and common block variable declarations from the /include directory. Note that this is set up to work at two resolutions, T31 and T42, with the associated grid resolutions of 96 and 128 points around a latitude circle (and 24 and 32 latitudes per hemisphere). Switching between resolutions is transparent for the code, and to a large extent also for the associated data files. It's all set up in the job script, as described in the next section. So you have very little reason to visit this source directory. 
+## 3.3 `source` directory
+In the `/source` directory you’ll find the model: at time of writing it’s `dream_v8.1.f`. Appendix A section 6 and Appendix D take you through the code in some detail. It is easy to edit the code but not recommended ! If you do want to hack it for some special reason, just make sure you keep a safe original copy. The model calls some library routines in /lib but once compiled these should not be touched. It also reads a lot of parameters and common block variable declarations from the `/include` directory. Note that this is set up to work at two resolutions, T31 and T42, with the associated grid resolutions of 96 and 128 points around a latitude circle (and 24 and 32 latitudes per hemisphere). Switching between resolutions is transparent for the code, and to a large extent also for the associated data files. It's all set up in the job script, as described in the next section. So you have very little reason to visit this source directory. 
 
-Also in the include subdirectory is a setup file. This contains a few edits to the code to alter its behaviour depending on some choices made in the job script namelists. The idea is to have some standard use cases, but we haven’t gone very far down this road as in general everyone’s use case is different. 
+Also in the include subdirectory is a `setup` file. This contains a few edits to the code to alter its behaviour depending on some choices made in the job script namelists. The idea is to have some standard use cases, but we haven’t gone very far down this road as in general everyone’s use case is different. 
 
-Finally there is a change-log which contains notes on changes made between versions of DREAM. As such it is a nice chronological summary of the development history which complements this user guide. 
+Finally there is a `change-log` which contains notes on changes made between versions of DREAM. As such it is a nice chronological summary of the development history which complements this user guide. 
 
 
 ---
@@ -164,7 +164,7 @@ multirun.ksh - a bog standard script to sequentially run several experiments - e
 
 * `makefed.ksh` - if you want to diagnose the transient eddy part of the forcing, it is the difference between a _fbs file and an `_fcm` file (see Appendix B). This script works it out using `calcfed.f`. 
 
-* `run_ensemble.ksh` - a very useful script for organising an ensemble forecast and then calculating an ensemble mean history record. It calls the script make_ensemble_mean.ksh, and fortran routines: `ensemble_ic.f` and `ensemble_mean.f` or `ensemble_mean_dry.f`
+* `run_ensemble.ksh` - a very useful script for organising an ensemble forecast and then calculating an ensemble mean history record. It calls the script make_ensemble_mean.ksh, and fortran routines: `ensemble_ic.f` and `ensemble_mean.f` or `ensemble_mean_dry.f`.
 
 ---
 ## 3.5 `results` directory
