@@ -73,11 +73,11 @@ The only essential grid file the model needs is the land-sea mask, `LSmask_G96.b
 ## data_process
 In the second main directory, dream_model, we have a set of routines to manipulate the data and prepare data files and forcing for the model. 
 
-i) data_manip
+i) `/data_manip/`
 
 Here we have a selection of fortran programs for a wide variety of tasks. They are stand-alone without scripts to run them, so it’s up to you to compile them:
 
-````
+```
 gfortran -fdefault-real-8 -fconvert=big-endian
 ```
 
@@ -120,29 +120,30 @@ Here’s the complete list:
 * `W2G2W_sector_mean.f` - uses the model’s spectral analysis code to do geographical  manipulations on spectral data in grid space, notably the sector mean. 
 * `zonal_mean+WN123.f` - takes the zonal mean of the input data, with options to also make it symmetric about the equator, and to retain wavenumbers 1, 1 and 2 or 1,2 and 3. 
 
-ii) prep_cyc
-A small number of fortran programs specifically focussed on computing cycles. The names of these programs are quite self explanatory (except the ones that refer to components of the annual cycle CT, TT, MC and CC which are highly specialised). 
+ii) `/prep_cyc/`
 
-annual_cycle_spec/grid - calculates the mean annual cycle from a sequence - note that there is no smoothing filter applied in this code, that is done separately afterwards using cyclic_running_mean_spec/grid. 
+A small number of fortran programs specifically focussed on computing cycles. The names of these programs are quite self explanatory (except the ones that refer to components of the annual cycle CT, TT, MC and CC which are highly specialised): 
+* `annual_cycle_spec/grid` - calculates the mean annual cycle from a sequence - note that there is no smoothing filter applied in this code, that is done separately afterwards using cyclic_running_mean_spec/grid. 
+* `composite_n_day_cycle_spec/grid` - used for diagnosing aggregate cyclic responses to cyclic forcing (like the MJO) in long model runs. 
 
-composite_n_day_cycle_spec/grid - used for diagnosing aggregate cyclic responses to cyclic forcing (like the MJO) in long model runs. 
+iii) `/prep_fan/`
 
-iii) prep_fan
-Scripts and programs for preparing idealised forcing anomalies. First look at makefan.ksh. It compiles and runs makefan.f to produce a gridpoint forcing anomaly for either temperature or vorticity. This is then spectrally analysed at T42 using specanANOMT42.f and written to a file called temp_fan.b (to be renamed as needed). T31 anomalies can be made by changing the parameters and using specanANOMT31.f (or by downscaling the T42 result using truncate_T42toT31.f). 
+Scripts and programs for preparing idealised forcing anomalies. First look at makefan.ksh. It compiles and runs makefan.f to produce a gridpoint forcing anomaly for either temperature or vorticity. This is then spectrally analysed at T42 using `specanANOMT42.f` and written to a file called temp_fan.b (to be renamed as needed). T31 anomalies can be made by changing the parameters and using `specanANOMT31.f` (or by downscaling the T42 result using `truncate_T42toT31.f`). 
 
-The program makefan.f starts from scratch and can be edited for the desired properties of the forcing anomaly. It will take the form of an ellipse with a cosine squared bell shaped horizontal distribution. You can specify its location and radius in x and y directions, its heating rate and its vertical profile. Examples are given in the file Notes_for_forcing_anomalies.rtf. 
+The program `makefan.f` starts from scratch and can be edited for the desired properties of the forcing anomaly. It will take the form of an ellipse with a cosine squared bell shaped horizontal distribution. You can specify its location and radius in x and y directions, its heating rate and its vertical profile. Examples are given in the file `Notes_for_forcing_anomalies.rtf`. 
 
-More complex shapes can be defined from gridpoint input using makefan_ReadGrid.f and sequences of forcing can be produced using makefan_seq.f. The model will read through a forcing anomaly sequence at a user-defined rate until it reaches the end and then it will repeat to give a cyclic forcing anomaly. 
+More complex shapes can be defined from gridpoint input using makefan_ReadGrid.f and sequences of forcing can be produced using `makefan_seq.f`. The model will read through a forcing anomaly sequence at a user-defined rate until it reaches the end and then it will repeat to give a cyclic forcing anomaly. 
 
-iv) prep_lsm
+iv) `/prep_lsm/`
+
 Code for creating the land-sea mask in model format from gridpoint data
 
-v) prep_seq
+v) `/prep_seq/`
+
 Basic code for creating the ERA-interim dataset as a sequential binary file in the model format. 
 
-vi) prep_sst
-Code for manipulating and visualising SST data and idealised SST anomalies. 
+vi) `/prep_sst/`
 
-check_grid_SST.f reads binary SST data in model format and prints it on the screen to check it’s OK. 
-
-makessta.f creates an elliptical SST anomaly in model grid format in a similar way to makefan.f
+Code for manipulating and visualising SST data and idealised SST anomalies:
+* `check_grid_SST.f reads binary SST data in model format and prints it on the screen to check it’s OK. 
+* `makessta.f` creates an elliptical SST anomaly in model grid format in a similar way to makefan.f
