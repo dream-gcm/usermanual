@@ -9,7 +9,7 @@ DREAM user manual
    :width: 300
 
 .. toctree::
-   :maxdepth: 3
+   :maxdepth: 2
    :caption: Contents:
 
    Chapter1
