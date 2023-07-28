@@ -1,7 +1,10 @@
 ![appendixC](./img/appendix_C.png)
-# Appendix C: Do Androids Dream of Electric Sheep ? - All the namelist variables are listed here with their default values and a brief explanation.
+# Appendix C: Do Androids Dream of Electric Sheep ? - Default values in namelist.
 
-## C1. SETUP
+All the namelist variables are listed here with their default values and a brief explanation.
+
+
+## C1. `SETUP``
 * `KRUN = 0` - The timestep on which the run will end (eg set to 320 for a 5-day run).
 * `KTFIN = 1` - Number of times the model is run when `LTRAIN=.T.` - should be set equal to number of records in initial condition sequence.
 
@@ -11,8 +14,8 @@ The following three string variables engage packages of namelist parameters - th
 * `THERMTYPE` - Specifies the type of moist thermodynamics: DRY, WET or INTER. 
 * `SSTZONE` - Specifies the region in which SSTs are read: TROPICS, PACIFIC, ATLANTIC or INDIAN.
 
-
-## C2. INITIAL
+---
+## C2. `INITIAL``
 
 ### Physical constants:
 * `GA = 9.81` - Acceleration due to gravity - m/s2
