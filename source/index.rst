@@ -18,6 +18,7 @@ You can browse this manual on-line here, or download it in pdf by clicking on "R
    :maxdepth: 3
    :caption: Contents:
 
+   How-to-cite
    Chapter1
    Chapter2
    Chapter3
