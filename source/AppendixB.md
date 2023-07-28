@@ -229,7 +229,7 @@ $$
 $$
 where $\tau$ is the nudging timescale. The procedure for implementing nudging is outlined in Chapter 4 section 4ii. 
 
-Note that you need to be careful if you try to use nudging as a linear perturbation. This is normally achieved by scaling down the forcing perturbation with some small factor $\epsilon$. But in this case you can’t just multiply the nudging term by , because if the model state is always close to a specified basic state, then the nudging term above will just become an additional constant forcing, not a spring. So instead of nudging towards the state ${\bf \Phi}_i$ , we need to nudge towards a state ${\bf \Phi}_i^*$  whose departure from the climatology $\overline{\bf \Phi}$  is scaled down ${\bf \Phi}_i^* = \overline{\bf \Phi} + \epsilon({\bf \Phi}_i - \overbarline{\bf \Phi})$.
+Note that you need to be careful if you try to use nudging as a linear perturbation. This is normally achieved by scaling down the forcing perturbation with some small factor $\epsilon$. But in this case you can’t just multiply the nudging term by , because if the model state is always close to a specified basic state, then the nudging term above will just become an additional constant forcing, not a spring. So instead of nudging towards the state ${\bf \Phi}_i$ , we need to nudge towards a state ${\bf \Phi}_i^*$  whose departure from the climatology $\overline{\bf \Phi}$  is scaled down ${\bf \Phi}_i^* = \overline{\bf \Phi} + \epsilon({\bf \Phi}_i - \overline{\bf \Phi})$.
 
 If we do this, then the nudging term becomes a small perturbation forcing and a damping on the anomaly response. The nudged version of (B10) can be written as:
 
