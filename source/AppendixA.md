@@ -6,8 +6,6 @@
 Now The primitive equations and the semi-implicit timestep
 DREAM solves the primitive equations expressed in terms of vorticity and divergence. These are written down in Hoskins and Simmons (1975, HS75) but let’s deciphier this presentation by approaching  them from the momentum equations, using subscript notation for partial derivatives:
 
-Test label :ref:`A.1 Compilation on your system>`
-
 $$
    \begin{eqnarray}
       u_t - fv &=& -uu_x - vu_y -wu_z - p_x/\rho & \qquad\qquad (A1) \\
@@ -128,7 +126,7 @@ $$
     - The ratio of the gas constant to the specific heat capacity at constant pressure `AKAP` =$\kappa=R/Cp$ =  0.286,
     - The latent heat of condensation `RLHEAT`$=L = 2256476$ J/kg
 
-Special attention needs to be paid to the nondimensionalisation of time intervals, timescales and rates. Since time is nondimensionalised in terms of an angular frequency $\Omega$, this means that a non-dimensional day actually has a day length of 2$\pi$. So if a timescale is specified in days, for example the dissipation timescale in the free troposphere `TAUFT=20 days`, then it’s non-dimensional value will be 20 $\times 2\pi$. The associated dissipation rate `FTFR` is the reciprocal of this: `FRFT=1./(PI2*TAUFT)` . Note that timescales are generally specified as `TAUXX (days)` and the associated rates as `FRXX`. The same logic applies to the nondiensional length of the model timestep `DELT=PI2/TSPD (=2*PI/64)`. For details of the reporting of time in model output and data see section 7. 
+Special attention needs to be paid to the nondimensionalisation of time intervals, timescales and rates. Since time is nondimensionalised in terms of an angular frequency $\Omega$, this means that a non-dimensional day actually has a day length of 2$\pi$. So if a timescale is specified in days, for example the dissipation timescale in the free troposphere `TAUFT=20 days`, then it’s non-dimensional value will be 20 $\times 2\pi$. The associated dissipation rate `FTFR` is the reciprocal of this: `FRFT=1./(PI2*TAUFT)` . Note that timescales are generally specified as `TAUXX (days)` and the associated rates as `FRXX`. The same logic applies to the nondiensional length of the model timestep `DELT=PI2/TSPD (=2*PI/64)`. For details of the reporting of time in model output and data see [Section A7](#a7-data-timing) of this appendix. 
 
 ---
 ## A4. Vertical structure
