@@ -240,6 +240,9 @@ $$
    \end{eqnarray}
 $$
 
+![FigB1](./img/fig_B1.png)
+_Fig. B1: Say no more !_
+
 
 ## B6. Diagnosing nonlinear and transient forcing
 There are many studies in which some kind of perturbation is added to a dynamical model, and the response is analysed in terms of the direct response to the perturbation, plus an additional response to the modified transient fluxes. The direct response might be linear or nonlinear (the time independent nonlinear component is sometimes called the “stationary nonlinearity’). 
@@ -268,7 +271,7 @@ $$
    \end{eqnarray}
 $$
 
-Where ${\bf TE}$ is time-mean difference between quadratic terms in the transients from the two runs. This is the transient eddy forcing anomaly, and it is easy to find for the entire model state vector. We know the time mean for both runs and we know the forcing perturbation. So we can work out ${\bf TE}$ using the same techniques as we used to find  above. Now we know both  and ${\bf TE}$, we can use them together and separately in perturbation experiments about the fixed basic state .  You’ll probably find that the linear solution about this basic state to the forcing perturbation ${\bf f_1} + {\bf TE}$  is pretty close to the difference between the two GCM runs. I told you it was neat !
+Where ${\bf TE}$ is time-mean difference between quadratic terms in the transients from the two runs. This is the transient eddy forcing anomaly, and it is easy to find for the entire model state vector. We know the time mean for both runs and we know the forcing perturbation. So we can work out ${\bf TE}$ using the same techniques as we used to find  above. Now we know both ${\bf f}_1$ and ${\bf TE}$, we can use them together and separately in perturbation experiments about the fixed basic state $\overline{\bf \Psi}_c$.  You’ll probably find that the linear solution about this basic state to the forcing perturbation ${\bf f_1} + {\bf TE}$  is pretty close to the difference between the two GCM runs. I told you it was neat !
 
 
 ## B7. Forcing the annual cycle
