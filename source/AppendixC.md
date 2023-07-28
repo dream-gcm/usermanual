@@ -3,8 +3,8 @@
 
 All the namelist variables are listed here with their default values and a brief explanation.
 
-
-## C1. `SETUP``
+---
+## C1. Setup
 * `KRUN = 0` - The timestep on which the run will end (eg set to 320 for a 5-day run).
 * `KTFIN = 1` - Number of times the model is run when `LTRAIN=.T.` - should be set equal to number of records in initial condition sequence.
 
@@ -15,7 +15,7 @@ The following three string variables engage packages of namelist parameters - th
 * `SSTZONE` - Specifies the region in which SSTs are read: TROPICS, PACIFIC, ATLANTIC or INDIAN.
 
 ---
-## C2. `INITIAL``
+## C2. Initial
 
 ### Physical constants:
 * `GA = 9.81` - Acceleration due to gravity - m/s$^2$
