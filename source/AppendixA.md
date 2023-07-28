@@ -168,3 +168,105 @@ The loop from 1 to `KTFIN` starts next and is bounded by line number 111. It is 
 State variables are reinitialised to zero for good measure, and then read from the input data in `INIIC`. Then if necessary we skip through the reference data and cyclic forcing files to the correct calendar date to get ready to read in the basic forcing. `READFCE` reads the forcing and reference data and then, conditionally on options set in the namelsit we read the forcing anomly, nudging data and SST data. 
 
 Once this is all done the intial condtion is written out as the first record of the model’s spectral history file at `RKOUNT=0`. For consistency in the number of records per file, gridpoint history records are also output at this point. But the first record of the grid history file will only contain the intial zeros, because no gridpoint information has yet been calculated. 
+
+### iv) The time loop starts
+This is a loop over `KOUNT=1` to `KRUN` bounded by line number 1000. The real `DAY` is incremented each timestep. First there is a conditional re-read of all the forcing, nudging and SST data contingent on the update periods that have been specified. This is also where the spectral humidity flux convergence is periodically re-intialised because it is needed in the calculation of the reference value in grid space. 
+
+### v) Calculation of advective tendencies
+The tendencies are first initialised to zero. Then the first set of transforms from spectral to grid space takes place. This is a short piece of the main program but much goes on here. 
+
+In W2GA there are two steps. First a call to `LTI` transforms Legendre polynomials to the Gaussian latitude grid. Along the way meridional and zonal pressure gradients are calculated, and vorticity and divergence are used to calculate zonal and meridional winds, streamfunction and velocity potential. At this point the data is still spectral in longitude. Conversion to the longitude grid then takes place with multiple calls to `FFT991`. 
+
+The subroutine `ADVECTION` computes all the advective tenencies by multiplying winds with gradients. These tendencies correspond to the advective terms on the right hand side of the primitive equations. We do not yet have tendencies for model state variables. 
+
+The variables associated with these terms are then transformed back to spectral space in `G2WA`. This performs multiple Fourier transforms (`FFT991`) and then direct Legendre transforms (`LTD`), reconstituting the desired terms in the equations from various zonal and meridional gradients along the way. 
+
+### vi) The semi-implicit timestep
+Having calculated all these terms, the spectral coefficients of state variables can now be stepped forward in time. The subroutine `TSTEP` contains vertical integral calculations to furnish the gravity wave source term, and updates the state variables with both linear and advective tendencies. The job is not complete, even for a purely dynamcial time step, because we are still inside a time filter and the diffusion is yet to be added. 
+
+### vii) Calculation of diabatic tendencies
+But first, lets find all the tendencies due to simple parameterisations in grid space. Spectral tendencies are first reinitialised to zero in `INITEND` and some preliminary operations are carried out in spectral space (`SPECPREP`) to smooth (truncate) the moisture flux convergence. 
+
+Then there is another round of spectral transforms (`W2GD`). Once in grid space the routine `DIABATIC` calls all the individual schemes to find tendencies associated with nudging, deep convection, SST anomalies, vertical diffusion, land-sea drag, large scale rain and radiative relaxation. It then adds all these tendencies together into a grand total that is passed back for transformation into spectral space (`G2WD`) to give diabatic tendencies for the model’s state variables. 
+
+Before doing this it also records some purely diagnostic gridpoint variables associated with precipitation, putting them into a more convenient format for output (`SHUFFLE` takes latitude pairs and writes them into a grid that is sequential from north to south). 
+
+Finally `SPECPOST` tidies up some of the spectral tendencies (makes sure there is no global diabatic tendency applied to vorticity, divergence or surface pressure). 
+
+### viii) Spectral forcing anomalies, damping and diffusion
+Subroutine `FANDAMP` adds the forcing anomaly that has been read from the _fan file to the spectral tendencies. It also adds stabilising damping on all degrees of freedom if requested. Then DIFUSE calculates the scale selective hyperdiffusion and adds this to the tendencies, all in spectral space. 
+
+### ix) Completing the timestep and adding the empirical forcing
+Subroutine `DSTEP` updates the state variables with the accumulated diabatic tendencies. This is much more straightforward that `TSTEP` as no extra calculations are requred at this point. The empirical forcing is then applied directly to the state variables in `FSTEP`. Then in `TFILT` there is a final adjustment to the values of the state variables on their previous timestep (`ZMI` etc) to close the time filter `PNU`. 
+
+### x)  Output a the end of the timestep
+If you’re looking for normal modes, the modefinder is engaged here by calling `SCALEDOWN`, after the timestep has completed. This is because it is a direct intervention on the state variables, not on the tendencies. 
+
+Then we check to see if we are on a timestep for reporting the output (a multiple of `KOUNTH`). After some timing calculations to get the model year in the right format, history records are written (spectral and grid), and occasionally a restart record  as well. 
+
+The time loop ends and then if we are at the end of the run, all that is left is to write a final restart record. If we’re in a training loop, this is done for each initial condition until the training loop also ends. 
+
+---
+## A7. Data timing
+
+### i) Reading, writing and initialising
+A history record containing the complete state of the model is periodically written as a binary file during the run as follows: 
+
+```
+WRITE(9)RKOUNT,RMYR,DAY,Z,D,T,SP,Q,YEAR
+```
+where
+* `KOUNT`` is the current integer time step and RKOUNT is the corresponding real number.
+* `DAY = RKOUNT/TSPD`` is the real day number
+* `RMYR`` is the current model year, counting up from the initial condition in `YYYY.DDDDD` format, with a 365.25-day year. 
+* `YEAR` is a real number `YYYY.DDDDD` that is initialised from to the reference data. It keeps track of   leap years, so it is different to `RMYR` and is useful for keeping track of time in the real world from the ERAi dataset. In practice the implementation in the model is incomplete so there is room for improvement here. 
+
+When the model is initialised it takes `YEAR` from the value provided by the initial condition. It then sets `RMYR` to the same thing for a cycle run, but to `100.00000` for a perpetual run. `RMYR` can also be set by SST metadata, which takes priority over the information in the initial condition. 
+
+From then on, in a model run, `YEAR` is only changed when it is updated by reading it from the reference state. Note that if this reference state is the mean annual cycle then `YEAR` will be set to `100.DDDDD`.
+
+`RMYR`, on the other hand, increments every time a history record is written. So if `RMYR=YYYY.DDDDD`, then `YYYY` is a model year that increments by one every 365.25 days, and `DDDDD` is the value of `DAY` times 1000. So `RMYR` will count round to `YYYY.36500` and then go on to` YYY(Y+1)`.00000. 
+
+At the end of a model run (and at certain long intervals during the run) a restart record is written. This contains all the information necessary to restart the run as a smooth continuation of the integration:
+
+```
+WRITE(12)RKOUNT,RMYR,DAY,Z,D,T,SP,Q,YEAR,ZMI,DMI,TMI,SPMI,QMI,RNTAPE
+```
+where
+`ZMI`,`DMI` etc denote the values of state variables at the previous timestep. For a restart record `RNTAPE=100.` and serves as a check on correct reading of the binary file. 
+
+### ii) The DREAM dataset
+The dataset provided with DREAM currently spans the calendar years 1979-2016. Four-times daily data is included at 00Z, 06Z, 12Z and 18Z. This is all assembled into one history record in the same format as the model output. This is the file `ERAi_seq4x_1979-2016_ANN.b`. 
+
+The entire dataset amounts to 55520 records for 13880 days. At T42 one record is 901864 bytes and the entire dataset is 50 GB. At T31 one record is 499752 bytes and the entire dataset is 28 GB. 
+
+A single annual cycle of four-times daily data for 365.25 days contains 1461 records. This is the file `ERAi_cyc4x_1979-2016_RM41.b`. 
+
+Since the 38-year dataset is written in model output format, some of the model counters have been included. It is written as:
+
+```
+RKOUNT,YEAR,DAY,Z,D,T,SP,Q,RMTAPE
+```
+
+In general `RNTAPE` takes different values depending on the type of data: `RNTAPE  = 100` (model runs), `200` (ERAi data), `300` (empirical forcing)  or `400` (forcing anomaly). The way the ERAi data is organised, the value of `RKOUNT` increments throughout the real calendar year as if it were model output, but resets to zero at 0Z at the beginning of every new calendar year. `DAY` also increments throughout the year resets at the new year.
+
+Output from a long run of the model would look slightly different because it would report as:
+
+```
+RKOUNT,RMYR,DAY,Z,D,T,SP,Q,YEAR
+```
+and `RMYR` would not exactly follow the value of `YEAR` because the model year has a fixed length of 365.25 days. 
+
+For example, the Intergovernmental Panel on Climate Change (IPCC) was created on 6th December 1988. This was the 341st day of 1988. Let’s pick the time 12Z. Since the first day of the year is always day 0, this would lead to a label for the year as:
+
+```
+ YEAR = 1988 + 340.50/1000 = 1988.34050
+```
+
+This would be record number 14511 of the ERAi dataset: 4 x (7x365+2x366+340) + 3 = 14511.
+A long model run starting at 0Z on 1 Jan 1979, with 4x-daily output, would, at record 14511, set 
+
+`DAY=(14511 - 1)/4 = 3627.5` and 
+`RMYR = 1979 + INT(DAY/365.25) + (the remainder from DAY/365.25)/1000 = 1988.34025`.
+
+The six-hour discrepancy between `RMYR` and `YEAR` is just because of fixed-length years compared to leap years. It doesn’t matter because there is no diurnal cycle in the model. Table A1 shows further examples of how to keep track of model years and calendar years. Note that although the dataset spans 38 calendar years exactly, the last two records enter the 39th model year. 
