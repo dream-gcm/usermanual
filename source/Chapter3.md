@@ -11,7 +11,7 @@ The first of three main branches from DREAM is `dream_data`. There are four sub-
 
 
 ### a. Spectral files
-Let's look at spectral data first. These files are all in the same format and contain the base variables of the model: vorticity, divergence, temperature, log surface pressure and specific humidity. Details of the file structure are given in Appendix A, but for now let’s look at the files in the different subdirectories. Note that the file names can be the same for T31 or T42 so it is important to keep them in their correct directories. 
+Let's look at spectral data first. These files are all in the same format and contain the base variables of the model: vorticity, divergence, temperature, log surface pressure and specific humidity. Details of the file structure are given in [Appendix A](https://dreamusermanual.readthedocs.io/en/latest/AppendixA.html), but for now let’s look at the files in the different subdirectories. Note that the file names can be the same for T31 or T42 so it is important to keep them in their correct directories. 
 
 _i) ave: Average_ 
 
@@ -111,11 +111,11 @@ Here’s the complete list:
 * `subtract_BS.f` - subtracts a basic state from a history file and adds a resting state in its place, useful for looking at anomalies on a fixed basic state.  
 * `subtract_CTL.f` - subtracts a time-dependent control experiment and adds a resting state, useful for tangent anomaly development. 
 * `subtract_IC.f` - subtracts the initial condition from a history file and adds a resting state, useful for anomaly forecasts. 
-* `TILS.f` - Time Independent Linear Solution. Complicated routine for extrapolating a set of three solutions found at different additional damping rates back to zero additional damping (see Appendix B section 3). 
+* `TILS.f` - Time Independent Linear Solution. Complicated routine for extrapolating a set of three solutions found at different additional damping rates back to zero additional damping (see [Appendix B,section 3](https://dreamusermanual.readthedocs.io/en/latest/AppendixB.html#b3-forcing-a-perturbation-model-with-a-fixed-basic-state)). 
 * `time_filter_history.f` - creates a block mean history file for crude low-pass filtering.
 * `time_mean.f` - creates a custom time-mean from the sequence data after skipping an initial period.
 * `truncate_T42toT31.f` - creates T31 history record from T42 input
-* `visualise_forcing_T42.f` - creates a history file that differs from the initial condition by an input forcing rate (from a _fan, _fcm or _fbs file) multiplied by one day to allow visualisation of tendency fields in units per day
+* `visualise_forcing_T42.f` - creates a history file that differs from the initial condition by an input forcing rate (from a `_fan`, `_fcm` or `_fbs` file) multiplied by one day to allow visualisation of tendency fields in units per day
 * `W2G2W_sector_mean.f` - uses the model’s spectral analysis code to do geographical  manipulations on spectral data in grid space, notably the sector mean. 
 * `zonal_mean+WN123.f` - takes the zonal mean of the input data, with options to also make it symmetric about the equator, and to retain wavenumbers 1, 1 and 2 or 1,2 and 3. 
 
@@ -144,7 +144,7 @@ Code for manipulating and visualising SST data and idealised SST anomalies:
 
 ---
 ## 3.3 `source` directory
-In the `/source` directory you’ll find the model: at time of writing it’s `dream_v8.1.f`. Appendix A section 6 and Appendix D take you through the code in some detail. It is easy to edit the code but not recommended ! If you do want to hack it for some special reason, just make sure you keep a safe original copy. The model calls some library routines in /lib but once compiled these should not be touched. It also reads a lot of parameters and common block variable declarations from the `/include` directory. Note that this is set up to work at two resolutions, T31 and T42, with the associated grid resolutions of 96 and 128 points around a latitude circle (and 24 and 32 latitudes per hemisphere). Switching between resolutions is transparent for the code, and to a large extent also for the associated data files. It's all set up in the job script, as described in the next section. So you have very little reason to visit this source directory. 
+In the `/source` directory you’ll find the model: at time of writing it’s `dream_v8.1.f`. [Appendix A, section 6](https://dreamusermanual.readthedocs.io/en/latest/AppendixA.html#a6-code-structure) and [Appendix D](https://dreamusermanual.readthedocs.io/en/latest/AppendixD.html) take you through the code in some detail. It is easy to edit the code but not recommended ! If you do want to hack it for some special reason, just make sure you keep a safe original copy. The model calls some library routines in /lib but once compiled these should not be touched. It also reads a lot of parameters and common block variable declarations from the `/include` directory. Note that this is set up to work at two resolutions, T31 and T42, with the associated grid resolutions of 96 and 128 points around a latitude circle (and 24 and 32 latitudes per hemisphere). Switching between resolutions is transparent for the code, and to a large extent also for the associated data files. It's all set up in the job script, as described in the next section. So you have very little reason to visit this source directory. 
 
 Also in the include subdirectory is a `setup` file. This contains a few edits to the code to alter its behaviour depending on some choices made in the job script namelists. The idea is to have some standard use cases, but we haven’t gone very far down this road as in general everyone’s use case is different. 
 
@@ -162,7 +162,7 @@ multirun.ksh - a bog standard script to sequentially run several experiments - e
 
 * `makefrc_cyc.ksh` - calculating a forcing function with an annual cycle is a protracted and elaborate business, see [Chapter 4, Section 2d](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html#d-forcing-a-simple-gcm-with-an-annual-cycle) and [Appendix B, section 7](https://dreamusermanual.readthedocs.io/en/latest/AppendixB.html#b7-forcing-the-annual-cycle) . This script is only part of the procedure, along with fortran routines: `calcfrc_cycADV.f` and `calcfrc_cycTEND.f`.
 
-* `makefed.ksh` - if you want to diagnose the transient eddy part of the forcing, it is the difference between a _fbs file and an `_fcm` file (see Appendix B). This script works it out using `calcfed.f`. 
+* `makefed.ksh` - if you want to diagnose the transient eddy part of the forcing, it is the difference between `a _fbs` file and an `_fcm` file (see [Appendix B](https://dreamusermanual.readthedocs.io/en/latest/AppendixB.html)). This script works it out using `calcfed.f`. 
 
 * `run_ensemble.ksh` - a very useful script for organising an ensemble forecast and then calculating an ensemble mean history record. It calls the script make_ensemble_mean.ksh, and fortran routines: `ensemble_ic.f` and `ensemble_mean.f` or `ensemble_mean_dry.f`.
 

@@ -78,7 +78,7 @@ and if all goes well, you will find some netCDFs in your experiment directory `D
 The probability of all going well is less than unity !  Typically there is some work to do to make sure your version of netCDF is compatible with your fortran compiler. 
 
 The netCDFs are labelled with reference to resolution, variable name and level. So for example `dreamT31L15_u_250.nc` is output from the model run at T31 with 15 levels, zonal wind at 250 mb  
-( but it’s not really millibars - in fact it’s output on the sigma=0.25 level, but it is close to data on a pressure surface because DREAM runs without orography and the surface pressure in the data is actually mean sea level pressure - see appendix A).
+( but it’s not really millibars - in fact it’s output on the sigma=0.25 level, but it is close to data on a pressure surface because DREAM runs without orography and the surface pressure in the data is actually mean sea level pressure - see [Appendix A](https://dreamusermanual.readthedocs.io/en/latest/AppendixA.html)).
 
 Now you can plot these variables and compute any diagnostics you want with your favourite tools and programs for dealing with netCDF datasets.
 

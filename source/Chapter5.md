@@ -1,7 +1,7 @@
 ![chapter5](./img/chapter_5.png)
 # Chapter 5: A Midsummer Night’s Dream - Working Together
 
-We hope that this manual provides you with a way into using DREAM, and that you find it is more than a user guide, also a source of scientific ideas for your diagnostic modelling. At the time of writing I think it would be a bit of an exaggeration to talk about a DREAM “community”, but there is a loose affiliation of people who have used the model in one form or another. In Appendix E there is a list of publications that have used DREAM or its earlier variants, and hopefully this list will continue to grow. To keep in touch, and participate in our ongoing activity there are some collaborative resources in place. 
+We hope that this manual provides you with a way into using DREAM, and that you find it is more than a user guide, also a source of scientific ideas for your diagnostic modelling. At the time of writing I think it would be a bit of an exaggeration to talk about a DREAM “community”, but there is a loose affiliation of people who have used the model in one form or another. In [Appendix E](https://dreamusermanual.readthedocs.io/en/latest/AppendixE.html) there is a list of publications that have used DREAM or its earlier variants, and hopefully this list will continue to grow. To keep in touch, and participate in our ongoing activity there are some collaborative resources in place. 
 
 ## The DREAM GitHub repositories
 It's here: [https://github.com/dream-gcm](https://github.com/dream-gcm)
