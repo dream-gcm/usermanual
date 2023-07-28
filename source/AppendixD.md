@@ -11,7 +11,7 @@ The scope of this user guide is to give an indication of how things work without
 * `INISI`: Called just once at the beginning of the run. Sets up the sigma levels from specified sigma half levels. Then sets up alpha weights used for calculating the geopotential in the gravity wave source term, see fig. A2.  
 ---
 * `INIRES`: Called just once at the beginning of the run (the name is historical, this routine is no longer used for restoration forcing). Contains some setup for the vertical profile of vertical diffusion coefficients. These are calculated according to the specified timescales and introduced into the profile `PRDAMP`. Also sets up the vertical profile for convective heating using input parameter `PRHEATMAX`. This profile is written into `PRHEAT`. 
-
+---
 * `INIVAR`: Called just once at the beginning of the run. Initialises model variables. First single-level grid variables: masks, precipitation diagnostics and SSTs. Then multi-level grid variables. Then reads in the land-sea mask. Sets up a latitude-dependent function `CD` for the boundary layer vertical diffusion. Then defines regional masks for SSTs and nudging. Finally (and redundantly) initialises all spectral variables to zero, including tendencies. 
 ---
 * `INIIC`: Called at the start of each run, which is once per initial condition if we are in a training loop, but only once for a normal run. Initialises all spectral variables to zero, including tendencies. Initialises gridpoint output diagnostics to zero. Reads the initial condition from `channel 10` and sets up the model year `RMYR`. Initialises previous timestep spectral variables to be the same as the initial condition. 
@@ -76,10 +76,13 @@ The scope of this user guide is to give an indication of how things work without
 ---
 * `SPDEL2`: Called from `LTD` to find the `EKE` term in the divergence equation. Calculates the Laplacian (or inverse Laplacian) of a spectral variable. 
 ---
-* `TSTEP`: Called just after the first set of spectral transforms that evaluate the advective tendencies in the main program. This subroutine basically implements the equations in HS75 in spectral space. It has nested loops for hemisphere, zonal wavenumber m and meridional wavenumber n. Briefly:
+* `TSTEP`: Called just after the first set of spectral transforms that evaluate the advective tendencies in the main program. This subroutine basically implements the equations in HS75 in spectral space. It has nested loops for hemisphere, zonal wavenumber m and meridional wavenumber n. 
 
-    - After setting up a few local variables, such as `RCN=1/n(n+1)` there are several calls to the matrix multiplier `SGEMM`. These evaluate variables like `RMPA=TTR*G`(the first part of the  term in HS75 eq 17) and `TMPG=TMI*G` (the geopotential in HS75 eq 11). 
-    - Then a vertical integral to find :
+Briefly:
+
+After setting up a few local variables, such as `RCN=1/n(n+1)` there are several calls to the matrix multiplier `SGEMM`. These evaluate variables like `RMPA=TTR*G`(the first part of the  term in HS75 eq 17) and `TMPG=TMI*G` (the geopotential in HS75 eq 11). 
+
+Then a vertical integral to find :
 
 ```
 D1 = 1/Cn DMI + DELT*[ PHI + (250/CT)*SPMI + 1/Cn DT(from advection) ]
@@ -87,16 +90,18 @@ D1 = 1/Cn DMI + DELT*[ PHI + (250/CT)*SPMI + 1/Cn DT(from advection) ]
 ```
 where `curlyP = V.grad log p*` and is equal to `-VP`.
 
-    - Then another matrix multiplication to get the left hand side of HS75 eq (17): 
+Then another matrix multiplication to get the left hand side of HS75 eq (17): 
 
 ```
 DT = D1 * BM1(IBM1+1) 
 ```
 Note that `DT` is used here to store the mean divergence, not the tendency !
 
-    - Then a vertical sum to get the tendency of `log p*` (HS75 eq 4): `VP(I1)=VP(I1)+DT(K)*DSIGMA(L)`
-    - Then another matrix multiplication to get `TMPA=DT*TAU`: to build the semi-implicit temperature tendency from HS75 eq (14). 
-    - This is added to `TT`, and then the rest of the subroutine basically adds in the advection, integrating  with the time filter in triplets of lines like :
+Then a vertical sum to get the tendency of `log p*` (HS75 eq 4): `VP(I1)=VP(I1)+DT(K)*DSIGMA(L)`
+
+Then another matrix multiplication to get `TMPA=DT*TAU`: to build the semi-implicit temperature tendency from HS75 eq (14). 
+
+This is added to `TT`, and then the rest of the subroutine basically adds in the advection, integrating  with the time filter in triplets of lines like :
 
 ```
 ZPAV=ZMI(I)
