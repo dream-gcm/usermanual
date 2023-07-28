@@ -3,7 +3,7 @@
 
 
 
-The sub-headings in this chapter refer to directory names under the DREAM root directory. As well as giving you a guide to the file structure, we’ll also have a look inside and see what data there is, and what code is available for pre-processing and manipulating the data, running the model and post processing the output. This chapter is mainly a guide to the files available with a few details where appropriate, especially for the data files. A more comprehensive guide to running the model and diagnosing the output follows in Chapter 4. 
+The sub-headings in this chapter refer to directory names under the DREAM root directory. As well as giving you a guide to the file structure, we’ll also have a look inside and see what data there is, and what code is available for pre-processing and manipulating the data, running the model and post processing the output. This chapter is mainly a guide to the files available with a few details where appropriate, especially for the data files. A more comprehensive guide to running the model and diagnosing the output follows in [Chapter 4](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html). 
 
 ---
 ## 3.1 `dream_data`directory
@@ -17,7 +17,7 @@ _i) ave: Average_
 
 Contains fortran binary files (extension .b) for time-mean climatologies. The annual mean of the analysis period 1979-2016 is given (ANN) and the four seasons DJF, MAM, JJA and SON. For example  `ERAi_ave4x_1979-2016_DJF.b`
  is ERA-interim, average of 4x-daily data, from 1979 to 2016, for the December, January February season. 
-These files are a single record. They are often used as reference states for the model (`channel 16`) and sometimes for the initial condition (`channel 10`), especially for perturbation stationary wave experiments (see chapter 4 section 1v). 
+These files are a single record. They are often used as reference states for the model (`channel 16`) and sometimes for the initial condition (`channel 10`), especially for perturbation stationary wave experiments (see [Chapter 4, section 1](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html#running-dream)). 
 
 As well as these mean climatologies, there are some idealised fields, which are derived from the mean fields, for example the global mean resting basic state
 `ERAi_ave4x_1979-2016_ANN_GM_REST.b`
@@ -43,7 +43,7 @@ _iv) fbs: Forcing the Basic State_
 
 These are single-record files that contain tendency information in the standard spectral format. They are read into the `channel 13` to provide the basic forcing for the model. If an _fbs file is chosen to force the model it should be used in conjunction with the correct initial condition, which corresponds to the desired basic state.  This is because an _fbs file contains exactly the value required to cancel the tendency that the unforced model would have if it were integrated one timestep forward from that basic state. So if the basic state is used as an initial condition in conjunction with its _fbs file, there will be no development in the model. It will step forward in time and its state will remain the same as its initial condition. So if you read  `fbs/ERAi_ave4x_1979-2016_DJF_fbs.b` into `channel 13`, and use  `ave/ERAi_ave4x_1979-2016_DJF.b` in `channel 10` and `channel 16`, the model will just sit on that state until rounding errors grow to finite amplitude through instability (this usually takes a few hundred days). 
 
-Of course this configuration is intended for use in experiments where there is a perturbation either to the forcing ( a `_fan` file) or to the initial condition. More on this in Chapter 4 section 4i. 
+Of course this configuration is intended for use in experiments where there is a perturbation either to the forcing ( a `_fan` file) or to the initial condition. More on this in [Chapter 4, Section 4.2e](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html#e-how-to-calculate-forcing-perturbations).
 
 _v) fcm: Forcing a Circulation Model_
 
