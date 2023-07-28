@@ -17,7 +17,7 @@ The following three string variables engage packages of namelist parameters - th
 ---
 ## C2. Initial
 
-### Physical constants:
+### Physical constants
 * `GA = 9.81` - Acceleration due to gravity - m/s$^2$
 * `GASCON = 287.` - The gas constant R - J/kg K or m$^2$/s$^2$ K
 * `RADEA = 6371000.` - Radius of the earth - m

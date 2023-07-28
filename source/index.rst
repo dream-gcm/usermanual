@@ -10,9 +10,9 @@ DREAM user manual
 
 How to cite this manual?
 
-_DREAM user manual, Nick Hall and Stephanie Leroux, Nov. 2023. DOI: [xxxxx](doi.org)_
+*DREAM user manual, Nick Hall and Stephanie Leroux, Nov. 2023. `DOI xxx <www.doi.org>`_*
 
-You can browse this manual on-line or download it in pdf by clicking on "Read the Docs" at the bottom left of this page.
+You can browse this manual on-line here, or download it in pdf by clicking on "Read the Docs" at the bottom left of this page.
 
 .. toctree::
    :maxdepth: 3
