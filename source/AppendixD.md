@@ -168,10 +168,9 @@ Finally the radiative cooling is applied directly and all the tendencies are add
 * `COLSAT`: for diagnostic purposes only, this is the value `COLWATER` would take if the column was at saturation at every level. 
 
 Some values are accumulated into 2-d grid arrays for diagnostic output:
-
-    - `VIMC=VIMCON`, the vertically integrated moisture convergence (mm/day)
-    - `VICW=COLWATER`, the column total water (mm)
-    - `VISF=COLWATER/COLSAT`, the saturated fraction. 
+    * `VIMC=VIMCON`, the vertically integrated moisture convergence (mm/day)
+    * `VICW=COLWATER`, the column total water (mm)
+    * `VISF=COLWATER/COLSAT`, the saturated fraction. 
 (note that 2-d values in mm could also be expressed in kg/m2 ).
 
 ---
