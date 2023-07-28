@@ -8,8 +8,8 @@ DREAM solves the primitive equations expressed in terms of vorticity and diverge
 
 $$
    \begin{eqnarray}
-      u_t - fv &=& -uu_x - vu_y -wu_z - p_x/\rho & (A1) \\
-      v_t + fu &=& -uv_x - vv_y -wv_z - p_y/\rho & (A1) \\
+      u_t - fv &=& -uu_x - vu_y -wu_z - p_x/\rho & \qquad (A1) \\
+      v_t + fu &=& -uv_x - vv_y -wv_z - p_y/\rho & \qquad (A1) \\
    \end{eqnarray}
 $$
 
