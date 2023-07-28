@@ -1,3 +1,5 @@
+# How to cite this manual
+
 How to cite this manual?
 
 *DREAM user manual, Nick Hall and Stephanie Leroux, Nov. 2023. `DOI xxx <www.doi.org>`_*
