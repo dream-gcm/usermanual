@@ -49,48 +49,87 @@ It remains to find a way of calculating this time-independent forcing. If you’
 
 
 ## B2. Forcing a simple GCM
-I tried to keep the quick guide quick. If you’re still reading, it’s because you want more. Be careful what you wish for. We’re now going to switch to a more generalised notation in which the instantaneous state of the atmosphere is represented by a state vector , which represents vorticity, divergence, temperature, specific humidity and surface pressure in the same basis as the model. The development of the observed atmosphere can then be written as
+I tried to keep the quick guide quick. If you’re still reading, it’s because you want more. Be careful what you wish for. We’re now going to switch to a more generalised notation in which the instantaneous state of the atmosphere is represented by a state vector ${\bf \Phi}=(\zeta,D,T,q,p_* …)$, which represents vorticity, divergence, temperature, specific humidity and surface pressure in the same basis as the model. The development of the observed atmosphere can then be written as
 
-				(B5)
+$$
+   \begin{eqnarray}
+      \frac{d {\bf \Phi}}{dt} + ({\cal A} + {\cal D}){\bf \Phi} = {\cal F}(t)		
+ & \qquad\qquad (B5) \\
+   \end{eqnarray}
+$$
 
-where  is a nonlinear advection operator. Let’s separate the state vector into time-mean and transient components. 
+where ${\cal A}$ is a nonlinear advection operator. Let’s separate the state vector into time-mean and transient components. 
 
-		(B6)
+$$
+   \begin{eqnarray}
+     \frac{d {\bf \Phi}'}{dt} + ({\cal A} + {\cal D})(\overline{\bf \Phi} + {\bf \Phi}') = \overline{\cal F} + {\cal F}'		
+ & \qquad\qquad (B6) \\
+   \end{eqnarray}
+$$
 
 As before, the time mean of this equation can be written
 
-				(B7)
+$$
+   \begin{eqnarray}
+      ({\cal A} + {\cal D})\overline{\bf \Phi} + \overline{O({\bf \Phi}'^2)} = \overline{\cal F}		
+ & \qquad\qquad (B7) \\
+   \end{eqnarray}
+$$
 
 This is the generalised form of (B4). We see that time-mean advection is balanced by transient eddy fluxes and forcing. We could move the second term to the right hand side and call it the “transient eddy forcing”. Subtracting (B7) from (B6) we obtain the transient budget with respect to the time mean
 
-		(B8)
+$$
+   \begin{eqnarray}
+      \frac{d {\bf \Phi}'}{dt} + {\cal L}\Phi' + \left[O({\bf \Phi}'^2) - \overline{O({\bf \Phi}'^2)} \right] = {\cal F}'		
+ & \qquad\qquad (B8) \\
+   \end{eqnarray}
+$$
 
-In (B8) all the terms have zero time mean, so there is no large cancellation. This means that the time-mean state is a realistic basis for perturbation experiments. The development of small perturbations is conditioned by the linear operator , which itself depends on the time mean state. And the structure of these small perturbations may be relevant to observed transient systems. For deeper philosophical insight into these matters see Hall and Sardeshmukh (1998). 
+In (B8) all the terms have zero time mean, so there is no large cancellation. This means that the time-mean state is a realistic basis for perturbation experiments. The development of small perturbations is conditioned by the linear operator ${\cal L}$ , which itself depends on the time mean state. And the structure of these small perturbations may be relevant to observed transient systems. For deeper philosophical insight into these matters see Hall and Sardeshmukh (1998). 
 
-Now back to the practical problem of forcing a simple GCM. Let’s introduce a model, with a state vector  in the same basis as . If it is forced with a constant source field, it will develop according to 
+Now back to the practical problem of forcing a simple GCM. Let’s introduce a model, with a state vector ${\bf \Psi}$ in the same basis as ${\bf \Phi}$ . If it is forced with a constant source field, it will develop according to:
 
-				(B9)
+$$
+   \begin{eqnarray}
+      \frac{d {\bf \Psi}}{dt} + ({\cal A} + {\cal D}){\bf \Psi} = {\cal G}_{cm}		
+ & \qquad\qquad (B9). \\
+   \end{eqnarray}
+$$
 
-As before let’s set our simple GCM forcing . To find it we run the model with no forcing for one timestep, providing us with a set of tendencies
+As before let’s set our simple GCM forcing ${\cal G}_{cm} = \overline{\cal F}$. To find it we run the model with no forcing for one timestep, providing us with a set of tendencies:
+$$
+   \begin{eqnarray}
+      \frac{d {\bf \Psi}}{dt} + ({\cal A} + {\cal D}){\bf \Psi} = 0 \:\:\: &\Rightarrow& \:\:\: ({\cal A} + {\cal D}){\bf \Psi} = -\frac{d {\bf \Psi}}{dt}	
+ & \qquad\qquad (B10). \\
+   \end{eqnarray}
+$$
 
-
-
-Do this many times with a set of observed states  as initial conditions, and take the average of all the tendencies
-
-
+Do this many times with a set of observed states ${\bf \Phi}_i$  as initial conditions, and take the average of all the tendencies:
+$$
+   \begin{eqnarray}
+      {\cal G}_{cm} = \frac{1}{n}  \sum_{i=1}^n ({\cal A} + {\cal D}){\bf \Phi}_i	
+ & \qquad\qquad (B11). \\
+   \end{eqnarray}
+$$
 
 If we use this forcing to perform a long integration of the model we can compare our simulation with the dataset we used to generate the empirical forcing. And we find that this prescription for the forcing guarantees that the total generalised flux from the model simulation will be the same as in the observations, i.e.
+$$
+   \begin{eqnarray}
+      \overline{({\cal A} + {\cal D}){\bf \Psi}} = \overline{({\cal A} + {\cal D}){\bf \Phi}}	
+ & \qquad\qquad (B12). \\
+   \end{eqnarray}
+$$
 
 
+But for reasons already explained above, it does not guarantee that the simulated time-mean flow will be realistic, i.e.  $\overline{\Psi} \ne \overline{\bf \Phi}$.
 
-But for reasons already explained above, it does not guarantee that the simulated time-mean flow will be realistic, i.e.  
-
-
-
-Neither does it guarantee that the transient fluxes will be realistic. This is because the balance of terms in
-
-
-
+Neither does it guarantee that the transient fluxes will be realistic. This is because the balance of terms in:
+$$
+   \begin{eqnarray}
+      ({\cal A} + {\cal D})\overline{\bf \Psi} + \overline{O({\bf \Psi}'^2)} = ({\cal A} + {\cal D})\overline{\bf \Phi} + \overline{O({\bf \Phi}'^2)}		
+ & \qquad\qquad (B13) \\
+   \end{eqnarray}
+$$
 can be achieved differently on the two sides of the equation, as already discussed above directly in terms of mean flow and transient fluxes (equation B4). 
 
 So we have a forcing that is time-independent. It formally corrects the average initial systematic error that you’d get if you had no forcing, and it ensures that the generalised flux convergence in the model solution is identical to that in the observational dataset. But it does not guarantee a realistic climate, or realistic transient fluxes. The model will typically have systematic errors, like any other GCM, associated with compensating errors in mean and transient fluxes, and between transient fluxes on different timescales. 
