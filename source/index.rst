@@ -19,4 +19,6 @@ DREAM user manual
    Chapter5
    AppendixA
    AppendixB
-   AppendixC   
+   AppendixC
+   AppendixD
+   AppendixE    
