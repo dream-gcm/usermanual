@@ -8,6 +8,12 @@ DREAM user manual
 .. image:: img/cover.png
    :width: 300
 
+How to cite this manual?
+
+_DREAM user manual, Nick Hall and Stephanie Leroux, Nov. 2023. DOI: [xxxxx](doi.org)_
+
+You can browse this manual on-line or download it in pdf by clicking on "Read the Docs" at the bottom left of this page.
+
 .. toctree::
    :maxdepth: 3
    :caption: Contents:

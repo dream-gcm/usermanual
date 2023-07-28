@@ -11,8 +11,8 @@ All the namelist variables are listed here with their default values and a brief
 The following three string variables engage packages of namelist parameters - there is no default. 
 
 * `RUNTYPE` - Specifies the type of run in terms of forcing or symmetry: `CYCLE`, `PERPETUAL`, `UNFORCED`, or `CHANNEL`.
-* `THERMTYPE` - Specifies the type of moist thermodynamics: DRY, WET or INTER. 
-* `SSTZONE` - Specifies the region in which SSTs are read: TROPICS, PACIFIC, ATLANTIC or INDIAN.
+* `THERMTYPE` - Specifies the type of moist thermodynamics: `DRY`, `WET` or `INTER`. 
+* `SSTZONE` - Specifies the region in which SSTs are read: `TROPICS`, `PACIFIC`, `ATLANTIC` or `INDIAN`.
 
 ---
 ## C2. Initial
