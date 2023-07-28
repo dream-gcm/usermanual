@@ -101,19 +101,19 @@ gfortran -fdefault-real-8 -fconvert=big-endian -O3 -frecord-marker=4 -w -fallow-
 ```
 ---
 ## 2.6 So what else do you need to know ?
-* I want to know where are all the files are stored and what are they’re all for - see Chapter 3.
-* I want to go further with diagnostics and understand the data structure and timing - see Chapter 3 and Appendix A
-* What is the physical and numerical specification of this model ? - see Appendix A.
-* What’s the difference between a GCM run and a perturbation experiment ? - see Chapter 4 and Appendix B.
-* How is the basic forcing calculated ? - see Chapter 4.
-* How do I make an anomaly forcing file ? - see Chapter 4.
+* I want to know where are all the files are stored and what are they’re all for - see [Chapter 3](https://dreamusermanual.readthedocs.io/en/latest/Chapter3.html).
+* I want to go further with diagnostics and understand the data structure and timing - see [Chapter 3](https://dreamusermanual.readthedocs.io/en/latest/Chapter3.html) and [Appendix A](https://dreamusermanual.readthedocs.io/en/latest/AppendixA.html).
+* What is the physical and numerical specification of this model ? - see [Appendix A](https://dreamusermanual.readthedocs.io/en/latest/AppendixA.html).
+* What’s the difference between a GCM run and a perturbation experiment ? - see [Chapter 4](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html) and [Appendix B](https://dreamusermanual.readthedocs.io/en/latest/AppendixB.html).
+* How is the basic forcing calculated ? - see [Chapter 4](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html).
+* How do I make an anomaly forcing file ? - see [Chapter 4](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html).
 * What are all those parameters in the namelist for ? - see Appendix C.
-* I want to run ensemble forecasts, with an annual cycle, and nudging, and SST anomalies, and deep convection - whoah, calm down, one step at a time, it’s all in Chapter 4. 
-* I want to know everything about how the model works - I’m afraid you have no choice but to look at Appendix D, good luck.
+* I want to run ensemble forecasts, with an annual cycle, and nudging, and SST anomalies, and deep convection - whoah, calm down, one step at a time, it’s all in [Chapter 4](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html). 
+* I want to know everything about how the model works - I’m afraid you have no choice but to look at [Appendix D](https://dreamusermanual.readthedocs.io/en/latest/AppendixD.html), good luck.
 
 and finally…
 
-* I’ve successfully used DREAM and my results are astonishing ! I think this is a major contribution to atmospheric science which will launch my career. My first draft is ready - Congratulations ! Now don’t forget about the rest of us - see Chapter 5
+* I’ve successfully used DREAM and my results are astonishing ! I think this is a major contribution to atmospheric science which will launch my career. My first draft is ready - Congratulations ! Now don’t forget about the rest of us - see Chapter 5](https://dreamusermanual.readthedocs.io/en/latest/Chapter5.html).
 
 
 

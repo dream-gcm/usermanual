@@ -174,7 +174,7 @@ Some values are accumulated into 2-d grid arrays for diagnostic output:
 (note that 2-d values in mm could also be expressed in kg/m2 ).
 
 ---
-* `DEEPTEND(J,TGTDEEP,QGTDEEP)`: Called from `DIABATIC`. Returns deep convective tendencies for temperature and specific humidity. Works on one latitude pair at a time. See Chapter 4 section 4iii for a description of the convection scheme. 
+* `DEEPTEND(J,TGTDEEP,QGTDEEP)`: Called from `DIABATIC`. Returns deep convective tendencies for temperature and specific humidity. Works on one latitude pair at a time. See [Chapter 4, section 4](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html#c-moisture-condensation-and-convection) for a description of the convection scheme. 
 
 This subroutine first sets the decision to trigger convection `LTRIG` as true, and then looks for reasons to set it to false. The first criterion depends on the difference `VIMCONA` between the smoothed vertically integrated moisture convergence `VIMCONTR` minus its reference value `VIMCONREF`. This difference must be positive and exceed a threshold for convection to be triggered. 
 
@@ -194,13 +194,13 @@ It also sets the tendency `TGT` of temperature by spreading the total latent hea
 These calculations are done level by level and the grid point values of temperature TG and specific humidity `QG` are updated as we go. This subroutine also updates the total precipitation rate for diagnostics `PPTRATE` (mm/day). 
 
 ---
-* `SSTTEND`: Called from DIABATIC. Returns tendencies for temperature and specific humidity associated with the response to an SST anomaly. Works on one latitude pair at a time. See Chapter 4 section 4iv for a description of the way SST anomalies are implemented. 
+* `SSTTEND`: Called from DIABATIC. Returns tendencies for temperature and specific humidity associated with the response to an SST anomaly. Works on one latitude pair at a time. See [Chapter 4, section 4c](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html#adding-sea-surface-temperature-effects) for a description of the way SST anomalies are implemented. 
 
 The purpose of this subroutine is to calculate a precipitation rate anomaly associated with an anomaly in SST. It does this by using one of three options to translate the SST anomaly into precipitation rates in mm/day. The code actually uses the variable `PPTTAU` for rainfall in mm. And then it assumes that this amount of rain falls in one day by setting the rate `FRSST` appropriately. This is quite artificial and it is only done like this so that the subroutine `PROFILEHEAT` can be used to get the tendencies.
 
 The subroutine starts by calculating the SSTA based on the nature of the variable SST. In the case `ISSTREAD=1` the SSTA is calculated by subtracting SSTC from SST. Otherwise (`ISSTREAD=0`) SST is just used directly as the SSTA. At this point the SSTA can also be scaled by the factor `SCALESSTA`. 
 
-The three cases for deducing a precipitation rate anomaly from the `SSTA`, set by `ISSTRAN`, are described in Chapter 4 section 4iv. For the nonlinear transfer function, SSTC and the model divergence at $\sigma$=0.2, together with its reference value are used, along with a number of tuneable parameters. These parameters have not yet made their way into a namelist and this part of the code is work in progress. 
+The three cases for deducing a precipitation rate anomaly from the `SSTA`, set by `ISSTRAN`, are described in [Chapter 4, section 4c](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html#adding-sea-surface-temperature-effects). For the nonlinear transfer function, SSTC and the model divergence at $\sigma$=0.2, together with its reference value are used, along with a number of tuneable parameters. These parameters have not yet made their way into a namelist and this part of the code is work in progress. 
 
 Once `PPTTAU` has been calculated, it is constrained by the land-sea mask to be only over the sea, and by the selective mask to either pick an ocean basin or cover the whole of the tropics. A constraint is added in the case that the convection scheme is being used, that the daily rainfall cannot exceed the column water total. 
 
@@ -214,7 +214,7 @@ This subroutine sets up damping rates due to vertical diffusion according to the
 A simple centred difference is applied to find diffusive flux convergence and this is assigned to the  tendencies of momentum, temperature and specific humidity. Only temperature and specific humidity grid variables are updated as there is no need to keep the momentum up to date. 
 
 ---
-* `LSRTEND(J,TGTLSR,QGTLSR)`: Called by `DIABATIC`. Returns height dependent tendencies for temperature and specific humidity associated with resolved condensation (large scale rain). Works on one latitude pair at a time. See Chapter 4 section 4iii for a description of the large scale rain scheme. 
+* `LSRTEND(J,TGTLSR,QGTLSR)`: Called by `DIABATIC`. Returns height dependent tendencies for temperature and specific humidity associated with resolved condensation (large scale rain). Works on one latitude pair at a time. See [Chapter 4, section 4c](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html#large-scale-rain) for a description of the large scale rain scheme. 
 
 This subroutine calculates saturated specific humidity QSAT at every level at a given grid point and compares it with the local specific humidity (or its smoothed value `QGTR` if `LTRUNCQ` is enabled). The supersaturation `QDIFF` is the difference between the two, and it is used directly to calculate the local specific humidity tendency `QGTLSR` using the rate `FRCOND` derived from the timescale `TAUCOND`. The associated latent heating rate is applied to the local temperature tendency `TGTLSR`. 
 
