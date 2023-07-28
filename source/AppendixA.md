@@ -225,7 +225,7 @@ When the model is initialised it takes `YEAR` from the value provided by the ini
 
 From then on, in a model run, `YEAR` is only changed when it is updated by reading it from the reference state. Note that if this reference state is the mean annual cycle then `YEAR` will be set to `100.DDDDD`.
 
-`RMYR`, on the other hand, increments every time a history record is written. So if `RMYR=YYYY.DDDDD`, then `YYYY` is a model year that increments by one every 365.25 days, and `DDDDD` is the value of `DAY` times 1000. So `RMYR` will count round to `YYYY.36500` and then go on to` YYY(Y+1)`.00000. 
+`RMYR`, on the other hand, increments every time a history record is written. So if `RMYR=YYYY.DDDDD`, then `YYYY` is a model year that increments by one every 365.25 days, and `DDDDD` is the value of `DAY` times 1000. So `RMYR` will count round to `YYYY.36500` and then go on to` YYY(Y+1).00000`. 
 
 At the end of a model run (and at certain long intervals during the run) a restart record is written. This contains all the information necessary to restart the run as a smooth continuation of the integration:
 
