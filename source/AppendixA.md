@@ -98,7 +98,7 @@ Gridpoint operations are carried out one latitude-pair at a time for all levels.
 
 The basic model variables are vorticity and divergence (s$^{-1}$), temperature (degrees C), surface pressure (Pa) and specific humidity (kg/kg). These quantities are non-dimensionalised using physical constants:
 
-* __Time__: the angular velocity of the earth `WW`=$\Omega$=2$\pi /$23.93 $\times$ 3600$ ($^{-1}$).  This immediately gives a scaling for vorticity and divergence, giving model variables: 
+* __Time__: the angular velocity of the earth `WW`=$\Omega$=2$\pi$ /23.93 $\times$ 3600$ ($^{-1}$).  This immediately gives a scaling for vorticity and divergence, giving model variables: 
     -  `Z = Absolute vorticity / WW`
     -  `D = Divergence / WW`
 
@@ -126,7 +126,7 @@ $$
     - The ratio of the gas constant to the specific heat capacity at constant pressure `AKAP` =$\kappa=R/Cp$ =  0.286,
     - The latent heat of condensation `RLHEAT`$=L = 2256476$ J/kg
 
-Special attention needs to be paid to the nondimensionalisation of time intervals, timescales and rates. Since time is nondimensionalised in terms of an angular frequency $\Omega$, this means that a non-dimensional day actually has a day length of 2$\pi$. So if a timescale is specified in days, for example the dissipation timescale in the free troposphere `TAUFT=20 days`, then it’s non-dimensional value will be 20 $\times$ 2. The associated dissipation rate `FTFR` is the reciprocal of this: `FRFT=1./(PI2*TAUFT)` . Note that timescales are generally specified as `TAUXX (days)` and the associated rates as `FRXX`. The same logic applies to the nondiensional length of the model timestep `DELT=PI2/TSPD (=2*PI/64)`. For details of the reporting of time in model output and data see section 7. 
+Special attention needs to be paid to the nondimensionalisation of time intervals, timescales and rates. Since time is nondimensionalised in terms of an angular frequency $\Omega$, this means that a non-dimensional day actually has a day length of 2$\pi$. So if a timescale is specified in days, for example the dissipation timescale in the free troposphere `TAUFT=20 days`, then it’s non-dimensional value will be 20 $\times 2\pi$. The associated dissipation rate `FTFR` is the reciprocal of this: `FRFT=1./(PI2*TAUFT)` . Note that timescales are generally specified as `TAUXX (days)` and the associated rates as `FRXX`. The same logic applies to the nondiensional length of the model timestep `DELT=PI2/TSPD (=2*PI/64)`. For details of the reporting of time in model output and data see section 7. 
 
 ---
 ## A4. Vertical structure
@@ -134,13 +134,13 @@ DREAM currently uses 15 $\sigma$-levels in the vertical. They are referenced to 
 
 The sigma levels used in DREAM have been chosen to be as close as possible to the ECMWF standard pressure levels on which the data was originally provided, minimising interpolation errors. An exact correspondence is not possible because the model sigma levels must fall at the mid point of model sigma layers. It is, in fact, the boundaries between sigma layers that are specified, not the mid-points. The layer boundaries start at zero at the top of the atmosphere and finish at unity at the bottom. Sigma levels are then calculated as the mid-points between these layer boundaries. The layer boundaries in DREAM have been chosen so that we end up with model sigma levels centred at the following fifteen values: 
 
- $\sigma \times$ 1000 = 37.5, 100,150, 200, 250, 312.5, 400, 500, 600, 700, 791.67, 850, 883, 925, 975
+ $\sigma \times$ 1000 = 37.5, 100,150, 200, 250, 312.5, 400, 500, 600, 700, 791.67, 850, 883, 925, 975.
 
 The model uses the Simmons and Burridge (1981) angular momentum conserving vertical scheme. The term “vertical scheme” refers to the way in which the geopotential is calculated on sigma levels in the gravity wave source term shown in fig. A2. For a quick discussion of this see the appendix of Hall (2000). 
 
 ---
 ## A5. Dissipation
-Scale selective hyperdiffusion is applied in spectral space to all the model’s 3-d state variables (`Z`,`D`,`T`,`Q`) independently of vertical level. Any order of the Laplacian operator can easily be used because it reduces to a simple multiple of the spectral coefficients. A timescale is also specified. Currently the default horizontal diffusion is set to 12-hour $\Nabla^6$ . 
+Scale selective hyperdiffusion is applied in spectral space to all the model’s 3-d state variables (`Z`,`D`,`T`,`Q`) independently of vertical level. Any order of the Laplacian operator can easily be used because it reduces to a simple multiple of the spectral coefficients. A timescale is also specified. Currently the default horizontal diffusion is set to 12-hour $\nabla^6$ . 
 
 Further level-dependent vertical diffusion and damping is added in grid space to all 3-d state variables (`U`,`V`,`T`,`Q`). Linear diffusive vertical fluxes are calculated from vertical gradients at sigma-level boundaries. Their convergence is then calculated at sigma levels, using linear centred differences. The boundary conditions act to damp the system as if the top and bottom surfaces mirrored the reference value in the adjacent layer, like a sponge at the top of the atmosphere or a fixed SST at the surface. The timescales used to calculate the fluxes depend on the model level, and are much shorter at the lowest levels. The damping rate (the reciprocal of the time scale) follows a linear profile from the surface to a specified boundary layer height. Standard parameters are shown in fig. A4. The mean rate in the boundary layer corresponds to a time scale of 16h. There is an optional doubling of the lowest layer vertical diffusion coefficient over land if `LLSD` is to to true. This is currently enabled by default at T42 but disabled at T31. Above the boundary layer, in the free troposphere, the vertical diffusion rate is fixed with a default timescale of 20 days. 
 
@@ -158,13 +158,13 @@ _Fig. A4: Vertical profiles of diffusion and damping with associated time scales
 
 Most of the presentation of the code is in Appendix D, but here I will walk you through the main program to give you an idea of how one timestep unfolds. Have the source code open in front of you while you read this. 
 
-i) Model setup
-A few subroutines are called to set up things that are not going to change thoughout the model run. INISET to set up namelist variables, nondimensionalisation constants and factors for Fourier transforms etc. INIGAU calculates Gaussian weights and latitudes. INISI sets up sigma levels, the vertical scheme and the semi-implicit scheme. INIRES defines damping coefficients from timescales given in the namelist. INIVAR initialises some model variables such as grid point fields, masks etc, and initialises the spectral state variables to zero. 
+### i) Model setup
+A few subroutines are called to set up things that are not going to change thoughout the model run. `INISET` to set up namelist variables, nondimensionalisation constants and factors for Fourier transforms etc. `INIGAU` calculates Gaussian weights and latitudes. `INISI` sets up sigma levels, the vertical scheme and the semi-implicit scheme. INIRES defines damping coefficients from timescales given in the namelist. `INIVAR` initialises some model variables such as grid point fields, masks etc, and initialises the spectral state variables to zero. 
 
-ii) The training loop
-The loop from 1 to KTFIN starts next and is bounded by line number 111. It is only used for training runs (LTRAIN=.T.). It actually runs the model multiple times for one timestep from a sequence of initial conditions. 
+### ii) The training loop
+The loop from 1 to `KTFIN` starts next and is bounded by line number 111. It is only used for training runs (`LTRAIN=.T.`). It actually runs the model multiple times for one timestep from a sequence of initial conditions. 
 
-iii) Initialisation
-State variables are reinitialised to zero for good measure, and then read from the input data in INIIC. Then if necessary we skip through the reference data and cyclic forcing files to the correct calendar date to get ready to read in the basic forcing. READFCE reads the forcing and reference data and then, conditionally on options set in the namelsit we read the forcing anomly, nudging data and SST data. 
+### iii) Initialisation
+State variables are reinitialised to zero for good measure, and then read from the input data in `INIIC`. Then if necessary we skip through the reference data and cyclic forcing files to the correct calendar date to get ready to read in the basic forcing. `READFCE` reads the forcing and reference data and then, conditionally on options set in the namelsit we read the forcing anomly, nudging data and SST data. 
 
-Once this is all done the intial condtion is written out as the first record of the model’s spectral history file at RKOUNT=0. For consistency in the number of records per file, gridpoint history records are also output at this point. But the first record of the grid history file will only contain the intial zeros, because no gridpoint information has yet been calculated. 
+Once this is all done the intial condtion is written out as the first record of the model’s spectral history file at `RKOUNT=0`. For consistency in the number of records per file, gridpoint history records are also output at this point. But the first record of the grid history file will only contain the intial zeros, because no gridpoint information has yet been calculated. 
