@@ -98,20 +98,20 @@ Gridpoint operations are carried out one latitude-pair at a time for all levels.
 
 The basic model variables are vorticity and divergence (s$^{-1}$), temperature (degrees C), surface pressure (Pa) and specific humidity (kg/kg). These quantities are non-dimensionalised using physical constants:
 
-* __Time__: the angular velocity of the earth $\Omega=$ `WW`$=2\pi / 23.93 x 3600$ (s-1).  This immediately gives a scaling for vorticity and divergence, giving model variables: 
+* __Time__: the angular velocity of the earth `WW`$=\Omega=2\pi / 23.93 x 3600$ ($^{-1}$).  This immediately gives a scaling for vorticity and divergence, giving model variables: 
     -  `Z = Absolute vorticity / WW`
     -  `D = Divergence / WW`
 
-* __Distance__: the radius of the earth, $a =$ `RADEA = 6371000 m`
-This gives us a scaling for Speed: $CV =$ `RADEA*WW`
+* __Distance__: the radius of the earth `RADEA`$=a = 6371000$ m
+This gives us a scaling for Speed: `CV =RADEA*WW`
 so in grid space `UG` and `VG` equal `u` and `v` divided by `CV`.
 
-* __The gas constant__: $R =$ `GASCON = 287 J/(kg K) or m2/(s2 K)`
-This gives us a scaling for temperature $CT=$ `CV*CV/GASCON`. 
+* __The gas constant__: `GASCON`$=R = 287$ J/(kg K) or m$^2$/(s$^2$ K).
+This gives us a scaling for temperature `CT=CV*CV/GASCON`. 
 The temperature variable used in the model is thus 
 `T = (Temperature in Kelvin - 250) / CT`.
 
-The surface pressure appears in the model equations as `SP=ln(p*)`. Since DREAM deos not have explicit orography this $p*$ is actually the mean sea level pressure referenced to 1000 hPa. This is calculated from the temperature and the geopotential height at 1000 hPa according to 
+The surface pressure appears in the model equations as `SP=ln(p*)`. Since DREAM does not have explicit orography, this `p*` is actually the mean sea level pressure referenced to 1000 hPa. This is calculated from the temperature and the geopotential height at 1000 hPa according to :
 
 $$
    \begin{equation}
@@ -122,8 +122,8 @@ $$
 * Specific humidity `Q` is already dimensionless as kg of water vapour per kg of air. 
 
 * Other physical constants set and used in the model are:
-    - Gravitational acceleration $g=$  `GA = 9.81 m^2/s^2`,
-    - The ratio of the gas constant to the specific heat capacity at constant pressure $\kappa=$  `R/Cp = AKAP = 0.286`,
-    - The latent heat of condensation, $L =$ `RLHEAT = 2256476 J/kg`
+    - Gravitational acceleration `GA`$=g= 9.81$ m$^2$/s$^2$,
+    - The ratio of the gas constant to the specific heat capacity at constant pressure `AKAP` $=\kappa=R/Cp =  = 0.286`,
+    - The latent heat of condensation `RLHEAT`$=L = 2256476$ J/kg
 
 Special attention needs to be paid to the nondimensionalisation of time intervals, timescales and rates. Since time is nondimensionalised in terms of an angular frequency , this means that a non-dimensional day actually has a day length of 2. So if a timescale is specified in days, for example the dissipation timescale in the free troposphere `TAUFT=20 days`, then it’s non-dimensional value will be 20  2. The associated dissipation rate FTFR is the reciprocal of this: `FRFT=1./(PI2*TAUFT)` . Note that timescales are generally specified as `TAUXX (days)` and the associated rates as `FRXX`. The same logic applies to the nondiensional length of the model timestep `DELT=PI2/TSPD (=2/64)`. For details of the reporting of time in model output and data see section 7. 
