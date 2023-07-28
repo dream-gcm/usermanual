@@ -143,7 +143,7 @@ To maintain a climatological mean state against time-mean advection requires a c
 
 $$
    \begin{eqnarray}
-     {\cal G}_{bs} = ({\cal A} + {\cal D})\overline{x} \bf{\Phi}}  		
+     {\cal G}_{bs} = ({\cal A} + {\cal D})\overline{x} \bf{\Phi} 		
  & \qquad\qquad \\
    \end{eqnarray}
 $$
