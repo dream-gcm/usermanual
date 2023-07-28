@@ -18,8 +18,8 @@ The following three string variables engage packages of namelist parameters - th
 ## C2. `INITIAL``
 
 ### Physical constants:
-* `GA = 9.81` - Acceleration due to gravity - m/s2
-* `GASCON = 287.` - The gas constant R - J/kg K or m2/s2 K
+* `GA = 9.81` - Acceleration due to gravity - m/s$^2$
+* `GASCON = 287.` - The gas constant R - J/kg K or m$^2$/s$^2$ K
 * `RADEA = 6371000.` - Radius of the earth - m
 * `AKAP = 0.286` - Kappa, the ratio gas constant to specific heat capacity: R/Cp
 * `WW = 7.292E-5` - Angular velocity of the earth - rad/s
@@ -37,13 +37,13 @@ The following three string variables engage packages of namelist parameters - th
 * `LLSD = .F.` for T31 otherwise `.T.` - Activates “Lucy in the Sky with Diamonds” mode, in case you are hallucinating enough to believe that adding Land-Sea Drag will improve model performance. Doubles the drag over land in the lowest layer.
 
 ### Forcing type
-* LTRAIN = .F. - Switch to put the model run into training mode, to make successive forecasts from a sequence of initial conditions. Only used when generating a new forcing file. 
-* LFCE = .T. - Switch to apply spectral forcing from channel 13.
-* LCYC = .F. - Switch to enable annual cycle and sequentially update forcing and reference fields.
+* `LTRAIN = .F.` - Switch to put the model run into training mode, to make successive forecasts from a sequence of initial conditions. Only used when generating a new forcing file. 
+* `LFCE = .T.` - Switch to apply spectral forcing from channel 13.
+* `LCYC = .F.` - Switch to enable annual cycle and sequentially update forcing and reference fields.
 
 ### Grid output for thermodynamic diagnostic variables
-* LGRIDOUT2D = .T. - Controls output of 2-d grid diagnostics related to precipitation.
-* LGRIDOUT3D = .F. - Controls output of 3-d grid condensation heating.
+* `LGRIDOUT2D = .T.` - Controls output of 2-d grid diagnostics related to precipitation.
+* `LGRIDOUT3D = .F.` - Controls output of 3-d grid condensation heating.
 
 ### Counters
 * `RNTAPE =  100.` - Variable for checking correct read/write of spectral history and restart files and also identifying type file: 100 for model output (restart); 200 for ERAi data; 300 for forcing files `_fcm` and `_fbs` and 400 for forcing anomaly files _fan. 
