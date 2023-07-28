@@ -97,6 +97,7 @@ $$
 $$
 
 As before let’s set our simple GCM forcing ${\cal G}_{cm} = \overline{\cal F}$. To find it we run the model with no forcing for one timestep, providing us with a set of tendencies:
+
 $$
    \begin{equation}
       \frac{d {\bf \Psi}}{dt} + ({\cal A} + {\cal D}){\bf \Psi} = 0 \:\:\: \Rightarrow \:\:\: ({\cal A} + {\cal D}){\bf \Psi} = -\frac{d {\bf \Psi}}{dt}	
@@ -104,6 +105,7 @@ $$
 $$
 
 Do this many times with a set of observed states ${\bf \Phi}_i$  as initial conditions, and take the average of all the tendencies:
+
 $$
    \begin{eqnarray}
       {\cal G}_{cm} = \frac{1}{n}  \sum_{i=1}^n ({\cal A} + {\cal D}){\bf \Phi}_i	
@@ -112,6 +114,7 @@ $$
 $$
 
 If we use this forcing to perform a long integration of the model we can compare our simulation with the dataset we used to generate the empirical forcing. And we find that this prescription for the forcing guarantees that the total generalised flux from the model simulation will be the same as in the observations, i.e.
+
 $$
    \begin{eqnarray}
       \overline{({\cal A} + {\cal D}){\bf \Psi}} = \overline{({\cal A} + {\cal D}){\bf \Phi}}	
@@ -123,6 +126,7 @@ $$
 But for reasons already explained above, it does not guarantee that the simulated time-mean flow will be realistic, i.e.  $\overline{\Psi} \ne \overline{\bf \Phi}$.
 
 Neither does it guarantee that the transient fluxes will be realistic. This is because the balance of terms in:
+
 $$
    \begin{eqnarray}
       ({\cal A} + {\cal D})\overline{\bf \Psi} + \overline{O({\bf \Psi}'^2)} = ({\cal A} + {\cal D})\overline{\bf \Phi} + \overline{O({\bf \Phi}'^2)}		
@@ -136,6 +140,7 @@ So we have a forcing that is time-independent. It formally corrects the average 
 
 ## B3. Forcing a perturbation model with a fixed basic state
 To maintain a climatological mean state against time-mean advection requires a combination of diabatic forcing and transient eddy fluxes. The sum of these two effects could be equated to the first term in (B7). So let’s do that, and define a new forcing:
+
 $$
    \begin{eqnarray}
      {\cal G}_{bs} = ({\cal A} + {\cal D})\overline{\bf \Phi}  		
@@ -178,7 +183,8 @@ $$
    \end{eqnarray}
 $$
 
-the solution is
+the solution is:
+
 $$
    \begin{eqnarray}
     \Psi_{1j} (t) = \frac{f_{1j}}{\lambda_j} \left( e^{\lambda_j t} -1 \right)		
@@ -198,6 +204,7 @@ But by their nature such normal mode solutions have little to do with the detail
 As discussed in Chapter 1 section 2, a popular way to force simple advective models is through “restoration” to a radiative-convective equilibrium state or a reference climatology. We imagine this as a spring, which returns the atmospheric state to what it would be if there were no dynamical fluxes, or at least prevents a model from straying too far from a realistic state. It’s worth briefly exploring the connection between restoration forcing and our empirical forcing approach in which we specify the dissipation, but not the equilibrium state. 
 
 Let’s rewrite the model development equation (B9):
+
 $$
    \begin{eqnarray}
     \frac{d {\bf \Psi}}{dt} + {\cal A}{\bf \Psi} = {\cal G}_{cm} - {\cal D}{\bf \Psi} = R({\bf \Phi^*} - {\bf \Psi})		
@@ -224,6 +231,7 @@ where $\tau$ is the nudging timescale. The procedure for implementing nudging is
 Note that you need to be careful if you try to use nudging as a linear perturbation. This is normally achieved by scaling down the forcing perturbation with some small factor $\epsilon$. But in this case you can’t just multiply the nudging term by , because if the model state is always close to a specified basic state, then the nudging term above will just become an additional constant forcing, not a spring. So instead of nudging towards the state ${\bf \Phi}_i$ , we need to nudge towards a state ${\bf \Phi}_i^*$  whose departure from the climatology $\overline{\bf \Phi}$  is scaled down ${\bf \Phi}_i^* = \overline{\bf \Phi} + \epsilon({\bf \Phi}_i - \overline{\bf \Phi})$.
 
 If we do this, then the nudging term becomes a small perturbation forcing and a damping on the anomaly response. The nudged version of (B10) can be written as:
+
 $$
    \begin{eqnarray}
     \frac{d {\bf \Psi}_1}{dt} + {\cal L}{\bf \Psi}_1 = \epsilon \left( \frac{{\bf \Phi}_i - \overline{\bf \Phi}}{\tau} \right) -\frac{{\bf \Psi}_1}{\tau}		
@@ -250,7 +258,8 @@ $$
    \end{eqnarray}
 $$
 
-Take the time mean and subtract from the time mean of the climatology run, and you get
+Take the time mean and subtract from the time mean of the climatology run, and you get:
+
 $$
    \begin{eqnarray}
     ({\cal A} + {\cal D})\overline{\bf \Psi}_p - ({\cal A} + {\cal D})\overline{\bf \Psi}_c = {\bf f_1} + {\bf TE}
