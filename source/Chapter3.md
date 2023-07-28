@@ -51,7 +51,7 @@ This is technically the same as the _fbs file described above, but it will not m
 
 This is the simple GCM forcing, which can be used for long runs or forecasts to get the model to behave like a GCM. The model will develop a fully turbulent eddy field with a mean state and transient fluxes that resemble those of a real GCM (or even the real atmosphere). Often used in experiments where there is a long perturbed equilibrium simulation, to be compared with a long control run. Forcing for perpetual runs simulating each of the four seasons is provided. 
 
-Most of the files in this directory are single record files, designated ave4x, but there is one that is designated `cyc4x`, which has 1461 records. This is the annual cycle forcing described in Chapter 4 section 1iii. If the annual forcing cycle is chosen, then the reference state must be the mean annual cycle. The model will read forcing and reference data sequentially every six hours and return to the beginning of the year at the end of the files. 
+Most of the files in this directory are single record files, designated ave4x, but there is one that is designated `cyc4x`, which has 1461 records. This is the annual cycle forcing described in [Chapter 4, section 2d](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html#d-forcing-a-simple-gcm-with-an-annual-cycle). If the annual forcing cycle is chosen, then the reference state must be the mean annual cycle. The model will read forcing and reference data sequentially every six hours and return to the beginning of the year at the end of the files. 
 
 _vi) inst: Instantaneous data snapshots_
 
@@ -85,7 +85,7 @@ and link the right input files to the appropriate channels and to rename the out
 Here’s the complete list: 
 * `add2_hst.f` - adds two model spectral history files together
 * `checkhst.f` - simply reads a spectral history file to check the data
-* `checkhst_modenorm.f` - reads a history file and calculates the norm used in “modefinder” (see Chapter 4 section 4i) 
+* `checkhst_modenorm.f` - reads a history file and calculates the norm used in “modefinder” (see [Chapter 4, section 4a](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html#a-diagnosis-of-normal-modes-and-time-independent-solutions)) 
 * `compare_hst.f` - compares two history files
 * `concat.f` - concatenates two history files into one
 * `daily_means.f` - calculates daily means from 4x-daily spectral data
@@ -101,7 +101,7 @@ Here’s the complete list:
 * `extract-label_years.f` - relabel spectral data with information about the year and daynumber
 * `global_mean.f` - creates spectral data with the global mean of the input file but no horizontal variations
 * `global_mean_resting.f` - same but with no wind at all
-* `growth.f` - calculates growth rates in a quadratic vorticity norm (for analysis from the modefinder, see Chapter 4 section 4i)
+* `growth.f` - calculates growth rates in a quadratic vorticity norm (for analysis from the modefinder, see [Chapter 4, section 4](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html#a-diagnosis-of-normal-modes-and-time-independent-solutions))
 * `make_inst2.f` - extracts a single record from a sequence to furnish a singe initial condition
 * `make_inst.f` - same with KOUNT and DAY set to zero
 * `modify_metadata.f` - to update timing information on history files
@@ -153,14 +153,14 @@ Finally there is a `change-log` which contains notes on changes made between ver
 
 ---
 ## 3.4 `jobs`directory
-This is where you’ll spend a lot of your time. We’ve already had a look at the job script to run the model in chapter 2, and we’ll go into much more detail in chapter 4. Here’s just an overview of the files in this directory. 
+This is where you’ll spend a lot of your time. We’ve already had a look at the job script to run the model in [Chapter 2](https://dreamusermanual.readthedocs.io/en/latest/Chapter2.html), and we’ll go into much more detail in [Chapter 4](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html). Here’s just an overview of the files in this directory. 
 
 * `runmodel_v8.1.ksh` - your basic script for running the model
 multirun.ksh - a bog standard script to sequentially run several experiments - edit at will.
 
-* `makefrc.ksh` - the script for making forcing files _fbs and _fcm. How to do this is explained in Chapter 4 section 2. It calls fortran routines: calcfrc_T31.f or calcfrc_T42.f. 
+* `makefrc.ksh` - the script for making forcing files _fbs and _fcm. How to do this is explained in Chapter 4 section 2. It calls fortran routines: `calcfrc_T31.f` or `calcfrc_T42.f`. 
 
-* `makefrc_cyc.ksh` - calculating a forcing function with an annual cycle is a protracted and elaborate business, see Chapter 4 section 2iv and Appendix B section 8 . This script is only part of the procedure, along with fortran routines: calcfrc_cycADV.f and calcfrc_cycTEND.f
+* `makefrc_cyc.ksh` - calculating a forcing function with an annual cycle is a protracted and elaborate business, see [Chapter 4, Section 2d](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html#d-forcing-a-simple-gcm-with-an-annual-cycle) and [Appendix B, section 7](https://dreamusermanual.readthedocs.io/en/latest/AppendixB.html#b7-forcing-the-annual-cycle) . This script is only part of the procedure, along with fortran routines: `calcfrc_cycADV.f` and `calcfrc_cycTEND.f`.
 
 * `makefed.ksh` - if you want to diagnose the transient eddy part of the forcing, it is the difference between a _fbs file and an `_fcm` file (see Appendix B). This script works it out using `calcfed.f`. 
 
@@ -186,7 +186,7 @@ When you run the diagnostics you’ll also get:
 
 ---
 ## 3.6 `diagnostics` directory
-Another directory where you’ll spend a lot of your time. Again, this is an overview of the files. A comprehensive guide to diagnostics is given in Chapter 4. 
+Another directory where you’ll spend a lot of your time. Again, this is an overview of the files. A comprehensive guide to diagnostics is given in [Chapter 4](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html). 
 * `specan_W2G.f` - the core fortran program that everything depends on, this routine uses the spectral analysis from the model to take a model history file and write grid diagnostic fields for dynamical variables into binary and netCDF formats.
 * `gridan2d.f` and `gridan3d.f` do a similar job but for model grid output, i.e. fields that are related to model precipitation.
 
