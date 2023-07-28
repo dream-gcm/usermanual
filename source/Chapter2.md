@@ -113,7 +113,7 @@ gfortran -fdefault-real-8 -fconvert=big-endian -O3 -frecord-marker=4 -w -fallow-
 
 and finally…
 
-* I’ve successfully used DREAM and my results are astonishing ! I think this is a major contribution to atmospheric science which will launch my career. My first draft is ready - Congratulations ! Now don’t forget about the rest of us - see Chapter 5](https://dreamusermanual.readthedocs.io/en/latest/Chapter5.html).
+* I’ve successfully used DREAM and my results are astonishing ! I think this is a major contribution to atmospheric science which will launch my career. My first draft is ready - Congratulations ! Now don’t forget about the rest of us - see [Chapter 5](https://dreamusermanual.readthedocs.io/en/latest/Chapter5.html).
 
 
 
