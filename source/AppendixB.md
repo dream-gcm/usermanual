@@ -241,6 +241,7 @@ $$
 $$
 
 ![FigB1](./img/fig_B1.png)
+
 _Fig. B1: Say no more !_
 
 
