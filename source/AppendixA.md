@@ -98,15 +98,15 @@ Gridpoint operations are carried out one latitude-pair at a time for all levels.
 
 The basic model variables are vorticity and divergence (s$^{-1}$), temperature (degrees C), surface pressure (Pa) and specific humidity (kg/kg). These quantities are non-dimensionalised using physical constants:
 
-* __Time__: the angular velocity of the earth `WW`$=\Omega=2\pi / 23.93 x 3600$ ($^{-1}$).  This immediately gives a scaling for vorticity and divergence, giving model variables: 
+* __Time__: the angular velocity of the earth `WW`=$\Omega$=2$\pi /$23.93 $\times$ 3600$ ($^{-1}$).  This immediately gives a scaling for vorticity and divergence, giving model variables: 
     -  `Z = Absolute vorticity / WW`
     -  `D = Divergence / WW`
 
-* __Distance__: the radius of the earth `RADEA`$=a = 6371000$ m
-This gives us a scaling for Speed: `CV =RADEA*WW`
-so in grid space `UG` and `VG` equal `u` and `v` divided by `CV`.
+* __Distance__: the radius of the earth `RADEA`=$a$ = 6371000 m
+This gives us a scaling for __Speed__: `CV =RADEA*WW`
+so in grid space `UG` and `VG` equal $u$ and $v$ divided by `CV`.
 
-* __The gas constant__: `GASCON`$=R = 287$ J/(kg K) or m$^2$/(s$^2$ K).
+* __The gas constant__: `GASCON`=$R$ = 287 J/(kg K) or m$^2$/(s$^2$ K).
 This gives us a scaling for temperature `CT=CV*CV/GASCON`. 
 The temperature variable used in the model is thus 
 `T = (Temperature in Kelvin - 250) / CT`.
@@ -122,11 +122,11 @@ $$
 * Specific humidity `Q` is already dimensionless as kg of water vapour per kg of air. 
 
 * Other physical constants set and used in the model are:
-    - Gravitational acceleration `GA`$=g= 9.81$ m$^2$/s$^2$,
-    - The ratio of the gas constant to the specific heat capacity at constant pressure `AKAP` $=\kappa=R/Cp =  = 0.286`,
+    - Gravitational acceleration `GA`=$g$= 9.81 m$^2$/s$^2$,
+    - The ratio of the gas constant to the specific heat capacity at constant pressure `AKAP` =$\kappa=R/Cp$ =  0.286,
     - The latent heat of condensation `RLHEAT`$=L = 2256476$ J/kg
 
-Special attention needs to be paid to the nondimensionalisation of time intervals, timescales and rates. Since time is nondimensionalised in terms of an angular frequency , this means that a non-dimensional day actually has a day length of 2. So if a timescale is specified in days, for example the dissipation timescale in the free troposphere `TAUFT=20 days`, then it’s non-dimensional value will be 20  2. The associated dissipation rate FTFR is the reciprocal of this: `FRFT=1./(PI2*TAUFT)` . Note that timescales are generally specified as `TAUXX (days)` and the associated rates as `FRXX`. The same logic applies to the nondiensional length of the model timestep `DELT=PI2/TSPD (=2/64)`. For details of the reporting of time in model output and data see section 7. 
+Special attention needs to be paid to the nondimensionalisation of time intervals, timescales and rates. Since time is nondimensionalised in terms of an angular frequency $\Omega$, this means that a non-dimensional day actually has a day length of 2$\pi$. So if a timescale is specified in days, for example the dissipation timescale in the free troposphere `TAUFT=20 days`, then it’s non-dimensional value will be 20 $\times$ 2. The associated dissipation rate `FTFR` is the reciprocal of this: `FRFT=1./(PI2*TAUFT)` . Note that timescales are generally specified as `TAUXX (days)` and the associated rates as `FRXX`. The same logic applies to the nondiensional length of the model timestep `DELT=PI2/TSPD (=2*PI/64)`. For details of the reporting of time in model output and data see section 7. 
 
 ---
 ## A4. Vertical structure
@@ -140,7 +140,7 @@ The model uses the Simmons and Burridge (1981) angular momentum conserving verti
 
 ---
 ## A5. Dissipation
-Scale selective hyperdiffusion is applied in spectral space to all the model’s 3-d state variables (`Z`,`D`,`T`,`Q`) independently of vertical level. Any order of the Laplacian operator can easily be used because it reduces to a simple multiple of the spectral coefficients. A timescale is also specified. Currently the default horizontal diffusion is set to 12-hour . 
+Scale selective hyperdiffusion is applied in spectral space to all the model’s 3-d state variables (`Z`,`D`,`T`,`Q`) independently of vertical level. Any order of the Laplacian operator can easily be used because it reduces to a simple multiple of the spectral coefficients. A timescale is also specified. Currently the default horizontal diffusion is set to 12-hour $\Nabla^6$ . 
 
 Further level-dependent vertical diffusion and damping is added in grid space to all 3-d state variables (`U`,`V`,`T`,`Q`). Linear diffusive vertical fluxes are calculated from vertical gradients at sigma-level boundaries. Their convergence is then calculated at sigma levels, using linear centred differences. The boundary conditions act to damp the system as if the top and bottom surfaces mirrored the reference value in the adjacent layer, like a sponge at the top of the atmosphere or a fixed SST at the surface. The timescales used to calculate the fluxes depend on the model level, and are much shorter at the lowest levels. The damping rate (the reciprocal of the time scale) follows a linear profile from the surface to a specified boundary layer height. Standard parameters are shown in fig. A4. The mean rate in the boundary layer corresponds to a time scale of 16h. There is an optional doubling of the lowest layer vertical diffusion coefficient over land if `LLSD` is to to true. This is currently enabled by default at T42 but disabled at T31. Above the boundary layer, in the free troposphere, the vertical diffusion rate is fixed with a default timescale of 20 days. 
 
@@ -153,3 +153,18 @@ The empirical forcing always acts hand in hand with the prescribed dissipation. 
 
 _Fig. A4: Vertical profiles of diffusion and damping with associated time scales._
 
+---
+## A6. Code structure
+
+Most of the presentation of the code is in Appendix D, but here I will walk you through the main program to give you an idea of how one timestep unfolds. Have the source code open in front of you while you read this. 
+
+i) Model setup
+A few subroutines are called to set up things that are not going to change thoughout the model run. INISET to set up namelist variables, nondimensionalisation constants and factors for Fourier transforms etc. INIGAU calculates Gaussian weights and latitudes. INISI sets up sigma levels, the vertical scheme and the semi-implicit scheme. INIRES defines damping coefficients from timescales given in the namelist. INIVAR initialises some model variables such as grid point fields, masks etc, and initialises the spectral state variables to zero. 
+
+ii) The training loop
+The loop from 1 to KTFIN starts next and is bounded by line number 111. It is only used for training runs (LTRAIN=.T.). It actually runs the model multiple times for one timestep from a sequence of initial conditions. 
+
+iii) Initialisation
+State variables are reinitialised to zero for good measure, and then read from the input data in INIIC. Then if necessary we skip through the reference data and cyclic forcing files to the correct calendar date to get ready to read in the basic forcing. READFCE reads the forcing and reference data and then, conditionally on options set in the namelsit we read the forcing anomly, nudging data and SST data. 
+
+Once this is all done the intial condtion is written out as the first record of the model’s spectral history file at RKOUNT=0. For consistency in the number of records per file, gridpoint history records are also output at this point. But the first record of the grid history file will only contain the intial zeros, because no gridpoint information has yet been calculated. 
