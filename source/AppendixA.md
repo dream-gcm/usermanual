@@ -215,10 +215,10 @@ A history record containing the complete state of the model is periodically writ
 ```
 WRITE(9)RKOUNT,RMYR,DAY,Z,D,T,SP,Q,YEAR
 ```
-where
-* `KOUNT`` is the current integer time step and RKOUNT is the corresponding real number.
-* `DAY = RKOUNT/TSPD`` is the real day number
-* `RMYR`` is the current model year, counting up from the initial condition in `YYYY.DDDDD` format, with a 365.25-day year. 
+where:
+* `KOUNT` is the current integer time step and RKOUNT is the corresponding real number.
+* `DAY = RKOUNT/TSPD` is the real day number
+* `RMYR` is the current model year, counting up from the initial condition in `YYYY.DDDDD` format, with a 365.25-day year. 
 * `YEAR` is a real number `YYYY.DDDDD` that is initialised from to the reference data. It keeps track of   leap years, so it is different to `RMYR` and is useful for keeping track of time in the real world from the ERAi dataset. In practice the implementation in the model is incomplete so there is room for improvement here. 
 
 When the model is initialised it takes `YEAR` from the value provided by the initial condition. It then sets `RMYR` to the same thing for a cycle run, but to `100.00000` for a perpetual run. `RMYR` can also be set by SST metadata, which takes priority over the information in the initial condition. 
@@ -232,7 +232,7 @@ At the end of a model run (and at certain long intervals during the run) a resta
 ```
 WRITE(12)RKOUNT,RMYR,DAY,Z,D,T,SP,Q,YEAR,ZMI,DMI,TMI,SPMI,QMI,RNTAPE
 ```
-where
+where:
 `ZMI`,`DMI` etc denote the values of state variables at the previous timestep. For a restart record `RNTAPE=100.` and serves as a check on correct reading of the binary file. 
 
 ### ii) The DREAM dataset
@@ -257,11 +257,8 @@ RKOUNT,RMYR,DAY,Z,D,T,SP,Q,YEAR
 ```
 and `RMYR` would not exactly follow the value of `YEAR` because the model year has a fixed length of 365.25 days. 
 
-For example, the Intergovernmental Panel on Climate Change (IPCC) was created on 6th December 1988. This was the 341st day of 1988. Let’s pick the time 12Z. Since the first day of the year is always day 0, this would lead to a label for the year as:
-
-```
- YEAR = 1988 + 340.50/1000 = 1988.34050
-```
+For example, the Intergovernmental Panel on Climate Change (IPCC) was created on 6th December 1988. This was the 341st day of 1988. Let’s pick the time 12Z. Since the first day of the year is always day 0, this would lead to a label for the year as
+`YEAR = 1988 + 340.50/1000 = 1988.34050`.
 
 This would be record number 14511 of the ERAi dataset: 4 x (7x365+2x366+340) + 3 = 14511.
 A long model run starting at 0Z on 1 Jan 1979, with 4x-daily output, would, at record 14511, set 
