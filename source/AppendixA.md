@@ -270,3 +270,26 @@ A long model run starting at 0Z on 1 Jan 1979, with 4x-daily output, would, at r
 `RMYR = 1979 + INT(DAY/365.25) + (the remainder from DAY/365.25)/1000 = 1988.34025`.
 
 The six-hour discrepancy between `RMYR` and `YEAR` is just because of fixed-length years compared to leap years. It doesn’t matter because there is no diurnal cycle in the model. Table A1 shows further examples of how to keep track of model years and calendar years. Note that although the dataset spans 38 calendar years exactly, the last two records enter the 39th model year. 
+
+![TabA1](./img/fig_A5.png)
+
+_Tab. A1: Timing in the DREAM dataset for 4x-daily data over 38 calendar years._
+
+### iii) The SST metadata
+SST data is read in binary grid form and some datasets contain metadata before the SST on every record. This metadata contains timing information, like a poor man’s netCDF. To recognise this and read it properly there is an option `LREADMETA`. It only applies to SST (channel 17) and should only be enabled if the metadata is present. SST data without metadata (idealised anomalies for example) should be read with `LREADMETA=.F.`, and climatological SSTC data (channel 18) does not contain metadata. 
+
+The metadata interfaces with the namelist specifications for `KBEGYRSST` and `KBEGMNSST`. When the SST is initialised with metadata enabled, it will scroll through the data file until it reaches the first record with the specified year and month. It will then read this SST data and set the model variable `RMYR` to the specified year and the first day of the specified month in a real calendar. This ensures a correct start date in NetCDF output for forecast runs. 
+
+The metadata consists of six integers before the SST data: 
+
+```
+MYEAR,MMONTH,MREMAIN,IYEAR,IMONTH,IDAY,SST
+```
+
+where `IYEAR`, `IMONTH` and `IDAY` are the calendar year, month and start date of the one-week period covered by the SST data record. This is for information only and is not used by the model. 
+
+`MYEAR` and `MMONTH` are the year and month for which this week-long SST state would apply if a forecast were started on the first of the month. In this way the model will pick the right SST to start its forecast, even if the week in question straddles the first of the month, which is usually the case. As long as `LPERSIST` is not enabled, the model will update its SST state every seven days. But at the beginning of a forecast the model will need to know how long to stay on the first SST state it reads: probably less than seven days. This information is provided by `MREMAIN`, which is used to offset the calculation for `DIFKSST` in the main body of the code and control the call to `READSST`. 
+
+
+
+
