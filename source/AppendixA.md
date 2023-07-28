@@ -17,7 +17,7 @@ then,
 
 $$
    \begin{equation}
-      \partial/\partial x (A2) - \partial/\partial y (A1)
+      \dfrac{\partial}{\partial x} (A2) - \dfrac{\partial}{\partial y} (A1)
    \end{equation}
 $$
 gives the vorticity equation:
@@ -39,7 +39,7 @@ The terms in curly brackets can be designated by the vector $(F_u,F_v)$ and this
 
 $$
    \begin{equation}
-      \partial/\partial x (A1) + \partial/\partial y (A2)
+      \dfrac{\partial}{\partial x} (A1) - \dfrac{\partial}{\partial y} (A2)
    \end{equation}
 $$
 eventually leading to a divergence equation as another expression in $F_u$ and $F_v$  with an added source related to the kinetic energy.
