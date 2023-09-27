@@ -24,7 +24,7 @@ and now you should be back in the dream_model directory.
 
 ---
 ## 2.3 Your first test simulation
-Go into the `DREAM/dream_model/jobs` directory and open the script `runmodel_v8.1.ksh` (at time of writing).
+Go into the `DREAM/dream_model/jobs` directory and open the script `runmodel_v8.4.ksh` (at time of writing).
 
 Modify the root path `$KD` so it points to the DREAM directory:
 `KD=/Users/yourname/DREAM` - for example
@@ -57,7 +57,7 @@ These data files all reside in `DREAM/dream_data` and its subdirectories. If the
 
 To run the model execute the script in a terminal:
 
-`./runmodel_v8.1.ksh`
+`./runmodel_v8.4.ksh`
 
 The model will run, developing over five days from its initial condition, subject to the forcing you have specified.
 
