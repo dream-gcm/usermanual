@@ -2,8 +2,7 @@
 # Appendix A: DREAM Works - Model Code Basics and Data Structure
 
 ---
-## A.1 Compilation on your system
-Now The primitive equations and the semi-implicit timestep
+## A.1 The primitive equations and the semi-implicit timestep
 DREAM solves the primitive equations expressed in terms of vorticity and divergence. These are written down in Hoskins and Simmons (1975, HS75) but let’s deciphier this presentation by approaching  them from the momentum equations, using subscript notation for partial derivatives:
 
 $$
