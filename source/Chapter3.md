@@ -144,7 +144,7 @@ Code for manipulating and visualising SST data and idealised SST anomalies:
 
 ---
 ## 3.3 `source` directory
-In the `/source` directory you’ll find the model: at time of writing it’s `dream_v8.1.f`. [Appendix A, section 6](https://dreamusermanual.readthedocs.io/en/latest/AppendixA.html#a6-code-structure) and [Appendix D](https://dreamusermanual.readthedocs.io/en/latest/AppendixD.html) take you through the code in some detail. It is easy to edit the code but not recommended ! If you do want to hack it for some special reason, just make sure you keep a safe original copy. The model calls some library routines in /lib but once compiled these should not be touched. It also reads a lot of parameters and common block variable declarations from the `/include` directory. Note that this is set up to work at two resolutions, T31 and T42, with the associated grid resolutions of 96 and 128 points around a latitude circle (and 24 and 32 latitudes per hemisphere). Switching between resolutions is transparent for the code, and to a large extent also for the associated data files. It's all set up in the job script, as described in the next section. So you have very little reason to visit this source directory. 
+In the `/source` directory you’ll find the model: at time of writing it’s `dream_v8.4.f`. [Appendix A, section 6](https://dreamusermanual.readthedocs.io/en/latest/AppendixA.html#a6-code-structure) and [Appendix D](https://dreamusermanual.readthedocs.io/en/latest/AppendixD.html) take you through the code in some detail. It is easy to edit the code but not recommended ! If you do want to hack it for some special reason, just make sure you keep a safe original copy. The model calls some library routines in /lib but once compiled these should not be touched. It also reads a lot of parameters and common block variable declarations from the `/include` directory. Note that this is set up to work at two resolutions, T31 and T42, with the associated grid resolutions of 96 and 128 points around a latitude circle (and 24 and 32 latitudes per hemisphere). Switching between resolutions is transparent for the code, and to a large extent also for the associated data files. It's all set up in the job script, as described in the next section. So you have very little reason to visit this source directory. 
 
 Also in the include subdirectory is a `setup` file. This contains a few edits to the code to alter its behaviour depending on some choices made in the job script namelists. The idea is to have some standard use cases, but we haven’t gone very far down this road as in general everyone’s use case is different. 
 
@@ -155,7 +155,7 @@ Finally there is a `change-log` which contains notes on changes made between ver
 ## 3.4 `jobs`directory
 This is where you’ll spend a lot of your time. We’ve already had a look at the job script to run the model in [Chapter 2](https://dreamusermanual.readthedocs.io/en/latest/Chapter2.html), and we’ll go into much more detail in [Chapter 4](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html). Here’s just an overview of the files in this directory. 
 
-* `runmodel_v8.1.ksh` - your basic script for running the model
+* `runmodel_v8.4.ksh` - your basic script for running the model
 multirun.ksh - a bog standard script to sequentially run several experiments - edit at will.
 
 * `makefrc.ksh` - the script for making forcing files _fbs and _fcm. How to do this is explained in Chapter 4 section 2. It calls fortran routines: `calcfrc_T31.f` or `calcfrc_T42.f`. 
@@ -169,10 +169,10 @@ multirun.ksh - a bog standard script to sequentially run several experiments - e
 ---
 ## 3.5 `results` directory
 So the model has run without crashing and you have some history files. They will have been put into your experimental directory under DREAM/dream_results. Here you will find for reference a record of how you set up the experiment in the form of the following files: 
-* `runmodel_v8.1.ksh` - a record of the script you used to run the model
+* `runmodel_v8.4.ksh` - a record of the script you used to run the model
 * `namelist_data` - the changes you made to the model namelist defaults
 * `results` - a text file with details of the run including namelist values etc. 
-* `dream_v8.1.f` and `setup.f` - a clone of the model code you used
+* `dream_v8.4.f` and `setup.f` - a clone of the model code you used
 * `parameters.f` - a record of your parameter (i.e. the resolution)
 * `prog` - the executable file for the model
 * `history` - the dynamical output from the model
