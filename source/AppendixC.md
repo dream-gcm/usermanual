@@ -72,7 +72,8 @@ The following three string variables engage packages of namelist parameters - th
 * `VIMCONTHR =  0.` - Threshold for anomaly in vertically integrated moisture flux convergence compared to climatology required to trigger deep convection.
 * `BLSITHR =  0.` - Threshold for anomaly in boundary layer static instability (bl vertical temperature gradient) compared to climatology required to trigger convection, see also `LBLSI`.
 * `PPTCAP =  15.` - Maximum precipitation rate allowed for the deep convection scheme in mm/day. This limit is approached smoothly. 
-* `PRHEATMAX = 0.35` - Sigma level at which normalised vertical profile for convective heating is maximum. This profile is used in the convection scheme and also in the response to SST anomalies. 
+* `PRHEATMAX = 0.35` - Sigma level at which normalised vertical profile for convective heating is maximum. This profile is used in the convection scheme and also in the response to SST anomalies.
+* `QGPFAC = 1.0` - Multiplying factor to boost continental humidity flux from the bottom boundary condition of the vertical diffusion scheme. Only applied over land. The sub-layer climatological value of specific humidity is multiplied by QGPFAC when MASK=1. 
 
 ### Forcing anomaly
 * `LFAN = .F.` - Switch to apply spectral forcing anomaly from channel 15 on temperature or other variables.
@@ -87,14 +88,14 @@ The following three string variables engage packages of namelist parameters - th
 * `LLSR = .F.` - Switch on the large scale in-situ condensation scheme (large scale rain).
 * `LCHX = .F.` - Switch to set any negative values of forcing on humidity to zero. Also modifies temperature forcing. To be used in conjunction with explicit condensation and diabatic heating schemes.
 * `LTRUNC = .T.` - Enables truncation of vertically integrated moisture flux convergence (`VIMC`) when used as a criterion for triggering deep convection - see also `NNTRUNC`. 
-* `LTRUNCQ = .T.` - Enables truncation of specific humidity when used for thermodynamic calculations - see also `NNTRUNC`
-* `LBLSI = .T.` - Switch to enable a boundary layer static stability criterion in the decision to trigger deep convection.
+* `LTRUNCQ = .F.` - Enables truncation of specific humidity when used for thermodynamic calculations - see also `NNTRUNC`
+* `LBLSI = .F.` - Switch to enable a boundary layer static stability criterion in the decision to trigger deep convection.
 * `LPPTCAP = .T.` - Enables limit to deep convective precipitation rate.
 
 ### Sea surface temperature options
 * `LSST = .F.` - Switch to read SST data from `channels 17` and `18`, which can be used to introduce heating anomalies.
 * `ISSTREAD = 1` - Instruction for how to interpret the SST data: 1 for full SST and 2 for SST anomaly. 
-* `ISSTTRAN = 1` - Instruction for how to convert the SST anomaly into a precipitation anomaly: 1 for linear (one degree per day heating per degree of SSTA); 2 for nonlinear transfer to precipitation; 3 for direct reading of precipitation data. 
+* `ISSTTRAN = 1` - Instruction for how to convert the SST anomaly into a precipitation anomaly: 1 for linear (one degree per day heating per degree of SSTA); 2 for nonlinear transfer to precipitation; 3 for direct reading of precipitation data; 4 to introduce the SST anomaly as a boundary condition in the vertical diffusions scheme. 
 * `LSSTMASK = .T.` - To apply the SST mask to the SST anomaly. 
 * `LPERSIST = .F.` - Will read one record of SST as directed by `KBEGYRSST` and `KBEGMNSST` if using SST metadata, otherwise just the first record. But will not update the SST after this, so the run will have a persisted SSTA. 
 * `LREADMETA = .T.` - Instructs the model to look for metadata in the SST file in `channel 17`. 

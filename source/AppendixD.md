@@ -156,21 +156,16 @@ Finally the radiative cooling is applied directly and all the tendencies are add
 * `ZMEAN(ZWK,DWK,TWK,SPWK,QWK)`: Called from `INIIC` and `READFCE`. Takes the zonal mean of the entire model state passed to the work arrays. Can also be used for forcing data. Global namelist options control symmetry: ISYM=1 for the full zonal mean and `ISYM=0` for a zonal mean that is symmetric about the equator. `IWAVE` adds wavenumbers 1, 2 and 3 (see Appendix C). 
 ---
 * `PWATER`: Called from `DIABATIC`. Calculates column total moisture flux convergence and water content. Works on one latitude pair at a time. Evaluates: 
----
-* `VIMCON`: the vertically integrated moisture flux convergence, by summing the flux convergence `QCONG` over sigma layers and dimensionalising to mm/day. 
----
-* `VIMCONTR`: as `VIMCON` but with truncated moisture flux convergence. 
----
-* `VIMCONREF`: as `VIMCON` for the reference state. 
----
-* `COLWATER`: the total column water, by summing over sigma layers and dimensionalising to mm. 
----
-* `COLSAT`: for diagnostic purposes only, this is the value `COLWATER` would take if the column was at saturation at every level. 
+  `VIMCON`: the vertically integrated moisture flux convergence, by summing the flux convergence `QCONG` over sigma layers and dimensionalising to mm/day. 
+  `VIMCONTR`: as `VIMCON` but with truncated moisture flux convergence. 
+  `VIMCONREF`: as `VIMCON` for the reference state. 
+  `COLWATER`: the total column water, by summing over sigma layers and dimensionalising to mm. 
+  `COLSAT`: for diagnostic purposes only, this is the value `COLWATER` would take if the column was at saturation at every level. 
 
 Some values are accumulated into 2-d grid arrays for diagnostic output:
-    * `VIMC=VIMCON`, the vertically integrated moisture convergence (mm/day)
-    * `VICW=COLWATER`, the column total water (mm)
-    * `VISF=COLWATER/COLSAT`, the saturated fraction. 
+  `VIMC=VIMCON`, the vertically integrated moisture convergence (mm/day)
+  `VICW=COLWATER`, the column total water (mm)
+  `VISF=COLWATER/COLSAT`, the saturated fraction. 
 (note that 2-d values in mm could also be expressed in kg/m2 ).
 
 ---
@@ -178,7 +173,7 @@ Some values are accumulated into 2-d grid arrays for diagnostic output:
 
 This subroutine first sets the decision to trigger convection `LTRIG` as true, and then looks for reasons to set it to false. The first criterion depends on the difference `VIMCONA` between the smoothed vertically integrated moisture convergence `VIMCONTR` minus its reference value `VIMCONREF`. This difference must be positive and exceed a threshold for convection to be triggered. 
 
-The other criterion depends on vertical temperature differences in the lowest four layers of the model: specifically the mean of the bottom two layers minus the mean of the next two layers up.  The “instability anomaly” `BLSIA` is the departure of this difference from its reference value. It must exceed a threshold for convection to be triggered. 
+The other optional criterion depends on vertical temperature differences in the lowest four layers of the model: specifically the mean of the bottom two layers minus the mean of the next two layers up.  The “instability anomaly” `BLSIA` is the departure of this difference from its reference value. It must exceed a threshold for convection to be triggered. 
 
 If convection is triggered the column total rain falling in next `TAUCOND` period `PPTTAU` is calculated in mm as the convergence in mm/day times the period `TACOND`. `PPTTAU` is constrained not to exceed the total column water COLWATER and to be positive. It is also subject to a maximum value `PPTTAUCAP`, which is is constrained to approach asymptotically. 
 
@@ -196,13 +191,18 @@ These calculations are done level by level and the grid point values of temperat
 ---
 * `SSTTEND`: Called from DIABATIC. Returns tendencies for temperature and specific humidity associated with the response to an SST anomaly. Works on one latitude pair at a time. See [Chapter 4, section 4c](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html#adding-sea-surface-temperature-effects) for a description of the way SST anomalies are implemented. 
 
-The purpose of this subroutine is to calculate a precipitation rate anomaly associated with an anomaly in SST. It does this by using one of three options to translate the SST anomaly into precipitation rates in mm/day. The code actually uses the variable `PPTTAU` for rainfall in mm. And then it assumes that this amount of rain falls in one day by setting the rate `FRSST` appropriately. This is quite artificial and it is only done like this so that the subroutine `PROFILEHEAT` can be used to get the tendencies.
+
+
+
+The purpose of this subroutine is to read SST data and, depending on the options set for `ISSTRAN`, calculate a precipitation rate anomaly associated with an anomaly in SST. 
 
 The subroutine starts by calculating the SSTA based on the nature of the variable SST. In the case `ISSTREAD=1` the SSTA is calculated by subtracting SSTC from SST. Otherwise (`ISSTREAD=0`) SST is just used directly as the SSTA. At this point the SSTA can also be scaled by the factor `SCALESSTA`. 
 
-The three cases for deducing a precipitation rate anomaly from the `SSTA`, set by `ISSTRAN`, are described in [Chapter 4, section 4c](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html#adding-sea-surface-temperature-effects). For the nonlinear transfer function, SSTC and the model divergence at $\sigma$=0.2, together with its reference value are used, along with a number of tuneable parameters. These parameters have not yet made their way into a namelist and this part of the code is work in progress. 
+There different methods of for deducing a precipitation rate anomaly from the `SSTA` are set by `ISSTRAN`. The first three options  translate the SST anomaly directly into a precipitation rates in mm/day (`ISSTTRAN=1,2,3`). The fourth passes the problem to the vertical diffusion scheme (`ISSTTRAN=4`). This is described in [Chapter 4, section 4c](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html#adding-sea-surface-temperature-effects). 
 
-Once `PPTTAU` has been calculated, it is constrained by the land-sea mask to be only over the sea, and by the selective mask to either pick an ocean basin or cover the whole of the tropics. A constraint is added in the case that the convection scheme is being used, that the daily rainfall cannot exceed the column water total. 
+For the first three cases the code actually uses the variable `PPTTAU` for rainfall in mm. And then it assumes that this amount of rain falls in one day by setting the rate `FRSST` appropriately. This is quite artificial and it is only done like this so that the subroutine `PROFILEHEAT` can be used to get the tendencies. For the fourth case (`ISSTTRAN=4`), this step is bypassed by setting `PPTTAU=0.` and the effect of the SSTA is calculated in the subroutine `VDIFFTEND`. 
+
+For the nonlinear transfer function, SSTC and the model divergence at $\sigma$=0.2, together with its reference value are used, along with a number of tuneable parameters. These parameters have not yet made their way into a namelist and this part of the code is work in progress. Once `PPTTAU` has been calculated, it is constrained by the land-sea mask to be only over the sea, and by the selective mask to either pick an ocean basin or cover the whole of the tropics. A constraint is added in the case that the convection scheme is being used, that the daily rainfall cannot exceed the column water total. 
 
 Finally `PROFILEHEAT` is called to set the tendencies of specific humidity and temperature associated with the SSTA: `QGTSST` and `TGTSST` as it does for the convection scheme, by spreading the heating into the deep profile and removing humidity pro-rata. But unlike the convection scheme call to `PROFILEHEAT`, the rate `FRSST` is now one day. 
 
@@ -211,12 +211,14 @@ Finally `PROFILEHEAT` is called to set the tendencies of specific humidity and t
 
 This subroutine sets up damping rates due to vertical diffusion according to the damping rate profile `PRDAMP`, which is defined on sigma layer boundaries. `DM` and `DP` refer to the layer boundaries above and blow a given sigma level. Variables such as `UGM` and `UGP` are assigned to represent the values in fictitious layers above and below the vertical domain so that different boundary conditions can be imposed. We choose damped boundary conditions with these variables fixed at the reference values at the adjacent (top and bottom) levels. 
 
+It is at this point that the anomalous boundary flux due to SSTAs is added in the case that this is selected by setting `ISSTTRAN=4`. The SSTA is defined again as a local variable like in `SSTTEND`. Anomalies in temperature and humidity (the difference in saturation value) are calculated and added to the bottom boundary condition. The optional boost in land-surface humidity flux by the factor `QGPFAC` is also implemented here. 
+
 A simple centred difference is applied to find diffusive flux convergence and this is assigned to the  tendencies of momentum, temperature and specific humidity. Only temperature and specific humidity grid variables are updated as there is no need to keep the momentum up to date. 
 
 ---
 * `LSRTEND(J,TGTLSR,QGTLSR)`: Called by `DIABATIC`. Returns height dependent tendencies for temperature and specific humidity associated with resolved condensation (large scale rain). Works on one latitude pair at a time. See [Chapter 4, section 4c](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html#large-scale-rain) for a description of the large scale rain scheme. 
 
-This subroutine calculates saturated specific humidity QSAT at every level at a given grid point and compares it with the local specific humidity (or its smoothed value `QGTR` if `LTRUNCQ` is enabled). The supersaturation `QDIFF` is the difference between the two, and it is used directly to calculate the local specific humidity tendency `QGTLSR` using the rate `FRCOND` derived from the timescale `TAUCOND`. The associated latent heating rate is applied to the local temperature tendency `TGTLSR`. 
+This subroutine calculates saturated specific humidity QSAT at every level at a given grid point and compares it with the local specific humidity (or its smoothed value `QGTR` if `LTRUNCQ` is enabled). The supersaturation `QDIFF` is the difference between the two, and it is used directly to calculate the local specific humidity tendency `QGTLSR` using the rate `FRCOND` derived from the timescale `TAUCOND`. The associated latent heating rate is applied to the local temperature tendency `TGTLSR`. A limit is set to the maximum value of supersaturation that can be rained out at any given level. It is current;y set in the code as `QDIFFCAP=50./16. * 1.e-4`. For a standard value of `TAUCOND=0.0625` (i.e. 1.5 hours) this means that the maximum precipitation rate possible (provided the limit is hit at every level) is 50 mm/day. 
 
 For diagnostic output, the rain rate `PPTRATE` (mm/day) is updated level by level. Note that this 2-d grid variable is the sum of all precipitation in the model. It is updated directly from this `LSR` scheme and also from the deep convection and SSTA schemes in `PROFILEHEAT`. Likewise the 3-d grid diagnostic variable for condensation heating `CONDHEAT` (deg/day) is updated level by level. 
 
