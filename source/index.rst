@@ -6,11 +6,11 @@ DREAM user manual
 ==============================================
 
 .. image:: img/cover.png
-   :width: 300
+   :width: 500
 
 How to cite this manual?
 
-*DREAM user manual v1.1, Nick Hall and Stephanie Leroux, Nov. 2022.* `DOI xxxxx <http://www.doi.org>`_ .
+*DREAM user manual v1.1, Nick Hall and Stephanie Leroux, Nov. 2023.* `DOI xxxxx <http://www.doi.org>`_ .
 
 You can browse this manual on-line here, or download it in pdf by clicking on "Read the Docs" at the bottom left of this page.
 
