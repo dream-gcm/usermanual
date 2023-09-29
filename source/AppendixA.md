@@ -1,8 +1,8 @@
-![appendixA](./img/appendix_A.png)
 # Appendix A: DREAM Works - Model Code Basics and Data Structure
+![appendixA](./img/appendix_A.png)
 
 ---
-## A.1 The primitive equations and the semi-implicit timestep
+## The primitive equations and the semi-implicit timestep
 
 DREAM solves the primitive equations expressed in terms of vorticity and divergence. These are written down in Hoskins and Simmons (1975, HS75) but let’s deciphier this presentation by approaching  them from the momentum equations, using subscript notation for partial derivatives:
 
@@ -61,7 +61,7 @@ _Fig. A1: The primitive equations as presented in HS75._
 _Fig. A2: Some more equations culled from HS75, outlining the semi-implicit timestep._
 
 ---
-## A.2 Spectral truncation and data organisation
+## Spectral truncation and data organisation
 The model proceeds by calculating tendencies and then applying these tendencies to the model state to find the next model state using a semi-implicit centred difference timestep. Linear calculations for the tendencies are carried out directly in spectral space. Spatial derivatives are calculated as part of the transformation between spectral and grid space. Nonlinear advective terms are calculated in grid space. Model state variables therefore have both spectral and gridpoint arrays asigned to them, and in this section we will briefly outline how this data is organised. 
 
 Model variables are projected onto Fourier transforms in the zonal direction and Legendre polynomials in the meridional direction. 
@@ -94,7 +94,7 @@ Note that the total number of latitudes `JGG=2JG`, and two dummy zeros are writt
 Gridpoint operations are carried out one latitude-pair at a time for all levels. So at any given moment only one latitude pair exists in grid space. The calculations proceed in zonal-vertical  slices. Note that in some routines the data is in grid space in the meridional direction but in Fourier coefficients in the zonal direction. At this stage the data is still complex, but when the data is fully into grid space it is real. Real grid data shares array space in common blocks with hybrid latitude-Fourier data, so declarations can change from one subroutine to another with the same variable names. Eeek !
 
 ---
-## A3.  Model variables and dimensions
+## Model variables and dimensions
 
 The basic model variables are vorticity and divergence (s$^{-1}$), temperature (degrees C), surface pressure (Pa) and specific humidity (kg/kg). These quantities are non-dimensionalised using physical constants:
 
@@ -129,7 +129,7 @@ $$
 Special attention needs to be paid to the nondimensionalisation of time intervals, timescales and rates. Since time is nondimensionalised in terms of an angular frequency $\Omega$, this means that a non-dimensional day actually has a day length of 2$\pi$. So if a timescale is specified in days, for example the dissipation timescale in the free troposphere `TAUFT=20 days`, then it’s non-dimensional value will be 20 $\times 2\pi$. The associated dissipation rate `FTFR` is the reciprocal of this: `FRFT=1./(PI2*TAUFT)` . Note that timescales are generally specified as `TAUXX (days)` and the associated rates as `FRXX`. The same logic applies to the nondiensional length of the model timestep `DELT=PI2/TSPD (=2*PI/64)`. For details of the reporting of time in model output and data see [Section A7](#a7-data-timing) of this appendix. 
 
 ---
-## A4. Vertical structure
+## Vertical structure
 DREAM currently uses 15 $\sigma$-levels in the vertical. They are referenced to the mean sea level pressure, as calculated from temperature and pressure at the 1000 hPa level as shown above. So model levels in DREAM are quite close to pressure levels, because there is no explicit orography. This does not mean that there is no orographic forcing in the model, because the absence of explicit orography is compensated for automatically in the empirical forcing of momentum. But it does mean that DREAM cannot simulate the interaction of transient systems with orography, because our empirical forcing is not flow-dependent. 
 
 The sigma levels used in DREAM have been chosen to be as close as possible to the ECMWF standard pressure levels on which the data was originally provided, minimising interpolation errors. An exact correspondence is not possible because the model sigma levels must fall at the mid point of model sigma layers. It is, in fact, the boundaries between sigma layers that are specified, not the mid-points. The layer boundaries start at zero at the top of the atmosphere and finish at unity at the bottom. Sigma levels are then calculated as the mid-points between these layer boundaries. The layer boundaries in DREAM have been chosen so that we end up with model sigma levels centred at the following fifteen values: 
@@ -139,7 +139,7 @@ The sigma levels used in DREAM have been chosen to be as close as possible to th
 The model uses the Simmons and Burridge (1981) angular momentum conserving vertical scheme. The term “vertical scheme” refers to the way in which the geopotential is calculated on sigma levels in the gravity wave source term shown in fig. A2. For a quick discussion of this see the appendix of Hall (2000). 
 
 ---
-## A5. Dissipation
+## Dissipation
 Scale selective hyperdiffusion is applied in spectral space to all the model’s 3-d state variables (`Z`,`D`,`T`,`Q`) independently of vertical level. Any order of the Laplacian operator can easily be used because it reduces to a simple multiple of the spectral coefficients. A timescale is also specified. Currently the default horizontal diffusion is set to 12-hour $\nabla^6$ . 
 
 Further level-dependent vertical diffusion and damping is added in grid space to all 3-d state variables (`U`,`V`,`T`,`Q`). Linear diffusive vertical fluxes are calculated from vertical gradients at sigma-level boundaries. Their convergence is then calculated at sigma levels, using linear centred differences. The boundary conditions act to damp the system as if the top and bottom surfaces mirrored the reference value in the adjacent layer, like a sponge at the top of the atmosphere or a fixed SST at the surface. The timescales used to calculate the fluxes depend on the model level, and are much shorter at the lowest levels. The damping rate (the reciprocal of the time scale) follows a linear profile from the surface to a specified boundary layer height. Standard parameters are shown in fig. A4. The mean rate in the boundary layer corresponds to a time scale of 16h. There is an optional doubling of the lowest layer vertical diffusion coefficient over land if `LLSD` is to to true. This is currently enabled by default at T42 but disabled at T31. Above the boundary layer, in the free troposphere, the vertical diffusion rate is fixed with a default timescale of 20 days. 
@@ -154,25 +154,25 @@ The empirical forcing always acts hand in hand with the prescribed dissipation. 
 _Fig. A4: Vertical profiles of diffusion and damping with associated time scales._
 
 ---
-## A6. Code structure
+## Code structure
 
 Most of the presentation of the code is in Appendix D, but here I will walk you through the main program to give you an idea of how one timestep unfolds. Have the source code open in front of you while you read this. 
 
-### i) Model setup
+### Model setup
 A few subroutines are called to set up things that are not going to change thoughout the model run. `INISET` to set up namelist variables, nondimensionalisation constants and factors for Fourier transforms etc. `INIGAU` calculates Gaussian weights and latitudes. `INISI` sets up sigma levels, the vertical scheme and the semi-implicit scheme. INIRES defines damping coefficients from timescales given in the namelist. `INIVAR` initialises some model variables such as grid point fields, masks etc, and initialises the spectral state variables to zero. 
 
-### ii) The training loop
+### The training loop
 The loop from 1 to `KTFIN` starts next and is bounded by line number 111. It is only used for training runs (`LTRAIN=.T.`). It actually runs the model multiple times for one timestep from a sequence of initial conditions. 
 
-### iii) Initialisation
+### Initialisation
 State variables are reinitialised to zero for good measure, and then read from the input data in `INIIC`. Then if necessary we skip through the reference data and cyclic forcing files to the correct calendar date to get ready to read in the basic forcing. `READFCE` reads the forcing and reference data and then, conditionally on options set in the namelsit we read the forcing anomly, nudging data and SST data. 
 
 Once this is all done the intial condtion is written out as the first record of the model’s spectral history file at `RKOUNT=0`. For consistency in the number of records per file, gridpoint history records are also output at this point. But the first record of the grid history file will only contain the intial zeros, because no gridpoint information has yet been calculated. 
 
-### iv) The time loop starts
+### The time loop starts
 This is a loop over `KOUNT=1` to `KRUN` bounded by line number 1000. The real `DAY` is incremented each timestep. First there is a conditional re-read of all the forcing, nudging and SST data contingent on the update periods that have been specified. This is also where the spectral humidity flux convergence is periodically re-intialised because it is needed in the calculation of the reference value in grid space. 
 
-### v) Calculation of advective tendencies
+### Calculation of advective tendencies
 The tendencies are first initialised to zero. Then the first set of transforms from spectral to grid space takes place. This is a short piece of the main program but much goes on here. 
 
 In W2GA there are two steps. First a call to `LTI` transforms Legendre polynomials to the Gaussian latitude grid. Along the way meridional and zonal pressure gradients are calculated, and vorticity and divergence are used to calculate zonal and meridional winds, streamfunction and velocity potential. At this point the data is still spectral in longitude. Conversion to the longitude grid then takes place with multiple calls to `FFT991`. 
@@ -181,10 +181,10 @@ The subroutine `ADVECTION` computes all the advective tenencies by multiplying w
 
 The variables associated with these terms are then transformed back to spectral space in `G2WA`. This performs multiple Fourier transforms (`FFT991`) and then direct Legendre transforms (`LTD`), reconstituting the desired terms in the equations from various zonal and meridional gradients along the way. 
 
-### vi) The semi-implicit timestep
+### The semi-implicit timestep
 Having calculated all these terms, the spectral coefficients of state variables can now be stepped forward in time. The subroutine `TSTEP` contains vertical integral calculations to furnish the gravity wave source term, and updates the state variables with both linear and advective tendencies. The job is not complete, even for a purely dynamcial time step, because we are still inside a time filter and the diffusion is yet to be added. 
 
-### vii) Calculation of diabatic tendencies
+### Calculation of diabatic tendencies
 But first, lets find all the tendencies due to simple parameterisations in grid space. Spectral tendencies are first reinitialised to zero in `INITEND` and some preliminary operations are carried out in spectral space (`SPECPREP`) to smooth (truncate) the moisture flux convergence. 
 
 Then there is another round of spectral transforms (`W2GD`). Once in grid space the routine `DIABATIC` calls all the individual schemes to find tendencies associated with nudging, deep convection, SST anomalies, vertical diffusion, land-sea drag, large scale rain and radiative relaxation. It then adds all these tendencies together into a grand total that is passed back for transformation into spectral space (`G2WD`) to give diabatic tendencies for the model’s state variables. 
@@ -193,13 +193,13 @@ Before doing this it also records some purely diagnostic gridpoint variables ass
 
 Finally `SPECPOST` tidies up some of the spectral tendencies (makes sure there is no global diabatic tendency applied to vorticity, divergence or surface pressure). 
 
-### viii) Spectral forcing anomalies, damping and diffusion
+### Spectral forcing anomalies, damping and diffusion
 Subroutine `FANDAMP` adds the forcing anomaly that has been read from the _fan file to the spectral tendencies. It also adds stabilising damping on all degrees of freedom if requested. Then DIFUSE calculates the scale selective hyperdiffusion and adds this to the tendencies, all in spectral space. 
 
-### ix) Completing the timestep and adding the empirical forcing
+### Completing the timestep and adding the empirical forcing
 Subroutine `DSTEP` updates the state variables with the accumulated diabatic tendencies. This is much more straightforward that `TSTEP` as no extra calculations are requred at this point. The empirical forcing is then applied directly to the state variables in `FSTEP`. Then in `TFILT` there is a final adjustment to the values of the state variables on their previous timestep (`ZMI` etc) to close the time filter `PNU`. 
 
-### x)  Output a the end of the timestep
+### Output a the end of the timestep
 If you’re looking for normal modes, the modefinder is engaged here by calling `SCALEDOWN`, after the timestep has completed. This is because it is a direct intervention on the state variables, not on the tendencies. 
 
 Then we check to see if we are on a timestep for reporting the output (a multiple of `KOUNTH`). After some timing calculations to get the model year in the right format, history records are written (spectral and grid), and occasionally a restart record  as well. 
@@ -207,9 +207,9 @@ Then we check to see if we are on a timestep for reporting the output (a multipl
 The time loop ends and then if we are at the end of the run, all that is left is to write a final restart record. If we’re in a training loop, this is done for each initial condition until the training loop also ends. 
 
 ---
-## A7. Data timing
+## Data timing
 
-### i) Reading, writing and initialising
+### Reading, writing and initialising
 A history record containing the complete state of the model is periodically written as a binary file during the run as follows: 
 
 ```
@@ -235,7 +235,7 @@ WRITE(12)RKOUNT,RMYR,DAY,Z,D,T,SP,Q,YEAR,ZMI,DMI,TMI,SPMI,QMI,RNTAPE
 where:
 `ZMI`,`DMI` etc denote the values of state variables at the previous timestep. For a restart record `RNTAPE=100.` and serves as a check on correct reading of the binary file. 
 
-### ii) The DREAM dataset
+### The DREAM dataset
 The dataset provided with DREAM currently spans the calendar years 1979-2016. Four-times daily data is included at 00Z, 06Z, 12Z and 18Z. This is all assembled into one history record in the same format as the model output. This is the file `ERAi_seq4x_1979-2016_ANN.b`. 
 
 The entire dataset amounts to 55520 records for 13880 days. At T42 one record is 901864 bytes and the entire dataset is 50 GB. At T31 one record is 499752 bytes and the entire dataset is 28 GB. 
@@ -272,7 +272,7 @@ The six-hour discrepancy between `RMYR` and `YEAR` is just because of fixed-leng
 
 _Tab. A1: Timing in the DREAM dataset for 4x-daily data over 38 calendar years._
 
-### iii) The SST metadata
+### The SST metadata
 SST data is read in binary grid form and some datasets contain metadata before the SST on every record. This metadata contains timing information, like a poor man’s netCDF. To recognise this and read it properly there is an option `LREADMETA`. It only applies to SST (channel 17) and should only be enabled if the metadata is present. SST data without metadata (idealised anomalies for example) should be read with `LREADMETA=.F.`, and climatological SSTC data (channel 18) does not contain metadata. 
 
 The metadata interfaces with the namelist specifications for `KBEGYRSST` and `KBEGMNSST`. When the SST is initialised with metadata enabled, it will scroll through the data file until it reaches the first record with the specified year and month. It will then read this SST data and set the model variable `RMYR` to the specified year and the first day of the specified month in a real calendar. This ensures a correct start date in NetCDF output for forecast runs. 
