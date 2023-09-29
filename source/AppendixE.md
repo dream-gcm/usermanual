@@ -1,5 +1,5 @@
-![appendixE](./img/appendix_E.png)
 # Appendix E: DREAM Warriors - Publications with DREAM and its Earlier Variants.
+![appendixE](./img/appendix_E.png)
 
 * Hai Lin, Bin Yu, and Nicholas M.J. Hall, 2022: Origin of the Warm Arctic–Cold North American Pattern on the Intraseasonal Time Scale. J. Atmos. Sci., 79, 10.1175/JAS-D-22-0013.1
 * Braga, Hugo, Tercio Ambrizzi and Nicholas M.J.Hall, 2022: Relationship Between Interhemispheric Rossby Wave Propagation and South Atlantic Convergence Zone during La Niña Years. Int. J. Climatol. DOI: 10.1002/joc.7755
