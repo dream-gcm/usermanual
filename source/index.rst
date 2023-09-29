@@ -5,7 +5,7 @@
 DREAM user manual
 ==============================================
 
-.. image:: img/cover.png
+.. figure:: img/cover.png
    :width: 600
 
 How to cite this manual?
