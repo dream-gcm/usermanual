@@ -19,7 +19,7 @@ You can browse this manual on-line here, or download it in pdf by clicking on "R
    :caption: Contents:
    :numbered: 3
 
-   Chapter 1 <Chapter1>
+   Chapter1
    Chapter2
    Chapter3
    Chapter4
