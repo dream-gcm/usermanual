@@ -1,5 +1,6 @@
-![appendixC](./img/appendix_C.png)
 # Appendix C: Do Androids Dream of Electric Sheep ? - Default values in namelist.
+![appendixC](./img/appendix_C.png)
+
 
 All the namelist variables are listed here with their default values and a brief explanation.
 
