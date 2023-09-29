@@ -17,7 +17,7 @@ You can browse this manual on-line here, or download it in pdf by clicking on "R
 .. toctree::
    :maxdepth: 3
    :caption: Contents:
-   :numbered:
+   :numbered:3
 
    Chapter1
    Chapter2
