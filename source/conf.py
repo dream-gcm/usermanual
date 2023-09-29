@@ -76,7 +76,6 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 
 # -- Options for PDF output -------------------------------------------------
-'figure_align':'H'
 latex_engine = 'xelatex'
 latex_elements = {
     'fontpkg': r'''
@@ -93,6 +92,7 @@ latex_elements = {
 ''',
     'fncychap': r'\usepackage[Bjornstrup]{fncychap}',
     'printindex': r'\footnotesize\raggedright\printindex',
+    'figure_align':'H'
 }
 latex_show_urls = 'footnote'
 
