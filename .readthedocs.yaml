@@ -18,6 +18,10 @@ sphinx:
    builder: html
    fail_on_warning: false
 
+# Build PDF & ePub
+formats:
+  - epub
+  - pdf
 
 # Optionally declare the Python requirements required to build your docs
 python:
