@@ -1,5 +1,5 @@
-![appendixB](./img/appendix_B.png)
 # Appendix B: Field of Dreams - The General Theory Behind DREAM Forcing and Solutions
+![appendixB](./img/appendix_B.png)
 
 
 ## B1. Quick guide
