@@ -1,7 +1,7 @@
-![chapter 2 fig](./img/chapter_1.png)
 # Chapter 1: Inception - Introduction to DREAM
+![chapter 2 fig](./img/chapter_1.png)
 
-## 1.1 Preamble
+## Preamble
 In 1983 Sir Brian Hoskins published a lecture in the QJ under the title “Dynamical processes in the atmosphere and the use of models” in which he commented on the interplay between observations, sophisticated numerical models and our understanding of dynamical processes. He advocated a hierarchical approach in which dynamical models of intermediate complexity play a role (I made a contribution to this vision in Hall 2004, but I don’t think anyone read it). There is always a tradeoff between physical realism and conceptual understanding. Models of varying complexity can bridge the gap. 
 
 Nearly four decades later, numerical modelling of the atmosphere and climate is more complex than ever. It has become a truly interdisciplinary endeavour shared by communities and worked on in teams, with a wide range of applications. At the same time, at a much more modest scale, a few simple models of the atmosphere have emerged to tackle various questions in a more restricted and often more economical way. DREAM is one of these models. 
