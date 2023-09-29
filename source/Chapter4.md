@@ -1,5 +1,6 @@
 # Chapter 4: Total Recall - The Many Different Ways of Using DREAM
 ![chapter4](./img/chapter_4.png)
+
 ---
 ## Running DREAM
 
