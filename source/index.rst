@@ -23,7 +23,13 @@ You can browse this manual on-line here, or download it in pdf by clicking on "R
    Chapter2
    Chapter3
    Chapter4
-   Chapter5
+   Chapter5  
+
+.. toctree::
+   :maxdepth: 3
+   :caption: Appendix:
+   :numbered: 3
+
    AppendixA
    AppendixB
    AppendixC
