@@ -20,11 +20,11 @@ sys.path.append(os.path.abspath('../'))
 # -- Project information -----------------------------------------------------
 
 project = 'dream-user-manual'
-copyright = '2022, nick hall'
+copyright = '2023, nick hall'
 author = 'nick hall'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0'
+release = '1.0.0'
 
 master_doc = 'index'
 
@@ -63,8 +63,8 @@ exclude_patterns = []
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'classic'
-#html_theme = 'sphinx_rtd_theme'
+#html_theme = 'classic'
+html_theme = 'sphinx_rtd_theme'
 
 
 # Add any paths that contain custom static files (such as style sheets) here,
