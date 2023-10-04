@@ -19,7 +19,7 @@ sys.path.append(os.path.abspath('../'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'dream-user-manual'
+project = 'DREAM user manual'
 copyright = '2023, nick hall'
 author = 'nick hall'
 
