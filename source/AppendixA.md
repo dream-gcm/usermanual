@@ -55,8 +55,6 @@ These equations are written in sperical coordinates in HS75 and thermodynamic, c
 ![FigA1](./img/fig_A1.png)
 _Fig. A1: The primitive equations as presented in HS75._
 
-<img src="/img/fig_A1.png" width="200" >
-
 
 
 ![FigA2](./img/fig_A2.png)
