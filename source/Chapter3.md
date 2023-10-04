@@ -1,16 +1,15 @@
-![nomenclature tab](./img/chapter_3.png)
 # Chapter 3: The Matrix - Description of the DREAM File Structure
-
+![nomenclature tab](./img/chapter_3.png)
 
 
 The sub-headings in this chapter refer to directory names under the DREAM root directory. As well as giving you a guide to the file structure, we’ll also have a look inside and see what data there is, and what code is available for pre-processing and manipulating the data, running the model and post processing the output. This chapter is mainly a guide to the files available with a few details where appropriate, especially for the data files. A more comprehensive guide to running the model and diagnosing the output follows in [Chapter 4](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html). 
 
 ---
-## 3.1 `dream_data`directory
+## `dream_data`directory
 The first of three main branches from DREAM is `dream_data`. There are four sub-directories as the data is split into two resolutions, and into spectral and grid data. So T31 spectral data goes with G96 grid data, and T42 spectral data goes with G128 grid data. 
 
 
-### a. Spectral files
+### Spectral files
 Let's look at spectral data first. These files are all in the same format and contain the base variables of the model: vorticity, divergence, temperature, log surface pressure and specific humidity. Details of the file structure are given in [Appendix A](https://dreamusermanual.readthedocs.io/en/latest/AppendixA.html), but for now let’s look at the files in the different subdirectories. Note that the file names can be the same for T31 or T42 so it is important to keep them in their correct directories. 
 
 _i) ave: Average_ 
@@ -66,14 +65,14 @@ There are also sequences for a given date: `ERAi_seq_1979-2016_01_01.b` contains
 is actually output from a long perpetual DJF integration of DREAM, sampled once every 28 days. So there are 120 records of independent data sampled from the model’s own climate: useful for drift-free idealised ensemble work. 
 
 
-### b. Grid files
+### Grid files
 The only essential grid file the model needs is the land-sea mask, `LSmask_G96.b` for T31 and `LSmask_G128.b` for T42. Apart from that the most important grid-based input to the model is the SST data. Single record climatologies are given for the four seasons, and a monthly climatology is also provided in a 12-record file. These climatologies are used in conjunction with either realistic or idealised SST anomalies to calculate the associated atmospheric heating anomaly. This is still  subject of research. 
 
 ---
-## 3.2 `data_process` directory
+## `data_process` directory
 In the second main directory, dream_model, we have a set of routines to manipulate the data and prepare data files and forcing for the model. 
 
-### a. In `/data_manip/`:
+### In `/data_manip/`:
 Here we have a selection of fortran programs for a wide variety of tasks. They are stand-alone without scripts to run them, so it’s up to you to compile them:
 
 ```
@@ -119,31 +118,31 @@ Here’s the complete list:
 * `W2G2W_sector_mean.f` - uses the model’s spectral analysis code to do geographical  manipulations on spectral data in grid space, notably the sector mean. 
 * `zonal_mean+WN123.f` - takes the zonal mean of the input data, with options to also make it symmetric about the equator, and to retain wavenumbers 1, 1 and 2 or 1,2 and 3. 
 
-### b. In `/prep_cyc/`:
+### In `/prep_cyc/`:
 A small number of fortran programs specifically focussed on computing cycles. The names of these programs are quite self explanatory (except the ones that refer to components of the annual cycle CT, TT, MC and CC which are highly specialised): 
 * `annual_cycle_spec/grid` - calculates the mean annual cycle from a sequence - note that there is no smoothing filter applied in this code, that is done separately afterwards using cyclic_running_mean_spec/grid. 
 * `composite_n_day_cycle_spec/grid` - used for diagnosing aggregate cyclic responses to cyclic forcing (like the MJO) in long model runs. 
 
-### c. In `/prep_fan/`:
+### In `/prep_fan/`:
 Scripts and programs for preparing idealised forcing anomalies. First look at makefan.ksh. It compiles and runs makefan.f to produce a gridpoint forcing anomaly for either temperature or vorticity. This is then spectrally analysed at T42 using `specanANOMT42.f` and written to a file called temp_fan.b (to be renamed as needed). T31 anomalies can be made by changing the parameters and using `specanANOMT31.f` (or by downscaling the T42 result using `truncate_T42toT31.f`). 
 
 The program `makefan.f` starts from scratch and can be edited for the desired properties of the forcing anomaly. It will take the form of an ellipse with a cosine squared bell shaped horizontal distribution. You can specify its location and radius in x and y directions, its heating rate and its vertical profile. Examples are given in the file `Notes_for_forcing_anomalies.rtf`. 
 
 More complex shapes can be defined from gridpoint input using makefan_ReadGrid.f and sequences of forcing can be produced using `makefan_seq.f`. The model will read through a forcing anomaly sequence at a user-defined rate until it reaches the end and then it will repeat to give a cyclic forcing anomaly. 
 
-### d. In `/prep_lsm/`:
+### In `/prep_lsm/`:
 Code for creating the land-sea mask in model format from gridpoint data
 
-### e. In `/prep_seq/`:
+### In `/prep_seq/`:
 Basic code for creating the ERA-interim dataset as a sequential binary file in the model format. 
 
-### f. In  `/prep_sst/`:
+### In  `/prep_sst/`:
 Code for manipulating and visualising SST data and idealised SST anomalies:
 * `check_grid_SST.f` reads binary SST data in model format and prints it on the screen to check it’s OK. 
 * `makessta.f` creates an elliptical SST anomaly in model grid format in a similar way to makefan.f
 
 ---
-## 3.3 `source` directory
+## `source` directory
 In the `/source` directory you’ll find the model: at time of writing it’s `dream_v8.4.f`. [Appendix A, section 6](https://dreamusermanual.readthedocs.io/en/latest/AppendixA.html#a6-code-structure) and [Appendix D](https://dreamusermanual.readthedocs.io/en/latest/AppendixD.html) take you through the code in some detail. It is easy to edit the code but not recommended ! If you do want to hack it for some special reason, just make sure you keep a safe original copy. The model calls some library routines in /lib but once compiled these should not be touched. It also reads a lot of parameters and common block variable declarations from the `/include` directory. Note that this is set up to work at two resolutions, T31 and T42, with the associated grid resolutions of 96 and 128 points around a latitude circle (and 24 and 32 latitudes per hemisphere). Switching between resolutions is transparent for the code, and to a large extent also for the associated data files. It's all set up in the job script, as described in the next section. So you have very little reason to visit this source directory. 
 
 Also in the include subdirectory is a `setup` file. This contains a few edits to the code to alter its behaviour depending on some choices made in the job script namelists. The idea is to have some standard use cases, but we haven’t gone very far down this road as in general everyone’s use case is different. 
@@ -152,7 +151,7 @@ Finally there is a `change-log` which contains notes on changes made between ver
 
 
 ---
-## 3.4 `jobs`directory
+## `jobs`directory
 This is where you’ll spend a lot of your time. We’ve already had a look at the job script to run the model in [Chapter 2](https://dreamusermanual.readthedocs.io/en/latest/Chapter2.html), and we’ll go into much more detail in [Chapter 4](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html). Here’s just an overview of the files in this directory. 
 
 * `runmodel_v8.4.ksh` - your basic script for running the model
@@ -167,7 +166,7 @@ multirun.ksh - a bog standard script to sequentially run several experiments - e
 * `run_ensemble.ksh` - a very useful script for organising an ensemble forecast and then calculating an ensemble mean history record. It calls the script make_ensemble_mean.ksh, and fortran routines: `ensemble_ic.f` and `ensemble_mean.f` or `ensemble_mean_dry.f`.
 
 ---
-## 3.5 `results` directory
+## `results` directory
 So the model has run without crashing and you have some history files. They will have been put into your experimental directory under DREAM/dream_results. Here you will find for reference a record of how you set up the experiment in the form of the following files: 
 * `runmodel_v8.4.ksh` - a record of the script you used to run the model
 * `namelist_data` - the changes you made to the model namelist defaults
@@ -185,7 +184,7 @@ When you run the diagnostics you’ll also get:
 * `/binary_grid` and `/binary_grid3d` - binary diagnostic output if you selected it. 
 
 ---
-## 3.6 `diagnostics` directory
+## `diagnostics` directory
 Another directory where you’ll spend a lot of your time. Again, this is an overview of the files. A comprehensive guide to diagnostics is given in [Chapter 4](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html). 
 * `specan_W2G.f` - the core fortran program that everything depends on, this routine uses the spectral analysis from the model to take a model history file and write grid diagnostic fields for dynamical variables into binary and netCDF formats.
 * `gridan2d.f` and `gridan3d.f` do a similar job but for model grid output, i.e. fields that are related to model precipitation.

@@ -1,10 +1,10 @@
-![chapter4](./img/chapter_4.png)
 # Chapter 4: Total Recall - The Many Different Ways of Using DREAM
+![chapter4](./img/chapter_4.png)
 
 ---
-## 4.1 Running DREAM
+## Running DREAM
 
-### a. A tour of the job script
+### A tour of the job script
 Let's look in more detail now at `runmodel_v8.4.ksh`.
 
 First you choose your resolution with `RESSP` and `RESGR`. They should match, i.e. T31G96 or T42G128. In fact if you choose a different combination the model will still run, so if for example you want to degrade the resolution of the grid-point calculations compared to the spectral resolution, or vice versa, it is possible but an unlikely use case. 
@@ -43,7 +43,7 @@ After this we are into linking input and output files. We've already covered the
 That's the basic overview - let's look at some specific examples.
 
 
-### b. Running DREAM as a simple GCM in perpetual mode
+### Running DREAM as a simple GCM in perpetual mode
 This is pretty straightforward. You want to simulate an equilibrium climate. You'll need to decide how long you want to run it. Bear in mind that the model can clear about 50-days per minute at T31 and about half that at T42 - your mileage may vary !  I suggest doing a few short test runs before you plunge into your long reference runs. Run it for a few hundred days and do some diagnostics. You probably want to have a control simulation, and the some sort of experiment in which you perturb something. You'll need to decide what perpetual season you want to simulate. 
 
 So first set your resolution and set `RUNTYPE="PERPETUAL"`. 
@@ -55,21 +55,21 @@ The rest is just a matter of choosing files. Your initial condition would normal
 When you come to do diagnostics you should skip a set number of spinup days and look at the mean (and maybe fluxes) over the remainder of the run. A spinup of about a month is usually sufficient. For statistically significant results for a climate signal you'll have to experiment. The model can display some very low frequency variability so be prepared to do long runs. The length of the runs you'll need to do depends entirely on how strong the perturbation you are testing is, and how strongly the model dynamics responds to it. 
 
 
-### c. Running DREAM as a simple GCM with an annual cycle
+### Running DREAM as a simple GCM with an annual cycle
 This is again a GCM-style experiment so again we're talking control and perturbation. But now you have an annual cycle, you'll have to do a bit more work on the diagnostics, extracting seasonal means etc. And inevitably you'll have four seasons to consider. 
 
 Technically all you have to do is set `RUNTYPE="CYCLE"` and choose your initial condition, forcing and reference states accordingly. The model will normally start at the beginning of the calendar year so your initial condition should be a first of January or at least some sort of boreal winter state, and you should consider a spinup. The forcing will be `ERAi_cyc4x_1979-2016_fcm_RM41.b` and the basic state will now also be an annual cycle sequence file `ERAi_cyc4x_1979-2016_RM41.b`. Both these files will step forward once every 6 hours, or 16 timesteps and will return at the end of a 365.25-day model year. 
 
 It is possible to start the annual cycle at the beginning of any month by setting KBEGMNSST to the desired month between 1 and 12. The model will skip through the forcing and reference data until it gets to the right part of the annual cycle and start from there. And you don't need to actually read SSTs or enable SST forcing in order to play this trick. If you do this the history records will have the correct time signature and your ensuing netCDFs will flag the correct calendar date. 
 
-### d. Running DREAM as an ensemble forecast model
+### Running DREAM as an ensemble forecast model
 Ensemble forecast runs can be made in any configuration: perpetual, cycle or even idealised stationary wave runs with a fixed basic state. All that is required is to use a script that runs the model multiple times and then takes an average of the output. Such a scrip is available and it is called `run_ensemble.ksh`. 
 
 The comments section at the beginning of this script is extremely comprehensive so just follow it. Basically you have to decide how many members your ensemble has, and how to initialise each member. The script assumes that all your initial conditions are gathered in a single file, one per record. It can read the initial conditions sequentially, or it can skip records at a fixed interval. This is useful if you're using a previous long run to supply initial conditions. Some options for the initial condition file are already provided in /seq directory but you can also make your own. The script will copy each initial condition to a file called initial_condition which is overwritten as you run each member of the ensemble. 
 
 A subdirectory is created in your experimental directory for the history records from each ensemble member. Each will have a run number appended to the file name: `history_n`. When all the members have run, the ensemble mean history is calculated and deposited up in your experimental directory. So note that the file in your experimental directory at the end that is called "history" is not a direct product of the model, it is the ensemble mean. This can also all be done for `grid2d` files if you have rainfall but you may need to uncomment those lines from the script. 
 
-### e. Running DREAM as a perturbation model with a fixed basic state
+### Running DREAM as a perturbation model with a fixed basic state
 This is the story of a dynamical model with a climatological initial condition, and of the one forcing that will cancel all its tendencies. It's Arrested Development. 
 
 You should try this first: set  `RUNTYPE="PERPETUAL"` and  `THERMTYPE="DRY"`
@@ -95,10 +95,10 @@ If you wish to perturb a fixed basic state with an SST anomaly instead there are
 To diagnose perturbation runs it's best to subtract the climatology from the model state, and this can be done in the diagnostics package, furnishing netCDFs that look like anomalies on a resting state. Of course you can also do this independently of the code presented here by using your own software to compare netCDFs generated by the perturbation run with a netCDF of the basic state. As always, it's up to you.
 
 ---
-## 4.2 Calculating the forcing
+## Calculating the forcing
 The theory of how a set of one-timestep tendencies can represent either diabatic and transient eddy forcing is laid out in [Appendix B](https://dreamusermanual.readthedocs.io/en/latest/AppendixB.html). Simply put, the `_fcm` forcing represents just the diabatic terms that are normally parameterised in a GCM. The `_fbs` forcing represents the sum of this diabatic forcing and the systematic effect of transient flux convergence, often termed "transient eddy forcing".  The latter is simpler to calculate so we'll start with that. 
 
-### a. Forcing a perturbation model with a fixed basic state
+### Forcing a perturbation model with a fixed basic state
 Suppose you have a basic state that you want to use for perturbation experiments. You want the model to develop as a response to your perturbation, in conjunction with this basic state. The first thing you need is a forcing that will stop the basic state from evolving. 
 
 To find this forcing, you take your basic state, use it as an initial condition (channel 10) and also as a reference (channel 16) and run the model with no forcing at all, for just one timestep. To achieve this, all you have to do is set `RUNTYPE="TRAIN"` and `KTFIN=1`, and make sure all your perturbations are switched off (`LFAN=.F.` and `LSST=.F.`). This setup will impose dry dynamics, switch off the basic forcing and run the model for one timestep. 
@@ -109,7 +109,7 @@ To check that it worked, try running the model in `PERPETUAL` mode (forcing will
 
 Remember - every time you change anything in the model, damping parameters for example, you will need to recalculate the forcing. 
 
-### b. Forcing a simple GCM in perpetual mode
+### Forcing a simple GCM in perpetual mode
 The forcing for a simple GCM is fundamentally different because it represents only the diabatic forcing and not the transient eddy part. In a fully turbulent GCM simulation the transient eddies are explicit and so their mean fluxes are represented explicitly in the simulation, they are not present in the forcing. But to calculate this `_fcm` forcing we follow exactly the same procedure as for the _fbs forcing, and use the same code. 
 
 The only thing that differs is the value of `KTFIN`. Now we have to scroll through a long list of initial conditions, running for one timestep from each of them. In principle it doesn't matter what order the initial conditions come in, but in practice it is usually a time sequence. 
@@ -118,10 +118,10 @@ There is a big loop in the model that scrolls through this sequence when trainin
 
 There is no simple way to check that it worked this time. You'll just have to use it as a forcing for a long run of the simple GCM, with whatever initial condition you want, and a suitable spinup period, and then validate. 
 
-### c. An aside on reference data
+### An aside on reference data
 Every time you do an operation like this you need to use the appropriate reference climatology in channel 16. This seems like a pain, and to be honest it is, and it's not strictly necessary if all the dissipation in the model is linear. This is just the way it evolved. In principle, any reference file could be substituted in and give the same result, because the forcing that you calculate would simply redress the large tendency associated with whatever reference state you use. DREAM could therefore be configured to avoid this reference state altogether and have one less input file to worry about. But that's not the way it has been done, and in fact the reference state does play a role in some very nonlinear bits of the model, especially concerning deep convection and the response to SSTs. 
 
-### d. Forcing a simple GCM with an annual cycle
+### Forcing a simple GCM with an annual cycle
 The procedure for finding the annual cycle forcing is not so straightforward, and the theory is outlined in [Appendix B](https://dreamusermanual.readthedocs.io/en/latest/AppendixB.html). The forcing consists of an advective part, calculated with the model, and a tendency part, calculated directly from the data. To calculate the advective part the procedure for running the model is the same as above with a very long sequence of consecutive years. But the time averaging is now cyclic in nature so the resulting forcing file is a sequence. The tendencies are calculated in the script makefrc_cyc.ksh but the cyclic averaging must be done manually using the code in data_process/prep_cyc (see [Chapter 3, Section 2](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html#d-forcing-a-simple-gcm-with-an-annual-cycle)). The full procedure to calculate the annual cycle forcing is: 
 
 _First step:_
@@ -138,7 +138,7 @@ _Final step:_
 * Add the two cycles together (the tendency and advective parts): `add2_hst.f`
 * Smooth it all again: `cyclic_running_mean_spec.f`
 
-### e. How to calculate forcing perturbations
+### How to calculate forcing perturbations
 There are many ways to perturb the model. Let's start with a simple idealised heating perturbation. In `data_process/prep_fan` open the script `makefan.ksh`. This script will help you to make a spectral forcing perturbation file `_fan.b` by specifying the shape and amplitude of your forcing in grid space. 
 
 To do this you will need to edit the fortran program `makefan.f`. This program is set up to generate idealised perturbations either to temperature T or vorticity Z. The first thing it does is set up the amplitude. Then you decide on your vertical profile. There are many to choose from (see `notes_for_forcing_anomalies.rtf`) or you can invent your own. Make sure it integrates to unity between sigma=0,1. Then you specify four coordinates: the longitude and latitude of the centre of the anomaly, and its radius in longitude and latitude directions. The program will fill this ellipse with a cosine-squared bell function and put zeros outside it. Note that makefan.f works on a T42 Gaussian grid but the output can still be used to make T31 forcing anomalies.
@@ -150,9 +150,9 @@ If you want a time-dependent forcing perturbation then you can create a time seq
 Sequences of forcing anomaly data are read by the model at a frequency determined by the namelist variable `KOUNTFAN` until it reaches the end of the sequence, then it will rewind and repeat. If you want to be a bit less idealised, then you can read the forcing anomaly from grid data using `makefan_ReadGrid.f`. These programs should serve as an example of how it's done and form this basis you can develop your forcing anomalies as you please. 
 
 ---
-## 4.3 Diagnosing the output
+## Diagnosing the output
 
-### a. Time-mean diagnostics
+### Time-mean diagnostics
 So you've run the model and successfully produced a history file with all the model dynamics. And if you ran the wet version you might have `history_grid2d` and `3d` with rainfall and diabatic heating as well. Well done, you're about half way there. It remains to convert this information into useable form and then visualise it. 
 
 There are a few basic ways you'll want to visualise the output. The diagnostics package is very focussed on horizontal maps on selected model levels. These can be written straight to netCDF, and there is a fairly comprehensive set of diagnosed variables. For vertical sections you'll have to delve into the binary 3d output and do it yourself. And then there are a few basic arithmetic operations you'll want to do: time sequences and time averages; anomalies from a reference state, and possibly time-mean second order transient fields, with various time-filters. This is all possible in the diagnostics package. Needless to say this is all in the `dream_model/diagnostics` directory. 
@@ -198,10 +198,10 @@ The gridan programs are more limited in scope and only concern grid output from 
 * `pptdeep` - precipitation rate from the deep convection scheme - mm/day
 * `condheat` - condensation heating (3d variable) - degrees/day.
 
-### b. Sequence diagnostics
+### Sequence diagnostics
 The second half of model_output.ksh repeats these operations for the sequential model output. So it will produce netCDFs with a time dimension. There is nothing new to say about this, it is just a repeat of the calls used for the time mean. The only thing worth mentioning is that the namelist input is written again here - so you have the opportunity to make different choices for time mean and sequential output. You could, for example use different levels for time mean and sequential data, or plot full fields for the time-mean and anomalies for the sequence, or request binary output only for the time-mean, or whatever combination you desire. All these choices are for the moment in this lower level script as I expect them to be fairly standardised, and thus choose not to clutter the top level scripts. 
 
-### c. Time-filtered transient fluxes, variance and eddy kinetic energy
+### Time-filtered transient fluxes, variance and eddy kinetic energy
 It remains to discuss time filtering and second order products. This is a fairly recent development and it is all dealt with from the script `run_output_flux.ksh`. This starts off the same way as run_output.ksh to do the basic mean and sequence diagnostics. Then the script deals with filtering and fluxes. The sequence of operations is as follows:
 
 1. Run model output on history file, skipping spinup, with sequence and mean output. A copy of run_output.ksh so you only need to run this one script. Note that lbinflux is set to true, so further sequence and mean diagnostics are output to binary grid. These extra files include eddy kinetic energy, momentum flux and zonal and meridional fluxes of temperature and specific humidity, as well as geopotential height and vertical velocity. 
@@ -230,9 +230,9 @@ This is done level by level for the total unfiltered quantities, low pass and mo
 Finally, if you do decide to use the filtered-transient package, bear in mind that it is relatively untested so pay attention to all the switches and directory names along the way. You'll probably have to be quite hands-on and it would be best if you had a good look at the code rather than using it as a black box. 
 
 ---
-## 4.4 Going further
+## Going further
 
-### a. Diagnosis of normal modes and time-independent solutions
+### Diagnosis of normal modes and time-independent solutions
 Linear analysis around a fixed basic state is one of the things that DREAM has been used for quite a bit. For mathematical details see [Appendix B, section 3](https://dreamusermanual.readthedocs.io/en/latest/AppendixB.html#b3-forcing-a-perturbation-model-with-a-fixed-basic-state). The trick of fixing the basic state in a time-stepping model allows you to track the response to a perturbation in the forcing for a limited time, usually about 20 days. After this, the instability of the basic sate starts to manifest, in the form of exponentially growing modes that usually look like midlatitude wavetrains. They can be a nuisance, because they are pretty independent of whatever carefully designed perturbation you are trying to study. On the other hand they can be interesting in their own right as a fundamental property of the basic state. 
 
 DREAM has provisions for addressing both these concerns. So if you want to study the structure and growth rate of the fastest growing normal mode on a given basic state, you can enable the modefinder. Choose your basic state. Set the forcing to maintain it as explained above. Then set `LMODE=.T.` in the namelist. Oh and make sure you initialise with a state that has enough multi-scale information to break the symmetry of whatever basic state you're using, especially if it is zonally uniform, because the modes you're looking for won't be zonally uniform and they have to grow from something. 
@@ -245,14 +245,14 @@ The stability or otherwise of the basic state depends on both its three-dimensio
 
 What if you're interested in the time-independent response to a given forcing anomaly but your basic state is unstable ? Time stepping the model will not converge to a fixed anomaly solution, but rather degenerate into instability and chaos. But if you stabilise your basic state you'll find that you can then repeat your perturbation experiment and a long run will converge to a time independent state. You don't get something for nothing though, because the extra damping will considerably weaken the response so it won't be the same as the imagined time-independent response with standard damping parameters. A crude fix to this is to use various values of `TAUSTAB` and then extrapolate back to zero extra damping. The fortran program `data_process/data_main/TILS.f` will calculate the solution using a quadratic extrapolation with three values of `TAUSTAB` (note that the extrapolation is actually done in terms of damping rate, not timescale). `TILS` stands for Time Independent Linear Solution. It will only be linear if by construction your perturbation is small. Otherwise it's nonlinear but it will still work. 
 
-### b. Nudging
+### Nudging
 Set `LNUDGE=.T.` to activate the nudging option. This is a linear relaxation towards a prescribed state that takes place in grid space. This makes it possible to nudge specific regions whilst leaving the solution unconstrained over the rest of the globe. It's useful to evaluate the remote impact of some observed sequence of events. 
 
 The nudging state is separate from the rest of the input data and so can be different to the model's reference state. It can be a single-record fixed state or a sequence. The model will read the next record from this file periodically, at a frequency that can be set to `KOUNTNUDGE` timesteps (default 16, i.e. 6 hours). If it reaches the end of the file it will rewind and start again. Each time the nudge state is read it is transformed to grid space and the variables `u`,`v`,`T`,`q` at all levels and sp are relaxed towards this state on a timescale specified by `TAUNUDGE` (default 6 hours). 
 
 The region in which nudging occurs is defined by the grid coordinates `IWNDG`, `IENDG` for the western and eastern boundaries and `JNNDG`,`JSNDG` for the northern and southern boundaries which define the mask `RMASKNDG` (see [Appendix A](https://dreamusermanual.readthedocs.io/en/latest/AppendixA.html) for details of the model grid). The strength of the nudging is halved on the grid boundaries for a smooth transition to un-nudged regions. 
 
-### c. Moisture, condensation and convection
+### Moisture, condensation and convection
 When you choose the setup option `THERMTYPE="WET"` you are activating schemes that will condense water vapour to produce precipitation and heating. The conditions under which this happens, and the amount and distribution of precipitation and heat requires some explanation, as  the user has a great deal of control over these routines. The three essential switches that are thrown to positive are `LCHX`, `LLSR` and `LDEEP`. Let's take them in reverse order. 
 
 #### Deep Convection:

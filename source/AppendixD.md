@@ -1,5 +1,5 @@
-![appendixD](./img/appendix_D.png)
 # Appendix D: Nightmare on Elm Street - The model subroutines.
+![appendixD](./img/appendix_D.png)
 
 The scope of this user guide is to give an indication of how things work without explaining every line of the code. The main body of the program has already been presented in Appendix A. Here the subroutines get a similar treatment, in the order they currently appear in the source code. 
 

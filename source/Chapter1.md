@@ -1,7 +1,7 @@
-![chapter 2 fig](./img/chapter_1.png)
 # Chapter 1: Inception - Introduction to DREAM
+![chapter 2 fig](./img/chapter_1.png)
 
-## 1.1 Preamble
+## Preamble
 In 1983 Sir Brian Hoskins published a lecture in the QJ under the title “Dynamical processes in the atmosphere and the use of models” in which he commented on the interplay between observations, sophisticated numerical models and our understanding of dynamical processes. He advocated a hierarchical approach in which dynamical models of intermediate complexity play a role (I made a contribution to this vision in Hall 2004, but I don’t think anyone read it). There is always a tradeoff between physical realism and conceptual understanding. Models of varying complexity can bridge the gap. 
 
 Nearly four decades later, numerical modelling of the atmosphere and climate is more complex than ever. It has become a truly interdisciplinary endeavour shared by communities and worked on in teams, with a wide range of applications. At the same time, at a much more modest scale, a few simple models of the atmosphere have emerged to tackle various questions in a more restricted and often more economical way. DREAM is one of these models. 
@@ -11,7 +11,7 @@ The real world is complicated but our brains are limited, and indeed we are in t
 DREAM can produce realistic simulations of the atmosphere based on dynamics alone. It can also be used in highly idealised configurations. Because of the way its forcing can be manipulated, DREAM is not just a model. It is a hierarchy of models. DREAM stands for Dynamical Research Empirical Atmospheric Model. It is a dynamical model intended mainly for research. It is not a statistical model, but since some elements are taken from data, the word Empirical appears in the acronym. This guide is an overview of how to use the model. It is part technical manual, part research manual as I will try to explain not only the scripts and the code, but also some diagnostic techniques that arise naturally from using DREAM. 
 
 ---
-## 1.2 Empirical forcing and data integration
+## Empirical forcing and data integration
 The problem of how to force a simple dynamical model to produce an equilibrium climate solution has often been approached by using relaxation forcing. An idealised radiative convective equilibrium temperature field is specified, and the model temperature field is relaxed linearly towards it on a chosen timescale. Since the radiative convective equilibrium is hydrodynamically unstable, the atmosphere never attains this state, nor even approaches it closely (unless a very short relaxation timescale is imposed). So it is difficult to appeal to data to deduce directly what this state should be.
 
 DREAM is based on an alternative approach first used by Roads (1987) to make a cheap forecast model. A sequence of observed initial conditions is used and the unforced model is integrated for just one timestep. The negative average of the one-timestep tendencies thus produced is then adopted as the forcing on the right hand side of the model equations. We assume that the set of initial conditions represents a stationary climate state, and that the forcing of the atmosphere can be viewed as time independent. Under these assumptions, this forcing represents the missing term that corrects the systematic errors of an unforced model.
@@ -23,7 +23,7 @@ The result is a GCM that is simple in conception, based entirely on dynamics, bu
 The data used with DREAM comes from four-times daily ERA-interim reanalysis from 1979-2016 (Dee et al, 2011). DREAM interacts with a version of this dataset that is written in the same spectral basis as the model output. The data can also be used to nudge selected regions of the model throughout the integration. A version of the empirical forcing with an annual cycle is also available. 
 
 ---
-## 1.3 How is DREAM different from other simple GCMs ?
+## How is DREAM different from other simple GCMs ?
 DREAM is based on the spectral primitive equation model code first introduced by Hoskins and Simmons (1975, HS75). This code was initially used to study baroclinic wave lifecycles and quickly became one of the staple tools for dynamical studies at the Reading University Meteorology department, pressed into service for a diverse range of topics in synoptic meteorology and global climate dynamics. As a purely dynamical model, it lacks the physical source terms that maintain the climate, so for longer integrations, or for studies of perturbations on a specified basic state, a prescription is needed for the right hand side of the equations. Various solutions have been implemented, and as the model was used for more sophisticated applications, further representations of physical processes were added. At the same time a sequence of technical modifications were also made to simplify the code and make it more portable. That model is now known as the “IGCM” and the current version (Joshi et al, 2015) is shared by a consortium of users at UK universities. 
 
 DREAM has the same dynamical core as the Reading IGCM, but it has far fewer physical parameterisations available and has not been developed by a community like the Reading model. Instead the development has been more in the direction of working with data for diagnostic modelling. The paraemterizations in DREAM are home-grown, and semi-empirical. 
@@ -39,11 +39,11 @@ Here’s a list of some models that fit into the simple GCM niche:
 * ISCA - Developed at the University of Exeter. Based on the GFDL spectral dynamical core. Can be forced at various levels of complexity from relaxation to full radiation. Applicable to Earth and other planets. 
 
 ---
-## 1.4 What can you do with DREAM ?
+## What can you do with DREAM ?
 In its simplest form DREAM is a dynamical model that either simulates a perpetual season or can be used to study perturbations about a fixed basic state, in both cases with time-independent forcing. An extension to the forcing has been developed that includes an annual cycle. In this way DREAM can be used for climate studies in which a one-to-one correspondence with historical data is required. DREAM is designed to work with the reanalysis data that is used to calculate the empirical forcing. This dataset can be consulted during a run to constrain predefined regions of the world to a time sequence of observations by “nudging” on a specified timescale. Further extensions to DREAM have been developed, including interaction with moist thermodynamics associated with the model’s specific humidity variable, and the response to tropical SST anomalies.  DREAM has been used for a wide range of applications, including fundamental properties of the midlatitude jets and baroclinic waves, easterly waves over West Africa, teleconnections from tropical convection, the annual cycle and seasonal prediction of continental rainfall. A complete list of publications is given in [Appendix E](https://dreamusermanual.readthedocs.io/en/latest/AppendixE.html). 
 
 ---
-## 1.5 Some references
+## Some references
 * Dee D.P., et al, 2011: The ERA INTERIM reanalysis: Configuration and performance of the data assimilation system. Quart. J. Roy. Meteor. Soc., 137, 553–597. 
 * Hall, N.M.J., 2000: A simple GCM based on dry dynamics and constant forcing. J. Atmos. Sci., 57, 1557-1572.
 * Hall, N.M.J., 2005: The atmospheric response to boundary forcing and the use of diagnostic models. ERCA6, EDP sciences, C. Boutron ed. J. Phys IV, France, 121, pp 125-137.

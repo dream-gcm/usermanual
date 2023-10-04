@@ -19,12 +19,12 @@ sys.path.append(os.path.abspath('../'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'dream-user-manual'
-copyright = '2022, nick hall'
+project = 'DREAM user manual'
+copyright = '2023, nick hall'
 author = 'nick hall'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0'
+release = '1.0.0'
 
 master_doc = 'index'
 
@@ -37,7 +37,7 @@ master_doc = 'index'
 #    'sphinx.ext.autodoc'
 #]
 extensions = [
-    'myst_parser','sphinx.ext.autosectionlabel'
+    'myst_parser','sphinx.ext.autosectionlabel' ,'sphinx_rtd_theme'
 ]
 
 source_suffix = {
@@ -74,3 +74,8 @@ html_theme = 'sphinx_rtd_theme'
 
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
+
+# -- Options for PDF output -------------------------------------------------
+latex_elements = {
+    'figure_align':'H'
+}
