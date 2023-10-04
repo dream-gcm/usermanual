@@ -12,7 +12,6 @@ $$
       v_t + fu &= -uv_x - vv_y -wv_z - p_y/\rho & \qquad\qquad (A2) \\
    \end{align*}
 $$
-
 then,
 
 $$
