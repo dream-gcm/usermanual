@@ -8,10 +8,10 @@ Whenever I try to explain the way DREAM is forced I seem to run into difficultie
 Let’s start with notation that is intuitive for people who were bought up in the geosciences. Consider the development of some variable, say the potential vorticity $q$, in the real atmosphere:
 
 $$
-   \begin{eqnarray}
+   \begin{align*}
       \frac{\partial q}{\partial t} + {\bf v}.\nabla q = {\cal F}(t) - {\cal D}(q)	
  & \qquad\qquad (B1) \\
-   \end{eqnarray}
+   \end{align*}
 $$
 
 What we have here is tendency, advection, external forcing and state-dependent dissipation. We can simulate the advection with our model, and we can specify damping and diffusion and tune it as we please. The biggest challenge is to find a way of specifying the forcing $\cal{F}$. We know what it is physically. It represents source terms like radiative heating, boundary fluxes or condensation. But it’s a tough job to specify it in a simple way. 
@@ -19,28 +19,28 @@ What we have here is tendency, advection, external forcing and state-dependent d
 What we know for sure is that if we ran the model without any forcing, from any realistic initial condition, it would quickly develop large systematic errors. So one prescription for the forcing might be a source term for q that corrects the average systematic error of an unforced model. Let’s assume that we are in a statistically steady climate state (i.e. we consider one season). And let’s also decide to impose an external forcing that time independent. This is not realistic, but it does lead to the great simplification that our external forcing is just the time mean of $\cal{F}$. We can readily see this by taking the time mean of (B1)
 
 $$
-   \begin{eqnarray}
+   \begin{align*}
       \overline{\cal F} = \overline{{\bf v}.\nabla q} + \overline{{\cal D}(q)}	
  & \qquad\qquad (B2) \\
-   \end{eqnarray}
+   \end{align*}
 $$
 
 Evidently if we use this to force a model that develops with the same advection and dissipation, i.e.
 
 $$
-   \begin{eqnarray}
+   \begin{align*}
       \frac{\partial q}{\partial t} + {\bf v}.\nabla q + {\cal D}(q)= \overline{{\cal F}}		
  & \qquad\qquad (B3) \\
-   \end{eqnarray}
+   \end{align*}
 $$
 
 then any statistically steady integration of this model will also satisfy equation (B2). This does not mean that the model’s climatology will be identical to the observed climatology. There is more than one way to satisfy (B2), because at least the advection term is nonlinear. The time mean advection contains contributions from advection of the mean flow and transient fluxes. Let’s have a look: 
 
 $$
-   \begin{eqnarray}
+   \begin{align*}
       \overline{\cal F} = \overline{\bf v}.\nabla \overline{q} + \overline{{\bf v}'.\nabla q'} + {{\cal D}(\overline{q})}		
  & \qquad\qquad (B4) \\
-   \end{eqnarray}
+   \end{align*}
 $$
 
 So you see the same forcing could balance different partitions between the first two terms on the right hand side, associated with different model climatologies. A model forced in this way may have systematic errors, just like any GCM. Only the time mean generalised total flux is constrained to conform to observations. Note that in (B4) we have assumed that the dissipation is linear. 
@@ -52,37 +52,37 @@ It remains to find a way of calculating this time-independent forcing. If you’
 I tried to keep the quick guide quick. If you’re still reading, it’s because you want more. Be careful what you wish for. We’re now going to switch to a more generalised notation in which the instantaneous state of the atmosphere is represented by a state vector ${\bf \Phi}=(\zeta,D,T,q,p_* …)$, which represents vorticity, divergence, temperature, specific humidity and surface pressure in the same basis as the model. The development of the observed atmosphere can then be written as
 
 $$
-   \begin{eqnarray}
+   \begin{align*}
       \frac{d {\bf \Phi}}{dt} + ({\cal A} + {\cal D}){\bf \Phi} = {\cal F}(t)		
  & \qquad\qquad (B5) \\
-   \end{eqnarray}
+   \end{align*}
 $$
 
 where ${\cal A}$ is a nonlinear advection operator. Let’s separate the state vector into time-mean and transient components. 
 
 $$
-   \begin{eqnarray}
+   \begin{align*}
      \frac{d {\bf \Phi}'}{dt} + ({\cal A} + {\cal D})(\overline{\bf \Phi} + {\bf \Phi}') = \overline{\cal F} + {\cal F}'		
  & \qquad\qquad (B6) \\
-   \end{eqnarray}
+   \end{align*}
 $$
 
 As before, the time mean of this equation can be written
 
 $$
-   \begin{eqnarray}
+   \begin{align*}
       ({\cal A} + {\cal D})\overline{\bf \Phi} + \overline{O({\bf \Phi}'^2)} = \overline{\cal F}		
  & \qquad\qquad (B7) \\
-   \end{eqnarray}
+   \end{align*}
 $$
 
 This is the generalised form of (B4). We see that time-mean advection is balanced by transient eddy fluxes and forcing. We could move the second term to the right hand side and call it the “transient eddy forcing”. Subtracting (B7) from (B6) we obtain the transient budget with respect to the time mean
 
 $$
-   \begin{eqnarray}
+   \begin{align*}
       \frac{d {\bf \Phi}'}{dt} + {\cal L}\Phi' + \left[O({\bf \Phi}'^2) - \overline{O({\bf \Phi}'^2)} \right] = {\cal F}'		
  & \qquad\qquad (B8) \\
-   \end{eqnarray}
+   \end{align*}
 $$
 
 In (B8) all the terms have zero time mean, so there is no large cancellation. This means that the time-mean state is a realistic basis for perturbation experiments. The development of small perturbations is conditioned by the linear operator ${\cal L}$ , which itself depends on the time mean state. And the structure of these small perturbations may be relevant to observed transient systems. For deeper philosophical insight into these matters see Hall and Sardeshmukh (1998). 
@@ -90,36 +90,36 @@ In (B8) all the terms have zero time mean, so there is no large cancellation. Th
 Now back to the practical problem of forcing a simple GCM. Let’s introduce a model, with a state vector ${\bf \Psi}$ in the same basis as ${\bf \Phi}$ . If it is forced with a constant source field, it will develop according to:
 
 $$
-   \begin{eqnarray}
+   \begin{align*}
       \frac{d {\bf \Psi}}{dt} + ({\cal A} + {\cal D}){\bf \Psi} = {\cal G}_{cm}		
  & \qquad\qquad (B9). \\
-   \end{eqnarray}
+   \end{align*}
 $$
 
 As before let’s set our simple GCM forcing ${\cal G}_{cm} = \overline{\cal F}$. To find it we run the model with no forcing for one timestep, providing us with a set of tendencies:
 
 $$
-   \begin{equation}
+   \begin{align*}
       \frac{d {\bf \Psi}}{dt} + ({\cal A} + {\cal D}){\bf \Psi} = 0 \:\:\: \Rightarrow \:\:\: ({\cal A} + {\cal D}){\bf \Psi} = -\frac{d {\bf \Psi}}{dt}	
-   \end{equation}
+   \end{align*}
 $$
 
 Do this many times with a set of observed states ${\bf \Phi}_i$  as initial conditions, and take the average of all the tendencies:
 
 $$
-   \begin{eqnarray}
+   \begin{align*}
       {\cal G}_{cm} = \frac{1}{n}  \sum_{i=1}^n ({\cal A} + {\cal D}){\bf \Phi}_i	
  & \qquad\qquad. \\
-   \end{eqnarray}
+   \end{align*}
 $$
 
 If we use this forcing to perform a long integration of the model we can compare our simulation with the dataset we used to generate the empirical forcing. And we find that this prescription for the forcing guarantees that the total generalised flux from the model simulation will be the same as in the observations, i.e.
 
 $$
-   \begin{eqnarray}
+   \begin{align*}
       \overline{({\cal A} + {\cal D}){\bf \Psi}} = \overline{({\cal A} + {\cal D}){\bf \Phi}}	
  & \qquad\qquad. \\
-   \end{eqnarray}
+   \end{align*}
 $$
 
 
@@ -128,10 +128,10 @@ But for reasons already explained above, it does not guarantee that the simulate
 Neither does it guarantee that the transient fluxes will be realistic. This is because the balance of terms in:
 
 $$
-   \begin{eqnarray}
+   \begin{align*}
       ({\cal A} + {\cal D})\overline{\bf \Psi} + \overline{O({\bf \Psi}'^2)} = ({\cal A} + {\cal D})\overline{\bf \Phi} + \overline{O({\bf \Phi}'^2)}		
  & \qquad\qquad \\
-   \end{eqnarray}
+   \end{align*}
 $$
 can be achieved differently on the two sides of the equation, as already discussed above directly in terms of mean flow and transient fluxes (equation B4). 
 
@@ -142,10 +142,10 @@ So we have a forcing that is time-independent. It formally corrects the average 
 To maintain a climatological mean state against time-mean advection requires a combination of diabatic forcing and transient eddy fluxes. The sum of these two effects could be equated to the first term in (B7). So let’s do that, and define a new forcing:
 
 $$
-   \begin{eqnarray}
+   \begin{align*}
      {\cal G}_{bs} = ({\cal A} + {\cal D})\overline{\bf{\Phi}} 		
  & \qquad\qquad \\
-   \end{eqnarray}
+   \end{align*}
 $$
 
 From (B7) we see that this forcing is the same forcing we had before (${\cal G}_{cm}$) plus the “transient eddy forcing” alluded to previously. And no, that’s not what “bs” stands for, it stands for “basic state”. What would happen if we forced the model with ${\cal G}_{bs}$ and initialised it with the climatology ${\bf \Psi} = \overline{\bf{\Phi}}$ ? Well, of course, nothing would happen ! The forcing would exactly cancel the tendency produced by the initial condition and the integration would proceed with no development. It’s actually much easier to find this forcing that to find the simple GCM forcing, because all you have to do is run the model for one timestep from a single initial condition. In this example that initial condition would be the time-mean state, but this can work for any basic state you want. What is the point of doing this ? Well, you can then study the development of of the solution due to perturbations, either in the initial condition or in the forcing. 
@@ -153,19 +153,19 @@ From (B7) we see that this forcing is the same forcing we had before (${\cal G}_
 If we add a perturbation ${\bf \Psi}_1$ to the initial condition, the development equation becomes
 
 $$
-   \begin{eqnarray}
+   \begin{align*}
      \frac{d {\bf \Psi}_1}{dt} + {\cal L}{\bf \Psi}_1 + O({\bf \Psi}_1^2) = 0		
  & \qquad\qquad \\
-   \end{eqnarray}
+   \end{align*}
 $$
 
 We can make sure that ${\bf \Psi}_1$ is small (and remains small) we have a linear perturbation model
 
 $$
-   \begin{eqnarray}
+   \begin{align*}
     \frac{d {\bf \Psi}_1}{dt} + {\cal L}{\bf \Psi}_1 = 0		
  & \qquad\qquad (B10)\\
-   \end{eqnarray}
+   \end{align*}
 $$
 
 The solution to this equation gives the normal mode structure associated with the climatology $\overline{\bf \Phi}$ (or any other basic state, with appropriate ${\cal G}_{bs}$ ). If 
@@ -177,19 +177,19 @@ an exponentially developing normal mode with a spatial structure that cycles per
 Instead of adding a perturbation to the initial condition we add also perturbation to the forcing (to  obtain the linear response it is sufficient to multiply some realistic forcing perturbation by a small factor, and then scale the solution back up by the same factor for diagnsotics). If the forcing anomaly is added to the right hand side of (B10)
 
 $$
-   \begin{eqnarray}
+   \begin{align*}
     \frac{d {\bf \Psi}_1}{dt} + {\cal L}{\bf \Psi}_1 = {\bf f}_1		
  & \qquad\qquad \\
-   \end{eqnarray}
+   \end{align*}
 $$
 
 the solution is:
 
 $$
-   \begin{eqnarray}
+   \begin{align*}
     \Psi_{1j} (t) = \frac{f_{1j}}{\lambda_j} \left( e^{\lambda_j t} -1 \right)		
  & \qquad\qquad \\
-   \end{eqnarray}
+   \end{align*}
 $$
 
 
@@ -206,10 +206,10 @@ As discussed in [Chapter 1, section 2](https://dreamusermanual.readthedocs.io/en
 Let’s rewrite the model development equation (B9):
 
 $$
-   \begin{eqnarray}
+   \begin{align*}
     \frac{d {\bf \Psi}}{dt} + {\cal A}{\bf \Psi} = {\cal G}_{cm} - {\cal D}{\bf \Psi} = R({\bf \Phi^*} - {\bf \Psi})		
  & \qquad\qquad \\
-   \end{eqnarray}
+   \end{align*}
 $$
 
 On the right we have restoration towards a specified fixed equilibrium state ${\bf \Phi}^*$ at rate $R$. We can identify this state as  ${\bf \Phi^*} = {\cal G}_{cm}/R$ and the rate $R$ is simply the local damping rate ${\cal D}$ . So it appears that the two approaches are mathematically identical. Instead of specifying a damping rate and an ad-hoc restoration state, we specify a damping rate and an objective empirical forcing. 
@@ -221,10 +221,10 @@ Strictly, for this equivalence to hold, our dissipation needs to be just a local
 Imagine you want to examine the influence of an observed sequence of events ${\bf \Phi}_i$   in a specified region on the large scale circulation. It is possible to artificially constrain the model within this specified region by nudging. This is another kind of restoration forcing but it does not correspond to any real physical process. Think of it as an additional term in (B9):
 
 $$
-   \begin{eqnarray}
+   \begin{align*}
     \frac{d {\bf \Psi}}{dt} + ({\cal A} + {\cal D}){\bf \Psi} = {\cal G}_{cm} + \left( \frac{{\bf \Phi}_i - {\bf \Psi}}{\tau} \right)		
  & \qquad\qquad \\
-   \end{eqnarray}
+   \end{align*}
 $$
 where $\tau$ is the nudging timescale. The procedure for implementing nudging is outlined in [Chapter 4,section 4b](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html#b-nudging). 
 
@@ -233,10 +233,10 @@ Note that you need to be careful if you try to use nudging as a linear perturbat
 If we do this, then the nudging term becomes a small perturbation forcing and a damping on the anomaly response. The nudged version of (B10) can be written as:
 
 $$
-   \begin{eqnarray}
+   \begin{align*}
     \frac{d {\bf \Psi}_1}{dt} + {\cal L}{\bf \Psi}_1 = \epsilon \left( \frac{{\bf \Phi}_i - \overline{\bf \Phi}}{\tau} \right) -\frac{{\bf \Psi}_1}{\tau}		
  & \qquad\qquad \\
-   \end{eqnarray}
+   \end{align*}
 $$
 
 ![FigB1](./img/fig_B1b.png)
@@ -256,19 +256,19 @@ The neat thing about DREAM is that it is relatively easy to be more quantitative
 Consider a simple GCM experiment with a forcing perturbation. First do a control run (B9) that yields a model climatology $\overline{\bf \Psi}_c$ . Now do a perturbation run :
 
 $$
-   \begin{eqnarray}
+   \begin{align*}
     \frac{d {\bf \Psi}_p}{dt} + ({\cal A} + {\cal D}){\bf \Psi}_p = {\cal G}_{cm} + {\bf f}_1
  & \qquad\qquad \\
-   \end{eqnarray}
+   \end{align*}
 $$
 
 Take the time mean and subtract from the time mean of the climatology run, and you get:
 
 $$
-   \begin{eqnarray}
+   \begin{align*}
     ({\cal A} + {\cal D})\overline{\bf \Psi}_p - ({\cal A} + {\cal D})\overline{\bf \Psi}_c = {\bf f_1} + {\bf TE}
  & \qquad\qquad \\
-   \end{eqnarray}
+   \end{align*}
 $$
 
 Where ${\bf TE}$ is time-mean difference between quadratic terms in the transients from the two runs. This is the transient eddy forcing anomaly, and it is easy to find for the entire model state vector. We know the time mean for both runs and we know the forcing perturbation. So we can work out ${\bf TE}$ using the same techniques as we used to find  above. Now we know both ${\bf f}_1$ and ${\bf TE}$, we can use them together and separately in perturbation experiments about the fixed basic state $\overline{\bf \Psi}_c$.  You’ll probably find that the linear solution about this basic state to the forcing perturbation ${\bf f_1} + {\bf TE}$  is pretty close to the difference between the two GCM runs. I told you it was neat !
@@ -283,10 +283,10 @@ and we can consider a full spectrum of time variation in observed states ${\bf \
 Where prime now denotes any variation that does not repeat annually. If we substitute this into (B5) then our expression for the forcing (equivalent to B7) becomes
 
 $$
-   \begin{eqnarray}
+   \begin{align*}
     \overline{\cal F} + \widetilde{\cal F} = \frac{d \widetilde{\bf \Phi}}{dt} + (\overline{\cal A} + \widetilde{\cal A})(\overline{\bf \Phi} + \widetilde{\bf \Phi} + {\bf \Phi}') + {\cal D}(\overline{\bf \Phi} + \widetilde{\bf \Phi})
  & \qquad\qquad \\
-   \end{eqnarray}
+   \end{align*}
 $$
 
 The main change is the first term on the right hand side which must be calculated directly from the data. The rest is calculated from one-timestep unforced model runs as before. The complete procedure is described in [Chapter 4, section 2d](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html#d-forcing-a-simple-gcm-with-an-annual-cycle). The second term contains a large number of timescale interactions which are exhaustively explored in Hall, Leroux and Ambrizzi (2019). They use a dummy multiplier technique in the data to isolate each term, but this is beyond the scope of this user guide. If you just want to run with an annual cycle then it is sufficient to calculate $\overline{\cal F} + \widetilde{\cal F}$  as a single diagnostic. 
