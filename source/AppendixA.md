@@ -15,23 +15,23 @@ $$
 then,
 
 $$
-   \begin{equation*}
+   \begin{align*}
       \dfrac{\partial}{\partial x} (A2) - \dfrac{\partial}{\partial y} (A1)
-   \end{equation*}
+   \end{align*}
 $$
 gives the vorticity equation:
 
 $$
-   \begin{equation*}
+   \begin{align*}
       \xi_t + f D + \beta v = -u\xi_x - v\xi_y - \xi D - (wv_z + p_y/\rho)_x + (wu_z + p_x/\rho)_y
-   \end{equation*}
+   \end{align*}
 $$
 which leads to an equation for the tendency of absolute vorticity:
 
 $$
-   \begin{equation*}
+   \begin{align*}
       \frac{\partial\zeta}{\partial t} = \frac{\partial}{\partial x} \{-u\zeta - wv_z - p_y/\rho\} - \frac{\partial}{\partial y} \{-v\zeta - wu_z - p_x/\rho\}
-   \end{equation*}
+   \end{align*}
 $$
 
 The terms in curly brackets can be designated by the vector $(F_u,F_v)$ and this vorticity equation is the curl of this vector. Likewise the tendency of the divergence  can be deduced from the momentum equations:
