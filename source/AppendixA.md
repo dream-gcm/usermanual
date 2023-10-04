@@ -7,10 +7,10 @@
 DREAM solves the primitive equations expressed in terms of vorticity and divergence. These are written down in Hoskins and Simmons (1975, HS75) but let’s deciphier this presentation by approaching  them from the momentum equations, using subscript notation for partial derivatives:
 
 $$
-   \begin{eqnarray}
-      u_t - fv &=& -uu_x - vu_y -wu_z - p_x/\rho & \qquad\qquad (A1) \\
-      v_t + fu &=& -uv_x - vv_y -wv_z - p_y/\rho & \qquad\qquad (A1) \\
-   \end{eqnarray}
+   \begin{align*}
+      u_t - fv &= -uu_x - vu_y -wu_z - p_x/\rho & \qquad\qquad (A1) \\
+      v_t + fu &= -uv_x - vv_y -wv_z - p_y/\rho & \qquad\qquad (A2) \\
+   \end{align*}
 $$
 
 then,
