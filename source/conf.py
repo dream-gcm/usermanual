@@ -37,7 +37,7 @@ master_doc = 'index'
 #    'sphinx.ext.autodoc'
 #]
 extensions = [
-    'myst_parser','sphinx.ext.autosectionlabel'
+    'myst_parser','sphinx.ext.autosectionlabel' ,'sphinx_rtd_theme'
 ]
 
 source_suffix = {
