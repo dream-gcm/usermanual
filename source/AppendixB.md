@@ -239,7 +239,7 @@ $$
    \end{eqnarray}
 $$
 
-![FigB1](./img/fig_B1.png)
+![FigB1](./img/fig_B1b.png)
 
 _Fig. B1: Say no more !_
 
