@@ -226,7 +226,7 @@ $$
 Take the time mean and subtract from the time mean of the climatology run, and you get:
 
 $$
-   \begin{aliequationgn*}
+   \begin{equation*}
     ({\cal A} + {\cal D})\overline{\bf \Psi}_p - ({\cal A} + {\cal D})\overline{\bf \Psi}_c = {\bf f_1} + {\bf TE}
    \end{equation*}
 $$
