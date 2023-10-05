@@ -78,12 +78,31 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # -- Options for LaTeX output --------------------------------------------------
 
+preamble = r'''\usepackage{fixltx2e} % LaTeX patches, \textsubscript
+\usepackage{cmap} % fix search and cut-and-paste in Acrobat
+%\usepackage[raccourcis]{fast-diagram}
+\usepackage{titlesec}
+\usepackage[a4paper,left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+%%% Redifined titleformat
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
+\newcommand{\hsp}{\hspace{20pt}}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\titleformat{\chapter}[hang]{\Huge\bfseries\sffamily}{\thechapter\hsp}{0pt}{\Huge\bfseries\sffamily}
+%%% Custom font
+\usepackage{libertine}
+%%% Set numeration
+%\setcounter{secnumdepth}{3}
+'''
+
 
 latex_elements = {
     'figure_align':'H',
-    'sphinxsetup': '',
     'passoptionstopackages': r'\PassOptionsToPackage{table}{xcolor}',
+    # Additional stuff for the LaTeX preamble.
+    'preamble': preamble
 }
+
 
 
 
