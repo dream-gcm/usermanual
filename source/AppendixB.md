@@ -8,10 +8,9 @@ Whenever I try to explain the way DREAM is forced I seem to run into difficultie
 Let’s start with notation that is intuitive for people who were bought up in the geosciences. Consider the development of some variable, say the potential vorticity $q$, in the real atmosphere:
 
 $$
-   \begin{align*}
-      \frac{\partial q}{\partial t} + {\bf v}.\nabla q = {\cal F}(t) - {\cal D}(q)	
- & \qquad\qquad (B1) \\
-   \end{align*}
+   \begin{equation*}
+      \frac{\partial q}{\partial t} + {\bf v}.\nabla q = {\cal F}(t) - {\cal D}(q) \qquad\qquad (B1)
+   \end{equation*}
 $$
 
 What we have here is tendency, advection, external forcing and state-dependent dissipation. We can simulate the advection with our model, and we can specify damping and diffusion and tune it as we please. The biggest challenge is to find a way of specifying the forcing $\cal{F}$. We know what it is physically. It represents source terms like radiative heating, boundary fluxes or condensation. But it’s a tough job to specify it in a simple way. 
