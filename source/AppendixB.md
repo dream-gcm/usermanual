@@ -172,10 +172,9 @@ As discussed in [Chapter 1, section 2](https://dreamusermanual.readthedocs.io/en
 Let’s rewrite the model development equation (B9):
 
 $$
-   \begin{align*}
-    \frac{d {\bf \Psi}}{dt} + {\cal A}{\bf \Psi} = {\cal G}_{cm} - {\cal D}{\bf \Psi} = R({\bf \Phi^*} - {\bf \Psi})		
- & \qquad\qquad \\
-   \end{align*}
+   \begin{equation*}
+    \frac{d {\bf \Psi}}{dt} + {\cal A}{\bf \Psi} = {\cal G}_{cm} - {\cal D}{\bf \Psi} = R({\bf \Phi^*} - {\bf \Psi})	
+   \end{equation*}
 $$
 
 On the right we have restoration towards a specified fixed equilibrium state ${\bf \Phi}^*$ at rate $R$. We can identify this state as  ${\bf \Phi^*} = {\cal G}_{cm}/R$ and the rate $R$ is simply the local damping rate ${\cal D}$ . So it appears that the two approaches are mathematically identical. Instead of specifying a damping rate and an ad-hoc restoration state, we specify a damping rate and an objective empirical forcing. 
@@ -187,10 +186,9 @@ Strictly, for this equivalence to hold, our dissipation needs to be just a local
 Imagine you want to examine the influence of an observed sequence of events ${\bf \Phi}_i$   in a specified region on the large scale circulation. It is possible to artificially constrain the model within this specified region by nudging. This is another kind of restoration forcing but it does not correspond to any real physical process. Think of it as an additional term in (B9):
 
 $$
-   \begin{align*}
+   \begin{equation*}
     \frac{d {\bf \Psi}}{dt} + ({\cal A} + {\cal D}){\bf \Psi} = {\cal G}_{cm} + \left( \frac{{\bf \Phi}_i - {\bf \Psi}}{\tau} \right)		
- & \qquad\qquad \\
-   \end{align*}
+   \end{equation*}
 $$
 where $\tau$ is the nudging timescale. The procedure for implementing nudging is outlined in [Chapter 4,section 4b](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html#b-nudging). 
 
@@ -199,10 +197,9 @@ Note that you need to be careful if you try to use nudging as a linear perturbat
 If we do this, then the nudging term becomes a small perturbation forcing and a damping on the anomaly response. The nudged version of (B10) can be written as:
 
 $$
-   \begin{align*}
+   \begin{equation*}
     \frac{d {\bf \Psi}_1}{dt} + {\cal L}{\bf \Psi}_1 = \epsilon \left( \frac{{\bf \Phi}_i - \overline{\bf \Phi}}{\tau} \right) -\frac{{\bf \Psi}_1}{\tau}		
- & \qquad\qquad \\
-   \end{align*}
+   \end{equation*}
 $$
 
 ![FigB1](./img/fig_B1b.png)
@@ -222,21 +219,17 @@ The neat thing about DREAM is that it is relatively easy to be more quantitative
 Consider a simple GCM experiment with a forcing perturbation. First do a control run (B9) that yields a model climatology $\overline{\bf \Psi}_c$ . Now do a perturbation run :
 
 $$
-   \begin{align*}
+   \begin{equation*}
     \frac{d {\bf \Psi}_p}{dt} + ({\cal A} + {\cal D}){\bf \Psi}_p = {\cal G}_{cm} + {\bf f}_1
- & \qquad\qquad \\
-   \end{align*}
+   \end{equation*}
 $$
-
 Take the time mean and subtract from the time mean of the climatology run, and you get:
 
 $$
-   \begin{align*}
+   \begin{aliequationgn*}
     ({\cal A} + {\cal D})\overline{\bf \Psi}_p - ({\cal A} + {\cal D})\overline{\bf \Psi}_c = {\bf f_1} + {\bf TE}
- & \qquad\qquad \\
-   \end{align*}
+   \end{equation*}
 $$
-
 Where ${\bf TE}$ is time-mean difference between quadratic terms in the transients from the two runs. This is the transient eddy forcing anomaly, and it is easy to find for the entire model state vector. We know the time mean for both runs and we know the forcing perturbation. So we can work out ${\bf TE}$ using the same techniques as we used to find  above. Now we know both ${\bf f}_1$ and ${\bf TE}$, we can use them together and separately in perturbation experiments about the fixed basic state $\overline{\bf \Psi}_c$.  You’ll probably find that the linear solution about this basic state to the forcing perturbation ${\bf f_1} + {\bf TE}$  is pretty close to the difference between the two GCM runs. I told you it was neat !
 
 
@@ -244,15 +237,11 @@ Where ${\bf TE}$ is time-mean difference between quadratic terms in the transien
 Some uses of DREAM require a direct correspondence to real-world events, like SSTs or nudging data. For these use cases the model simulation must have a simple way of changing with the seasons. The constant forcing described up to now needs to be extended to include a repeating annual cycle. If we use the notation tilde to represent such a cycle, which contains the annual frequency and its harmonics, then the forcing we seek can be expressed as ${\cal F} = \overline{\cal F} + \widetilde{\cal F}$,
 and we can consider a full spectrum of time variation in observed states ${\bf \Phi} = \overline{\bf \Phi} + \widetilde{\bf \Phi} + {\bf \Phi}'$.
 
-
-
 Where prime now denotes any variation that does not repeat annually. If we substitute this into (B5) then our expression for the forcing (equivalent to B7) becomes
 
 $$
-   \begin{align*}
+   \begin{equation*}
     \overline{\cal F} + \widetilde{\cal F} = \frac{d \widetilde{\bf \Phi}}{dt} + (\overline{\cal A} + \widetilde{\cal A})(\overline{\bf \Phi} + \widetilde{\bf \Phi} + {\bf \Phi}') + {\cal D}(\overline{\bf \Phi} + \widetilde{\bf \Phi})
- & \qquad\qquad \\
-   \end{align*}
+   \end{equation*}
 $$
-
 The main change is the first term on the right hand side which must be calculated directly from the data. The rest is calculated from one-timestep unforced model runs as before. The complete procedure is described in [Chapter 4, section 2d](https://dreamusermanual.readthedocs.io/en/latest/Chapter4.html#d-forcing-a-simple-gcm-with-an-annual-cycle). The second term contains a large number of timescale interactions which are exhaustively explored in Hall, Leroux and Ambrizzi (2019). They use a dummy multiplier technique in the data to isolate each term, but this is beyond the scope of this user guide. If you just want to run with an annual cycle then it is sufficient to calculate $\overline{\cal F} + \widetilde{\cal F}$  as a single diagnostic. 
