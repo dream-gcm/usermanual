@@ -78,7 +78,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # -- Options for PDF output -------------------------------------------------
 latex_engine = 'xelatex'
 latex_elements = {
-    'figure_align':'H'
+    'figure_align':'H',
     'sphinxsetup': '',
     'passoptionstopackages': r'\PassOptionsToPackage{table}{xcolor}',
     'preamble': latex_preamble,
