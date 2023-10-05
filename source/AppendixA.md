@@ -74,7 +74,7 @@ $$
 
 where $m$ is the zonal wavenumber, and n is the meridional wavenumber (i.e. the number of zeros between the poles). The number of coefficients is limited by a “jagged triangular” truncation, which has the property of istoropy on a sphere (the resolution independent of direction or latitude), and equal numbers of even and odd coefficients with respect to symmetry about the equator, in total and also individually for each zonal wavenumber. This is illustrated in fig. A3 which shows how many coefficients you have for triangular truncation to an odd number, T5 and an even number T4. DREAM can easily be run at T31 or T42.
 
-![FigA3](./img/fig_A3b.png)
+![FigA3](./img/fig_A3c.png)
 
 _Fig. A3: Jagged triangular truncation for spectral coefficients._
 
@@ -149,7 +149,7 @@ In addition to difusion, there is a level-indepenent linear damping on temperatu
 
 The empirical forcing always acts hand in hand with the prescribed dissipation. Whenever a damping or diffusion parameter is changed, the forcing must be recalculated. If you find you are tinkering a lot with the dissipation parameters for simple GCM runs, but you don’t want to go through the long process of finding a new `_fcm` forcing every time you make an adjustment, there is a short cut. If the dissipation is linear, the transient eddy part of the forcing: `fbs-fcm` will not change. And it is quick to find the forcing for a fixed basic state _fbs. So if you want, you can calculate the transient forcing just once, and then go ahead and subtract it from a newly calculated `_fbs` forcing every time you change parameters.  This will give you a new _fcm every time, which should be identical to the `_fcm` you would have calculated the long way by stepping through lots of inital conditions. For this to work your basic state must of course be the mean of your long dataset. See Appendix B for a mathematical explanation. 
 
-![FigA4](./img/fig_A4b.png)
+![FigA4](./img/fig_A4c.png)
 
 _Fig. A4: Vertical profiles of diffusion and damping with associated time scales._
 
