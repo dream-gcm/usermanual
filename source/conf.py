@@ -96,6 +96,7 @@ preamble = r'''\usepackage{fixltx2e} % LaTeX patches, \textsubscript
 \usepackage{libertine}
 %%% Set numeration
 %\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
 '''
 
 
