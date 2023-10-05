@@ -15,23 +15,23 @@ $$
 then,
 
 $$
-   \begin{align*}
+   \begin{equation*}
       \dfrac{\partial}{\partial x} (A2) - \dfrac{\partial}{\partial y} (A1)
-   \end{align*}
+   \end{equation*}
 $$
 gives the vorticity equation:
 
 $$
-   \begin{align*}
+   \begin{equation*}
       \xi_t + f D + \beta v = -u\xi_x - v\xi_y - \xi D - (wv_z + p_y/\rho)_x + (wu_z + p_x/\rho)_y
-   \end{align*}
+   \end{equation*}
 $$
 which leads to an equation for the tendency of absolute vorticity:
 
 $$
-   \begin{align*}
+   \begin{equation*}
       \frac{\partial\zeta}{\partial t} = \frac{\partial}{\partial x} \{-u\zeta - wv_z - p_y/\rho\} - \frac{\partial}{\partial y} \{-v\zeta - wu_z - p_x/\rho\}
-   \end{align*}
+   \end{equation*}
 $$
 
 The terms in curly brackets can be designated by the vector $(F_u,F_v)$ and this vorticity equation is the curl of this vector. Likewise the tendency of the divergence  can be deduced from the momentum equations:
@@ -67,9 +67,9 @@ The model proceeds by calculating tendencies and then applying these tendencies 
 Model variables are projected onto Fourier transforms in the zonal direction and Legendre polynomials in the meridional direction. 
 
 $$
-   \begin{equation}
+   \begin{equation*}
       X = \sum X^m_n P^m_n(\mu)e^{im\lambda}
-   \end{equation}
+   \end{equation*}
 $$
 
 where $m$ is the zonal wavenumber, and n is the meridional wavenumber (i.e. the number of zeros between the poles). The number of coefficients is limited by a “jagged triangular” truncation, which has the property of istoropy on a sphere (the resolution independent of direction or latitude), and equal numbers of even and odd coefficients with respect to symmetry about the equator, in total and also individually for each zonal wavenumber. This is illustrated in fig. A3 which shows how many coefficients you have for triangular truncation to an odd number, T5 and an even number T4. DREAM can easily be run at T31 or T42.
@@ -114,11 +114,10 @@ The temperature variable used in the model is thus
 The surface pressure appears in the model equations as `SP=ln(p*)`. Since DREAM does not have explicit orography, this `p*` is actually the mean sea level pressure referenced to 1000 hPa. This is calculated from the temperature and the geopotential height at 1000 hPa according to :
 
 $$
-   \begin{equation}
+   \begin{equation*}
       \ln (p_* / 1000) = \left(\frac{gz}{RT}\right)
-   \end{equation}
+   \end{equation*}
 $$
-
 * Specific humidity `Q` is already dimensionless as kg of water vapour per kg of air. 
 
 * Other physical constants set and used in the model are:
