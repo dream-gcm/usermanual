@@ -68,7 +68,7 @@ html_theme = 'sphinx_rtd_theme'
 html_logo = './img/cover.png'
 
 html_theme_options = {
-    'logo_only': True}
+    'logo_only': False}
 
 
 # Add any paths that contain custom static files (such as style sheets) here,
