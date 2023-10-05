@@ -100,6 +100,7 @@ latex_maketitle = r'''
     \@date \par
     \py@authoraddress \par
   \end{flushright}
+  \noindent{\hspace*{\fill}\sphinxincludegraphics{{/img/cover}.png}}
   \@thanks
   \setcounter{footnote}{0}
   \let\thanks\relax\let\maketitle\relax
