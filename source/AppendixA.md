@@ -65,7 +65,7 @@ _Fig. A2: Some more equations culled from HS75, outlining the semi-implicit time
 ## Spectral truncation and data organisation
 The model proceeds by calculating tendencies and then applying these tendencies to the model state to find the next model state using a semi-implicit centred difference timestep. Linear calculations for the tendencies are carried out directly in spectral space. Spatial derivatives are calculated as part of the transformation between spectral and grid space. Nonlinear advective terms are calculated in grid space. Model state variables therefore have both spectral and gridpoint arrays asigned to them, and in this section we will briefly outline how this data is organised. 
 
-Model variables are projected onto Fourier transforms in the zonal direction and Legendre polynomials in the meridional direction. 
+Model variables are projected onto Fourier transforms in the zonal direction and Legendre polynomials in the meridional direction: 
 
 $$
    \begin{equation*}
