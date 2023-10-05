@@ -84,6 +84,13 @@ latex_elements = {
     'maketitle': latex_maketitle
                  }
 
+latex_maketitle = r'''
+\begin{titlepage}
+\noindent \Huge Example title \par
+\sphinxlogo
+\end{titlepage}
+'''
+
 
 
 
