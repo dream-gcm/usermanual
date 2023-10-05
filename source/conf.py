@@ -77,11 +77,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # -- Options for PDF output -------------------------------------------------
 latex_engine = 'xelatex'
-latex_elements = {'preamble':r'''
-\usepackage{etoolbox}
-\robustify\(
-\robustify\)
-'''
+latex_elements = {
 'figure_align':'H'
                  }
 
