@@ -7,12 +7,6 @@ DREAM user manual
 
 .. toctree::
    :maxdepth: 3
-   :caption: How to cite
-
-   how2cite
-
-.. toctree::
-   :maxdepth: 3
    :caption: Chapters
    :numbered: 3
 
@@ -32,3 +26,9 @@ DREAM user manual
    AppendixC
    AppendixD
    AppendixE    
+
+.. toctree::
+   :maxdepth: 3
+   :caption: How to cite
+
+   how2cite
