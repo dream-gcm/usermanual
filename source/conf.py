@@ -77,12 +77,6 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # -- Options for PDF output -------------------------------------------------
 latex_engine = 'xelatex'
-latex_elements = {
-    'figure_align':'H',
-    'sphinxsetup': '',
-    'passoptionstopackages': r'\PassOptionsToPackage{table}{xcolor}',
-    'maketitle': latex_maketitle
-                 }
 
 latex_maketitle = r'''
 \begin{titlepage}
@@ -90,6 +84,15 @@ latex_maketitle = r'''
 \sphinxlogo
 \end{titlepage}
 '''
+
+latex_elements = {
+    'figure_align':'H',
+    'sphinxsetup': '',
+    'passoptionstopackages': r'\PassOptionsToPackage{table}{xcolor}',
+    'maketitle': latex_maketitle
+                 }
+
+
 
 
 
