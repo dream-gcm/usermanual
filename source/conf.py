@@ -76,25 +76,106 @@ html_logo = "/img/cover.png"
 exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 
-# -- Options for PDF output -------------------------------------------------
-latex_engine = 'xelatex'
-
-latex_maketitle = r'''
-\begin{titlepage}
-\noindent \Huge Example title \par
-\sphinxlogo
-
-\end{titlepage}
+# -- Options for LaTeX output --------------------------------------------------
+preamble = r'''\usepackage{fixltx2e} % LaTeX patches, \textsubscript
+\usepackage{cmap} % fix search and cut-and-paste in Acrobat
+\usepackage[raccourcis]{fast-diagram}
+\usepackage{titlesec}
+\usepackage[a4paper,left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+%%% Redifined titleformat
+\setlength{\parindent}{0cm}
+\setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
+\newcommand{\hsp}{\hspace{20pt}}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\titleformat{\chapter}[hang]{\Huge\bfseries\sffamily}{\thechapter\hsp}{0pt}{\Huge\bfseries\sffamily}
+%%% Custom font
+\usepackage{libertine}
+%%% Set numeration
+\setcounter{secnumdepth}{3}
 '''
-
 latex_elements = {
-    'figure_align':'H',
-    'sphinxsetup': '',
-    'passoptionstopackages': r'\PassOptionsToPackage{table}{xcolor}',
-    'maketitle': latex_maketitle
-                 }
+    # The paper size ('letterpaper' or 'a4paper').
+    'papersize': 'a4paper',
+
+    # The font size ('10pt', '11pt' or '12pt').
+    'pointsize': '12pt',
+
+    # Babel for french
+    'babel': '\\usepackage[french]{babel}',
+
+    # Additional stuff for the LaTeX preamble.
+    'preamble': preamble,
+
+    # No default title
+    'maketitle': '',
+
+    # No default toc
+    'tableofcontents': '',
+}
+
+# Grouping the document tree into LaTeX files. List of tuples
+# (source start file, target name, title, author, documentclass [howto/manual]).
+#latex_documents = [
+#  ('rapport', 'Rapport.tex', 'Rapport de stage 2A',
+#   'Julien Enselme', 'manual'),
+#]
+
+# The name of an image file (relative to this directory) to place at the top of
+# the title page.
+latex_logo = '/img/cover.png'
+
+# For "manual" documents, if this is true, then toplevel headings are parts,
+# not chapters.
+#latex_use_parts = False
+
+# If true, show page references after internal links.
+#latex_show_pagerefs = False
+
+# If true, show URL addresses after external links.
+#latex_show_urls = False
+
+# Documents to append as an appendix to all manuals.
+latex_appendices = []
+
+# Additionnal files
+#latex_additional_files = ['title_page_images/ecm.png']
+
+# If false, no module index is generated.
+#latex_domain_indices = True
 
 
+# -- Options for manual page output --------------------------------------------
+
+# One entry per manual page. List of tuples
+# (source start file, name, description, authors, manual section).
+#man_pages = [
+#    ('rapport.rst', 'rapport', 'Rapport Documentation',
+#     ['Julien Enselme'], 1)
+#]
+
+# If true, show URL addresses after external links.
+#man_show_urls = False
+
+
+# -- Options for Texinfo output ------------------------------------------------
+
+# Grouping the document tree into Texinfo files. List of tuples
+# (source start file, target name, title, author,
+#  dir menu entry, description, category)
+#texinfo_documents = [
+#  ('rapport.rst', 'Rapport', 'Rapport Documentation',
+#   'Julien Enselme', 'Rapport', 'One line description of project.',
+#   'Miscellaneous'),
+#]
+
+# Documents to append as an appendix to all manuals.
+#texinfo_appendices = []
+
+# If false, no module index is generated.
+#texinfo_domain_indices = True
+
+# How to display URL addresses: 'footnote', 'no', or 'inline'.
+#texinfo_show_urls = 'footnote'
 
 
 
