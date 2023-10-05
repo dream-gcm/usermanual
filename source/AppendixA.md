@@ -12,7 +12,8 @@ $$
       v_t + fu &= -uv_x - vv_y -wv_z - p_y/\rho & \qquad\qquad (A2)  &.
    \end{align*}
 $$
-then,
+
+Then:
 
 $$
    \begin{equation*}
@@ -23,14 +24,14 @@ gives the vorticity equation:
 
 $$
    \begin{equation*}
-      \xi_t + f D + \beta v = -u\xi_x - v\xi_y - \xi D - (wv_z + p_y/\rho)_x + (wu_z + p_x/\rho)_y
+      \xi_t + f D + \beta v = -u\xi_x - v\xi_y - \xi D - (wv_z + p_y/\rho)_x + (wu_z + p_x/\rho)_y ,
    \end{equation*}
 $$
 which leads to an equation for the tendency of absolute vorticity:
 
 $$
    \begin{equation*}
-      \frac{\partial\zeta}{\partial t} = \frac{\partial}{\partial x} \{-u\zeta - wv_z - p_y/\rho\} - \frac{\partial}{\partial y} \{-v\zeta - wu_z - p_x/\rho\}
+      \frac{\partial\zeta}{\partial t} = \frac{\partial}{\partial x} \{-u\zeta - wv_z - p_y/\rho\} - \frac{\partial}{\partial y} \{-v\zeta - wu_z - p_x/\rho\}.
    \end{equation*}
 $$
 
@@ -41,7 +42,7 @@ $$
       \dfrac{\partial}{\partial x} (A1) - \dfrac{\partial}{\partial y} (A2)
    \end{equation*}
 $$
-eventually leading to a divergence equation as another expression in $F_u$ and $F_v$  with an added source related to the kinetic energy.
+eventually leading to a divergence equation as another expression in $F_u$ and $F_v$  with an added source related to the kinetic energy:
 
 $$
    \begin{equation*}
@@ -71,7 +72,6 @@ $$
       X = \sum X^m_n P^m_n(\mu)e^{im\lambda}
    \end{equation*}
 $$
-
 where $m$ is the zonal wavenumber, and n is the meridional wavenumber (i.e. the number of zeros between the poles). The number of coefficients is limited by a “jagged triangular” truncation, which has the property of istoropy on a sphere (the resolution independent of direction or latitude), and equal numbers of even and odd coefficients with respect to symmetry about the equator, in total and also individually for each zonal wavenumber. This is illustrated in fig. A3 which shows how many coefficients you have for triangular truncation to an odd number, T5 and an even number T4. DREAM can easily be run at T31 or T42.
 
 ![FigA3](./img/fig_A3c.png)
