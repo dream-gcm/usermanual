@@ -2,7 +2,7 @@
 ![appendixA](./img/appendix_A.png)
 
 ---
-## The primitive equations and the semi-implicit timestep
+## A1. The primitive equations and the semi-implicit timestep
 
 DREAM solves the primitive equations expressed in terms of vorticity and divergence. These are written down in Hoskins and Simmons (1975, HS75) but let’s deciphier this presentation by approaching  them from the momentum equations, using subscript notation for partial derivatives:
 
@@ -62,7 +62,7 @@ _Fig. A1: The primitive equations as presented in HS75._
 _Fig. A2: Some more equations culled from HS75, outlining the semi-implicit timestep._
 
 ---
-## Spectral truncation and data organisation
+## A2. Spectral truncation and data organisation
 The model proceeds by calculating tendencies and then applying these tendencies to the model state to find the next model state using a semi-implicit centred difference timestep. Linear calculations for the tendencies are carried out directly in spectral space. Spatial derivatives are calculated as part of the transformation between spectral and grid space. Nonlinear advective terms are calculated in grid space. Model state variables therefore have both spectral and gridpoint arrays asigned to them, and in this section we will briefly outline how this data is organised. 
 
 Model variables are projected onto Fourier transforms in the zonal direction and Legendre polynomials in the meridional direction: 
@@ -94,7 +94,7 @@ Note that the total number of latitudes `JGG=2JG`, and two dummy zeros are writt
 Gridpoint operations are carried out one latitude-pair at a time for all levels. So at any given moment only one latitude pair exists in grid space. The calculations proceed in zonal-vertical  slices. Note that in some routines the data is in grid space in the meridional direction but in Fourier coefficients in the zonal direction. At this stage the data is still complex, but when the data is fully into grid space it is real. Real grid data shares array space in common blocks with hybrid latitude-Fourier data, so declarations can change from one subroutine to another with the same variable names. Eeek !
 
 ---
-## Model variables and dimensions
+## A3. Model variables and dimensions
 
 The basic model variables are vorticity and divergence (s$^{-1}$), temperature (degrees C), surface pressure (Pa) and specific humidity (kg/kg). These quantities are non-dimensionalised using physical constants:
 
@@ -128,7 +128,7 @@ $$
 Special attention needs to be paid to the nondimensionalisation of time intervals, timescales and rates. Since time is nondimensionalised in terms of an angular frequency $\Omega$, this means that a non-dimensional day actually has a day length of 2$\pi$. So if a timescale is specified in days, for example the dissipation timescale in the free troposphere `TAUFT=20 days`, then it’s non-dimensional value will be 20 $\times 2\pi$. The associated dissipation rate `FTFR` is the reciprocal of this: `FRFT=1./(PI2*TAUFT)` . Note that timescales are generally specified as `TAUXX (days)` and the associated rates as `FRXX`. The same logic applies to the nondiensional length of the model timestep `DELT=PI2/TSPD (=2*PI/64)`. For details of the reporting of time in model output and data see [Section A7](#a7-data-timing) of this appendix. 
 
 ---
-## Vertical structure
+## A4. Vertical structure
 DREAM currently uses 15 $\sigma$-levels in the vertical. They are referenced to the mean sea level pressure, as calculated from temperature and pressure at the 1000 hPa level as shown above. So model levels in DREAM are quite close to pressure levels, because there is no explicit orography. This does not mean that there is no orographic forcing in the model, because the absence of explicit orography is compensated for automatically in the empirical forcing of momentum. But it does mean that DREAM cannot simulate the interaction of transient systems with orography, because our empirical forcing is not flow-dependent. 
 
 The sigma levels used in DREAM have been chosen to be as close as possible to the ECMWF standard pressure levels on which the data was originally provided, minimising interpolation errors. An exact correspondence is not possible because the model sigma levels must fall at the mid point of model sigma layers. It is, in fact, the boundaries between sigma layers that are specified, not the mid-points. The layer boundaries start at zero at the top of the atmosphere and finish at unity at the bottom. Sigma levels are then calculated as the mid-points between these layer boundaries. The layer boundaries in DREAM have been chosen so that we end up with model sigma levels centred at the following fifteen values: 
@@ -138,7 +138,7 @@ The sigma levels used in DREAM have been chosen to be as close as possible to th
 The model uses the Simmons and Burridge (1981) angular momentum conserving vertical scheme. The term “vertical scheme” refers to the way in which the geopotential is calculated on sigma levels in the gravity wave source term shown in fig. A2. For a quick discussion of this see the appendix of Hall (2000). 
 
 ---
-## Dissipation
+## A5. Dissipation
 Scale selective hyperdiffusion is applied in spectral space to all the model’s 3-d state variables (`Z`,`D`,`T`,`Q`) independently of vertical level. Any order of the Laplacian operator can easily be used because it reduces to a simple multiple of the spectral coefficients. A timescale is also specified. Currently the default horizontal diffusion is set to 12-hour $\nabla^6$ . 
 
 Further level-dependent vertical diffusion and damping is added in grid space to all 3-d state variables (`U`,`V`,`T`,`Q`). Linear diffusive vertical fluxes are calculated from vertical gradients at sigma-level boundaries. Their convergence is then calculated at sigma levels, using linear centred differences. The boundary conditions act to damp the system as if the top and bottom surfaces mirrored the reference value in the adjacent layer, like a sponge at the top of the atmosphere or a fixed SST at the surface. The timescales used to calculate the fluxes depend on the model level, and are much shorter at the lowest levels. The damping rate (the reciprocal of the time scale) follows a linear profile from the surface to a specified boundary layer height. Standard parameters are shown in fig. A4. The mean rate in the boundary layer corresponds to a time scale of 16h. There is an optional doubling of the lowest layer vertical diffusion coefficient over land if `LLSD` is to to true. This is currently enabled by default at T42 but disabled at T31. Above the boundary layer, in the free troposphere, the vertical diffusion rate is fixed with a default timescale of 20 days. 
@@ -153,7 +153,7 @@ The empirical forcing always acts hand in hand with the prescribed dissipation. 
 _Fig. A4: Vertical profiles of diffusion and damping with associated time scales._
 
 ---
-## Code structure
+## A6. Code structure
 
 Most of the presentation of the code is in Appendix D, but here I will walk you through the main program to give you an idea of how one timestep unfolds. Have the source code open in front of you while you read this. 
 
@@ -206,7 +206,7 @@ Then we check to see if we are on a timestep for reporting the output (a multipl
 The time loop ends and then if we are at the end of the run, all that is left is to write a final restart record. If we’re in a training loop, this is done for each initial condition until the training loop also ends. 
 
 ---
-## Data timing
+## A7. Data timing
 
 ### Reading, writing and initialising
 A history record containing the complete state of the model is periodically written as a binary file during the run as follows: 
