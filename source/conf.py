@@ -84,12 +84,7 @@ latex_elements = {
     'preamble': latex_preamble,
     'maketitle': latex_maketitle,
                  }
-latex_maketitle = r'''
-\begin{titlepage}
-\noindent \Huge Example title \par
-\sphinxlogo
-\end{titlepage}
-'''
+
 
 
 
