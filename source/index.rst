@@ -7,7 +7,7 @@ DREAM user manual
 
 .. toctree::
    :maxdepth: 3
-   :caption: Contents
+   :caption: Chapters
    :numbered: 3
 
    Chapter1
@@ -15,6 +15,12 @@ DREAM user manual
    Chapter3
    Chapter4
    Chapter5  
+
+
+.. toctree::
+   :maxdepth: 3
+   :caption: Appendix
+
    AppendixA
    AppendixB
    AppendixC
