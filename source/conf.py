@@ -80,9 +80,7 @@ latex_engine = 'xelatex'
 latex_elements = {
     'figure_align':'H',
     'sphinxsetup': '',
-    'passoptionstopackages': r'\PassOptionsToPackage{table}{xcolor}',
-    'preamble': latex_preamble,
-    'maketitle': latex_maketitle,
+    'passoptionstopackages': r'\PassOptionsToPackage{table}{xcolor}'
                  }
 
 
