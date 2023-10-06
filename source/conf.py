@@ -21,7 +21,7 @@ sys.path.append(os.path.abspath('../'))
 
 project = 'DREAM user manual'
 copyright = '2023, nick hall'
-author = 'nick hall'
+author = 'nick hall, stephanie leroux'
 
 # The full version, including alpha/beta/rc tags
 release = '1.0.0'
