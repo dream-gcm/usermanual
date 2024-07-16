@@ -11,7 +11,7 @@ You need to join the private DREAM project on github, so if you don’t already 
 ## Compilation on your system
 Now you’re on your computer and you have either downloaded and unzipped the repository or `git clone` it. If what you downloaded is named "DREAM-master" then rename this folder as DREAM, put it wherever you want, and go into this directory. 
 
-First you’ll need to recompile the model libraries. Go into the “dream_model/source” directory to compile the model libraries on your computer (you should only have to do this once):
+First you’ll need to recompile the model libraries. Go into the `dream_model/source` directory to compile the model libraries on your computer (you should only have to do this once):
 
 ```
 cd ./lib
